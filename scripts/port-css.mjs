@@ -94,10 +94,15 @@ const keyframes = new Map();
 // the two header phone variants and the floating-action tooltips. Dropping those left the markup
 // unstyled.
 //
-// So the state mock still wins for everything it defines, and the city mock may ADD a rule whose
-// every selector names at least one class the state mock never mentions. `.hdr .phone-bar` is added
-// because `phone-bar` is new; `.hdr .wrap` is not, because the state mock owns both. The hub mock
-// contributes no chrome, exactly as before.
+// The city mock is the newest design of that shared chrome, and it deliberately overrides the state
+// mock in places — it redefines `.menu-btn` at the same breakpoint to move the hamburger to the far
+// left (`order:-1`) so the BBB badge, call button and booking CTA form one right-hand cluster.
+// Refusing those overrides left the hamburger pinned right and the badge stranded mid-header.
+//
+// So the city mock wins for chrome. It is emitted after the state mock, so ordinary cascade order
+// applies and a selector the city mock does not touch keeps the state mock's value. The hub mock
+// contributes no chrome, exactly as before. Every template renders the same header component, so
+// there is one header design and this is it.
 const CHROME_SOURCES = new Set(['state', 'city']);
 const stateChromeRules = new Set(); // "<media>|<selector>" pairs the state mock actually wrote
 const ruleKey = (atParams, sel) => `${atParams ?? ''}|${sel.replace(/\s+/g, ' ').trim()}`;
@@ -108,12 +113,8 @@ function claimChrome(tpl, node, atParams) {
   if (!sels.length) return false;
   if (tpl === 'state') {
     for (const sel of sels) stateChromeRules.add(ruleKey(atParams, sel));
-    return true;
   }
-  // The city mock may add a rule the state mock never wrote at this exact breakpoint. It may not
-  // change one the state mock did write: where both define the same selector at the same media
-  // query, the state mock's value stands and every template keeps the header it has today.
-  return sels.every((sel) => !stateChromeRules.has(ruleKey(atParams, sel)));
+  return true;
 }
 
 function emit(bucket, rule, atParams, scope) {

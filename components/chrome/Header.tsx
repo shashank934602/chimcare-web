@@ -53,6 +53,9 @@ export function Header({
             <Icon name="phone" />
             {phone}
           </a>
+          {/* On phones the badge moves into this panel with the phone number, so the bar keeps only
+              the menu button and the logo. Same file as the one in the bar, so nothing extra loads. */}
+          {bbb && <img className="hdr-bbb-panel" src={bbb.src} width={bbb.width} height={bbb.height} decoding="async" alt={bbb.alt} />}
         </div>
         {bbb && <img className="hdr-bbb" src={bbb.src} width={bbb.width} height={bbb.height} decoding="async" alt={bbb.alt} />}
         <a className="phone phone-bar" href={phoneHref}>

@@ -1,15 +1,14 @@
 {
- "generatedAt": "2026-09-10T11:08:06.801Z",
+ "generatedAt": "2026-09-10T13:03:13.670Z",
  "urls": 10,
- "verdict": "SMOKE REVIEW",
+ "verdict": "SMOKE FAIL",
  "counts": {
   "PASS": 0,
-  "FAIL": 0,
-  "REVIEW": 10
+  "FAIL": 6,
+  "REVIEW": 4
  },
  "templates": {
-  "CityPage": 4,
-  "ServicePage": 2,
+  "CityPage": 6,
   "StateHub": 1,
   "NationalHub": 1,
   "LegacyPage": 2
@@ -19,11 +18,11 @@
   "404": 1
  },
  "sourceRows": 8,
- "imagesChecked": 243,
+ "imagesChecked": 273,
  "imagesBroken": 0,
  "conflicts": {
-  "total": 27,
-  "critical": 0,
+  "total": 35,
+  "critical": 8,
   "review": 27
  }
 }

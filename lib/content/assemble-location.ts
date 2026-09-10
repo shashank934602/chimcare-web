@@ -206,7 +206,10 @@ export function assembleLocationPage(
     hero: {
       eyebrow: heroMaster?.eyebrow ?? (city ? `${city}, ${src.state}` : src.state),
       title: src.post_title,
-      lede: s.lead ?? heroMaster?.lede ?? null,
+      // The mock's hero lede is one short line, capped at 44ch by the stylesheet. The body's opening
+      // paragraph is a full paragraph and belongs in the introduction, where the mock puts its prose;
+      // dropping it into the hero stretched the hero to twice its designed height.
+      lede: heroMaster?.lede ?? s.lead ?? null,
       trustLine: [
         { icon: 'shield', label: 'CSIA Certified' },
         { icon: 'cal', label: 'Since 1989' },
@@ -226,8 +229,16 @@ export function assembleLocationPage(
       { icon: 'pin', title: ctx.city ? `Local ${ctx.city.name} Team` : 'Local team', small: addressLine ?? 'Serving this area' },
     ],
     // The body's own "why it matters" if it has one; otherwise the design's introduction.
-    intro: s.whyImportant
-      ? { eyebrow: introMaster?.eyebrow ?? 'Chimcare', heading: s.whyImportant.heading, paragraphs: s.whyImportant.paragraphs, cta: introMaster?.cta ?? 'Get a Quote', teamPhoto: DESIGN.cityTeam }
+    // The introduction is where the page's own prose lives: its opening paragraph first, then its
+    // "why it matters" section. Master copy fills in only when the body has neither.
+    intro: s.whyImportant || s.lead
+      ? {
+          eyebrow: introMaster?.eyebrow ?? 'Chimcare',
+          heading: s.whyImportant?.heading ?? introMaster?.heading ?? '',
+          paragraphs: [...(s.lead ? [s.lead] : []), ...(s.whyImportant?.paragraphs ?? [])],
+          cta: introMaster?.cta ?? 'Get a Quote',
+          teamPhoto: DESIGN.cityTeam,
+        }
       : introMaster
         ? { ...introMaster, teamPhoto: DESIGN.cityTeam }
         : null,

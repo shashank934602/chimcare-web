@@ -1,0 +1,61 @@
+{
+ "sampled": 500,
+ "fetched": 40,
+ "wp": {
+  "post_title": 500,
+  "yoast_title": 0,
+  "yoast_metadesc": 1,
+  "yoast_canonical": 0,
+  "thumbnail_id": 500,
+  "phone": 24,
+  "job_location": 24
+ },
+ "parsed": {
+  "lead": 500,
+  "whyImportant": 468,
+  "whyTrust": 8,
+  "serviceDirectory": 1,
+  "process": 479,
+  "whyChooseUs": 475,
+  "areas": 473,
+  "faqs": 475,
+  "faqsWithItems": 475,
+  "bookCta": 458,
+  "unmatchedHeadings": 55
+ },
+ "rendered": {
+  "served": 27,
+  "notServed": 13,
+  "title": 27,
+  "titleWithSuffix": 0,
+  "description": 0,
+  "canonical": 27,
+  "h1": 27,
+  "heroImage": 21,
+  "phone": 27,
+  "address": 23,
+  "intro": 26,
+  "process": 26,
+  "areas": 26,
+  "faq": 26,
+  "whyChooseUs": 27,
+  "bookCta": 24,
+  "serviceDirectory": 0,
+  "unmatchedRendered": 1
+ },
+ "notServedSlugs": [
+  "chimney-deep-cleaning-pcr-in-brooklyn-park-mn → 308",
+  "chimney-maintenance-in-montrose-mn → 308",
+  "wood-burning-fireplace-installation-in-shakopee-mn → 308",
+  "shafer-chimney-maintenance-in-mn → 308",
+  "custom-chimney-caps-in-wyoming-mn → 308",
+  "caps-rain-pans-repair-in-roseville-mn → 308",
+  "electric-fireplaces-in-monticello-mn → 308",
+  "chimney-construction-in-mendota-heights-mn → 308",
+  "fireplace-flue-installation-in-northfield-mn → 308",
+  "chimney-flue-repair-excelsior-mn → 308",
+  "chimney-inspection-in-cannon-falls-mn → 308",
+  "chimney-framing-rebuild-in-oakdale-mn → 308",
+  "chimney-framing-repair-in-forest-lake-mn → 308"
+ ]
+}

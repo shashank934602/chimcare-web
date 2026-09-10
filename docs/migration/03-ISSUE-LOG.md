@@ -850,3 +850,70 @@ refactor has been started.
 
 Blocks the pilot: yes. The 100-URL pilot would otherwise be built on a page model that does not match
 the URLs it is migrating.
+
+---
+
+## ISSUE-030 — Every page has a hero, and 19,000 of them point at a photo of Boston
+
+Status: OPEN — decision needed, deliberately not "fixed"
+Severity: HIGH
+Phase: Real-data integration
+Raised: 2026-09-10
+
+Measured:
+
+| | |
+| --- | ---: |
+| Minnesota pages with a `_thumbnail_id` | 19,014 / 19,014 (100%) |
+| Distinct attachments those point at | 15 |
+| Pages pointing at attachment 88125 | **19,000** |
+| Site-wide pages with a thumbnail | 229,483 of 229,621 |
+| Site-wide distinct attachments | **118** |
+
+Attachment 88125 is `chimney-sweep-boston-MA.jpg`. Another recovered file is `Saint-PaulMA.webp`.
+Both are labelled for Massachusetts and are used on Minnesota pages.
+
+Two true statements:
+- **Code:** the application renders a hero only where a city's media was recovered (21 of 27 sampled),
+  so it is not resolving a thumbnail it already has.
+- **Data:** resolving it would put one shared Boston photograph on 19,000 Minnesota pages.
+
+Why it was not fixed:
+Wiring the field through would look like progress and would make 19,000 pages worse. 118 distinct
+images across 229,483 pages is not a per-page hero; it is a stock image with an id attached.
+
+Resolution required, one of:
+1. Render the shared image anyway, accepting a Boston photo on Minnesota pages.
+2. Render no hero unless the attachment is specific to that page (14 pages in Minnesota).
+3. Source real photography, which is a client decision and a cost.
+
+Blocks the pilot: it should be decided before 100 URLs are published, because the choice is visible
+on every one of them.
+
+---
+
+## ISSUE-031 — FAQ questions are lost on pages that write them as prose
+
+Status: OPEN
+Severity: MEDIUM
+Phase: Real-data integration
+Raised: 2026-09-10
+
+Problem:
+`parseSourceSections` recovers FAQ questions from `[vc_tta_section title="…"]` accordion attributes,
+and falls back to `<h3>`/`<h4>` headings. Some pages do neither: they put the whole question-and-
+answer set in one paragraph, e.g. "How often should I have my chimney cleaned in Milwaukee? Most
+homes benefit from…".
+
+Measured:
+- Minnesota: **475 of 475** FAQ sections keep their questions. No loss.
+- Random cross-state sample: **5 of 12** pages parse the FAQ heading but recover zero questions —
+  Milwaukee WI, Lincoln City OR, Salem OR, south-west Cleveland OH, north-west Milwaukee WI.
+
+This is code, not data: the content is in the body, and the parser does not split it.
+
+Resolution required:
+Add a third strategy that splits a prose FAQ blob on its question marks. Verify against a cross-state
+sample rather than Minnesota, since Minnesota does not exhibit the problem.
+
+Blocks the pilot: not for Minnesota. It would for any state whose pages use the prose form.

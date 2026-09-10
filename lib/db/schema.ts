@@ -259,5 +259,33 @@ export const bookings = site.table('bookings', {
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });
 
+/**
+ * The page's WordPress body, exactly as WordPress holds it.
+ *
+ * This is the migration's own copy of the source, and it is immutable: nothing in the application
+ * writes to it after insert, and nothing cleans it in place. Templates read it through
+ * `lib/content/source-sections.ts`, which parses it at the render boundary and leaves the row alone.
+ * `contentSha256` is recorded at extraction so any later claim about "the source" can be checked.
+ */
+export const pageSource = site.table('page_source', {
+  id: serial('id').primaryKey(),
+  slug: text('slug').notNull().unique(), // the legacy path segment under /location/, same key as pages.slug
+  wpPostId: integer('wp_post_id'),
+  postTitle: text('post_title').notNull(),
+  postContent: text('post_content').notNull(),
+  postModified: text('post_modified'),
+  yoastTitle: text('yoast_title'),
+  yoastMetadesc: text('yoast_metadesc'),
+  yoastCanonical: text('yoast_canonical'),
+  thumbnailId: integer('thumbnail_id'),
+  phone: text('phone'),
+  jobLocation: text('job_location'),
+  contentSha256: text('content_sha256').notNull(),
+  extractedAt: timestamp('extracted_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type PageSource = typeof pageSource.$inferSelect;
+export type NewPageSource = typeof pageSource.$inferInsert;
+
 export type Booking = typeof bookings.$inferSelect;
 export type NewBooking = typeof bookings.$inferInsert;

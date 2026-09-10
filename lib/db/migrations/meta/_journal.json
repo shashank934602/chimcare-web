@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1788509149891,
+      "tag": "0000_public_electro",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1788511647286,
+      "tag": "0001_harsh_lord_hawal",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1789034249826,
+      "tag": "0002_short_sue_storm",
+      "breakpoints": true
+    }
+  ]
+}

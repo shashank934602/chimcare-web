@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Chimcare — URL Change Report</title>
+<style>
+  @page { size: A4; margin: 11mm 11mm 9mm; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { font: 9pt/1.3 "Helvetica Neue", Arial, sans-serif; color: #1a1a1a; }
+  .page { page-break-after: always; }
+  .page:last-child { page-break-after: auto; }
+  h1 { font-size: 15pt; margin: 0 0 1mm; letter-spacing: -.3px; }
+  h2 { font-size: 10.5pt; margin: 3.6mm 0 1.4mm; padding-bottom: .8mm; border-bottom: 1.8px solid #DD2E44; }
+  p { margin: 0 0 1.6mm; }
+  .sub { color: #666; font-size: 8pt; margin-bottom: 2.6mm; }
+  table { width: 100%; border-collapse: collapse; margin: 1.4mm 0 2mm; font-size: 8.2pt; }
+  th { text-align: left; background: #f4f4f5; font-weight: 700; padding: 1mm 1.6mm; border-bottom: 1px solid #d4d4d8; }
+  td { padding: .95mm 1.6mm; border-bottom: .5px solid #e8e8ea; vertical-align: top; }
+  td.n, th.n { text-align: right; white-space: nowrap; }
+  code { font-family: "SF Mono", Menlo, monospace; font-size: 7.6pt; background: #f4f4f5; padding: .2mm .8mm; }
+  .ex { font-family: "SF Mono", Menlo, monospace; font-size: 7.4pt; background: #fafafa; border-left: 2px solid #DD2E44;
+        padding: 1.4mm 2mm; margin: 1.2mm 0 2mm; white-space: pre-wrap; line-height: 1.42; }
+  .note, .key { padding: 1.6mm 2.2mm; margin: 2mm 0; font-size: 8.4pt; line-height: 1.35; }
+  .note { background: #fff8e6; border-left: 2px solid #d9a300; }
+  .key  { background: #fdeef0; border-left: 2px solid #DD2E44; }
+  .foot { margin-top: 3mm; padding-top: 1.2mm; border-top: .5px solid #ddd; color: #999; font-size: 7pt; }
+  ul { margin: .8mm 0 0; padding-left: 4mm; }
+  li { margin-bottom: .5mm; }
+</style>
+</head>
+<body>
+
+<!-- ================= PAGE 1 ================= -->
+<div class="page">
+  <h1>Chimcare — URL Change Report</h1>
+  <p class="sub">What our URLs are made of, and what the already-decided ones mean. Measured from the WordPress
+  database and the approved decision files. Read-only. 9 September 2026.</p>
+
+  <h2>1. What a Chimcare URL is made of</h2>
+  <p>Nearly every URL sits under <code>/location/</code> and names three things: a <strong>service</strong>,
+  a <strong>city</strong> and a <strong>state</strong>.</p>
+  <div class="ex">/location/<b>chimney-sweep</b>-in-<b>seattle</b>-<b>wa</b>/
+             SERVICE        CITY    STATE</div>
+
+  <p>Checking all 262,987 URLs for how many carry each part:</p>
+  <table>
+    <tr><th>The URL names…</th><th class="n">URLs</th><th class="n">Share</th></tr>
+    <tr><td>A service</td><td class="n">262,987</td><td class="n">100.0%</td></tr>
+    <tr><td>A state</td><td class="n">262,837</td><td class="n">99.9%</td></tr>
+    <tr><td>A city</td><td class="n">258,583</td><td class="n">98.3%</td></tr>
+    <tr><td><strong>All three together</strong></td><td class="n"><strong>258,543</strong></td><td class="n"><strong>98.3%</strong></td></tr>
+  </table>
+  <p>The structure is more consistent than it looks. <strong>Fewer than 2 in 100 URLs are missing a piece.</strong>
+  The problem is not that the pattern is absent, but that a small number break it in expensive ways.</p>
+
+  <h2>2. The eight kinds of URL</h2>
+  <table>
+    <tr><th>Category</th><th class="n">URLs</th><th class="n">Clicks</th><th>What it is</th></tr>
+    <tr><td><strong>Service + city + state</strong></td><td class="n">199,748</td><td class="n">21,532</td><td>The standard pattern. Clean.</td></tr>
+    <tr><td>Not a live page</td><td class="n">33,347</td><td class="n">7,614</td><td>Only in the decision files; deleted from WordPress.</td></tr>
+    <tr><td>Same, but missing “in”</td><td class="n">14,429</td><td class="n">8,455</td><td>Older shape. Still readable.</td></tr>
+    <tr><td>Town hub page</td><td class="n">5,377</td><td class="n">19,126</td><td>A town’s main page, not a service page.</td></tr>
+    <tr><td>Duplicate <code>-2</code> copy</td><td class="n">5,052</td><td class="n">361</td><td>WordPress made a second copy.</td></tr>
+    <tr><td>No city named</td><td class="n">4,057</td><td class="n">432</td><td>City missing from the address.</td></tr>
+    <tr><td>Editing note saved as a URL</td><td class="n">972</td><td class="n">29</td><td>Someone’s notes became a live page.</td></tr>
+    <tr><td>No state named</td><td class="n">5</td><td class="n">417</td><td>City and state stuck together.</td></tr>
+  </table>
+
+  <div class="ex"><b>Standard</b>       /location/chimney-sweep-in-seattle-wa/
+<b>Missing “in”</b>   /location/chimney-sweep-seattle-wa/             1,927 clicks
+<b>Town hub</b>       /location/chimney-sweep-repair-in-boston-ma/    1,236 clicks
+<b>Duplicate</b>      /location/duct-cleaning-in-worcester-ma-2/          1 click
+<b>No city</b>        /location/chimney-sweep-long-beach-wa/            50 clicks
+<b>No state</b>       /location/cleveland-oh-chimney-sweep-repair/     307 clicks
+<b>Editing note</b>   /location/heat-shield-repair-in-newton-ma-is-not-correct-
+                since-the-first-variable-is-heatshield-not-heat-shield…/</div>
+
+  <div class="key"><strong>Take-away:</strong> 98.3% of URLs already contain state, city and service. The site
+  is well structured. About 10,000 URLs break the pattern, and those are what make a URL change difficult —
+  not the other 250,000.</div>
+
+  <div class="foot">Page 1 of 3 · Source: WordPress database (read-only), approved decision files, Google Search Console export</div>
+</div>
+
+<!-- ================= PAGE 2 ================= -->
+<div class="page">
+  <h1>The 89,815 already-decided URLs</h1>
+  <p class="sub">URLs where the business has already chosen what happens. They split into two groups.</p>
+
+  <table>
+    <tr><th>Decision</th><th class="n">URLs</th><th>Meaning</th></tr>
+    <tr><td><strong>REDIRECT</strong></td><td class="n">53,056</td><td>Send the visitor to a different page.</td></tr>
+    <tr><td><strong>GONE</strong></td><td class="n">36,759</td><td>Retire the page. It should stop existing.</td></tr>
+    <tr><td><strong>Total</strong></td><td class="n"><strong>89,815</strong></td><td>The figure of 89,727 quoted earlier is close; the measured total today is 89,815.</td></tr>
+  </table>
+
+  <h2>3. The 53,056 redirects — where they come from</h2>
+  <table>
+    <tr><th>Source of the decision</th><th class="n">URLs</th><th>What it is</th></tr>
+    <tr><td>The approved redirect file</td><td class="n">50,938</td><td>Decisions made by the business.</td></tr>
+    <tr><td>Duplicate town pages</td><td class="n">1,488</td><td>A town had more than one main page.</td></tr>
+    <tr><td>WordPress’s own history</td><td class="n">630</td><td>A page was renamed in the past.</td></tr>
+  </table>
+
+  <h2>4. What each redirect does to the visitor</h2>
+  <p>We compared what the visitor <em>asked for</em> against what they would <em>get</em>.</p>
+  <table>
+    <tr><th>Result</th><th class="n">URLs</th><th class="n">Share</th></tr>
+    <tr><td>Different service, same town</td><td class="n">46,539</td><td class="n">87.7%</td></tr>
+    <tr><td>Different service, different town</td><td class="n">2,684</td><td class="n">5.1%</td></tr>
+    <tr><td><strong>Same service, same town</strong> — correct</td><td class="n"><strong>2,210</strong></td><td class="n"><strong>4.2%</strong></td></tr>
+    <tr><td>Same service, different town</td><td class="n">905</td><td class="n">1.7%</td></tr>
+    <tr><td>Town could not be read</td><td class="n">718</td><td class="n">1.4%</td></tr>
+  </table>
+
+  <div class="ex"><b>Correct — same thing, same place</b>
+ /location/chimney-sweep-in-st-helens-or/ → /location/chimney-sweep-st-helens-or/
+
+<b>Wrong — different job</b>
+ /location/pellet-stove-service-in-lynn-ma/
+     → /location/wood-burning-stove-installation-in-lynn-ma/
+ A pellet stove customer sent to a wood stove installation page.
+
+<b>Wrong — different city and state</b>
+ /location/cleveland-chimney-sweep/ → /location/chimney-sweep-portland-oregon/
+ Cleveland, Ohio sent to Portland, Oregon.   524 clicks.</div>
+
+  <div class="note"><strong>Why this matters.</strong> Google treats a redirect landing on an unrelated page as
+  a broken page and passes none of the value across. <strong>92.8% of approved redirects send the visitor to a
+  different service</strong> than the one they searched for. Only 2,210 are a clean like-for-like move.</div>
+
+  <div class="key"><strong>Good news.</strong> The 49,223 different-service redirects are not 49,223 separate
+  decisions. They collapse into <strong>4,403 service pairs</strong>. Deciding “does chimney sweep forward to
+  chimney sweep repair?” once fixes hundreds of URLs at a time.</div>
+
+  <div class="foot">Page 2 of 3 · Chimcare URL Change Report</div>
+</div>
+
+<!-- ================= PAGE 3 ================= -->
+<div class="page">
+  <h1>The 36,759 retirements, and what this means</h1>
+
+  <h2>5. What the “GONE” URLs actually are</h2>
+  <table>
+    <tr><th>Category</th><th class="n">URLs</th><th>What it is</th></tr>
+    <tr><td><strong>Never existed</strong></td><td class="n">30,854</td><td>Not in WordPress at all. Already returns “not found” today.</td></tr>
+    <tr><td>Duplicate copy</td><td class="n">5,035</td><td>A live page with WordPress’s <code>-2</code> suffix.</td></tr>
+    <tr><td>A real published page</td><td class="n">603</td><td>Live page, no duplicate marker.</td></tr>
+    <tr><td>Disagreement</td><td class="n">239</td><td>Our check says this should not be retired.</td></tr>
+    <tr><td><strong>A town’s main page</strong></td><td class="n">19</td><td>A working town hub page. <strong>Worth questioning.</strong></td></tr>
+    <tr><td>Existed, never published</td><td class="n">9</td><td>In WordPress as another type of item.</td></tr>
+  </table>
+
+  <div class="ex"><b>Never existed</b>      /location/duct-cleaning-in-northbrook-il/
+                   already “not found” — 0 clicks, 1,744 Google views
+<b>Duplicate copy</b>     /location/air-duct-cleaning-in-ca-27/
+                   “Air Duct Cleaning in Jackson, CA” — a second copy
+<b>Town’s main page</b>   /location/chimney-sweep-repair-in-glen-ellyn-il/
+                   live and working — should this really be retired?</div>
+
+  <p><strong>One claim we had to correct.</strong> We were told this group had zero Google traffic. Not true:
+  <strong>32,347 have views and 1,972 have clicks.</strong> But the amounts are small, and that matters too —
+  34,787 have no clicks, 1,955 have 1–4, and only <strong>17 have 5 or more</strong>. The highest earner has
+  13 clicks and is a PDF, not a page. Retiring all 36,759 costs about 2,445 clicks out of 75,524 site-wide,
+  roughly 3%. <strong>The decision is sound; the reason given for it was wrong.</strong></p>
+
+  <h2>6. If we change the URL pattern</h2>
+  <p>Proposal: change <code>/location/{service}-in-{city}-{state}/</code> to
+  <code>/{state}/location/{city}/{service}/</code>. We tested whether it can actually be built.</p>
+  <table>
+    <tr><th>Result</th><th class="n">URLs</th><th class="n">Share</th></tr>
+    <tr><td>Can be converted automatically</td><td class="n">218,322</td><td class="n">95.1%</td></tr>
+    <tr><td>Needs a person to decide first</td><td class="n">11,318</td><td class="n">4.9%</td></tr>
+  </table>
+  <p>The 11,318 are the same broken ones from page 1 — duplicate copies, missing cities, editing notes. They
+  carry <strong>1,701 clicks and 522,038 Google views</strong>, so they are not throwaway pages. A further
+  <strong>302 collisions</strong> would occur, where two or three old URLs become one new URL.</p>
+
+  <div class="note"><strong>The bigger issue.</strong> Changing every URL means every existing redirect points
+  at an address that has itself moved. Redirect rules to maintain go from <strong>53,056 to 282,696</strong> —
+  more than five times as many — and the current set already has problems on 96% of its rows.</div>
+
+  <div class="key"><strong>Recommendation: change one thing at a time.</strong>
+  <ul>
+    <li><strong>Step 1</strong> — Move to the new website. Keep every URL exactly as it is.</li>
+    <li><strong>Step 2</strong> — Fix the ~11,000 broken addresses in WordPress.</li>
+    <li><strong>Step 3</strong> — Settle the service list (208 names for 92 services).</li>
+    <li><strong>Step 4</strong> — Then restructure, on a clean base, as its own release.</li>
+  </ul>
+  Steps 2 and 3 are already on the plan. Doing them first turns a 95% conversion into a 100% one.</div>
+
+  <div class="foot">Page 3 of 3 · Nothing was modified. WordPress was read with SELECT only; no redirect was applied and no page retired.</div>
+</div>
+
+</body>
+</html>

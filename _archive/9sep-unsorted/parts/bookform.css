@@ -1,0 +1,44 @@
+/* =====================================================================
+   BOOKING FORM — a static replica of the live Chimcare (Workiz) widget.
+   Only the Service step is interactive; the rest are indicator dots.
+   ===================================================================== */
+.book{--bk-blue:#3E9BEE;--bk-ink:#2E3A44;--bk-muted:#8A99A6;--bk-line:#DDE4EA;--bk-panel:#F1F5F8;
+  background:#fff;border-radius:6px;overflow:hidden;width:100%;font-family:var(--font-body);
+  box-shadow:0 30px 80px rgba(0,0,0,.35);line-height:1.5;color:var(--bk-ink)}
+.bsheet .book{box-shadow:0 10px 40px rgba(0,0,0,.08)}
+.book-head{padding:22px 26px 18px;background:#fff}
+.book-head h3{font-family:var(--font-body);font-size:19px;font-weight:800;letter-spacing:-.01em;color:#22303B}
+.book-head p{margin-top:5px;font-size:13px;color:var(--bk-muted)}
+.book-body{background:var(--bk-panel);padding:26px 26px 30px}
+.book-foot{background:#fff;height:44px}
+
+.steps{display:grid;grid-template-columns:repeat(4,1fr);position:relative;margin:0 0 26px;padding:0}
+.steps::before{content:"";position:absolute;z-index:0;top:11px;left:12.5%;width:75%;height:2px;background:var(--bk-line)}
+.step{position:relative;z-index:1;display:grid;justify-items:center;gap:9px}
+.step .dot{width:24px;height:24px;border-radius:50%;background:#CFD8E0;
+  box-shadow:0 0 0 4px var(--bk-panel);transition:background .25s,box-shadow .25s}
+.step.is-active .dot{background:var(--bk-blue);border:5px solid #fff;
+  box-shadow:0 0 0 3px var(--bk-blue),0 0 0 7px var(--bk-panel)}
+.step .lbl{font-size:12.5px;font-weight:600;color:transparent}
+.step.is-active .lbl{color:var(--bk-blue)}
+
+.book-q{font-size:15.5px;color:#55636E;margin:0 0 16px}
+.svc-opts{display:grid;gap:12px}
+.svc-opt{position:relative;width:100%;min-height:60px;padding:16px 18px;border:0;border-radius:7px;
+  background:#fff;color:var(--bk-ink);font-family:inherit;font-size:15.5px;font-weight:500;
+  text-align:center;box-shadow:0 1px 3px rgba(31,45,58,.10),0 6px 14px rgba(31,45,58,.05);
+  transition:color .2s,box-shadow .2s}
+.svc-opt::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:7px 0 0 7px;
+  background:var(--bk-blue);opacity:0;transition:opacity .2s}
+.svc-opt:hover,.svc-opt[aria-checked="true"]{color:var(--bk-blue);
+  box-shadow:0 1px 3px rgba(62,155,238,.18),0 8px 20px rgba(62,155,238,.14)}
+.svc-opt:hover::before,.svc-opt[aria-checked="true"]::before{opacity:1}
+.svc-opt:focus-visible{outline:3px solid var(--brand-accent);outline-offset:2px}
+
+@media (max-width:520px){
+  .book-head{padding:18px 18px 14px}
+  .book-head h3{font-size:17px}
+  .book-body{padding:22px 18px 26px}
+  .step .lbl{font-size:11.5px}
+  .svc-opt{font-size:14.5px;padding:15px 14px;min-height:56px}
+}

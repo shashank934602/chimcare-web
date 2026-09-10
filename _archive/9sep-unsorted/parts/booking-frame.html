@@ -1,0 +1,23 @@
+<!-- BOOKING — the live Chimcare (Workiz) online booking widget. One instance:
+     it moves into the schedule sheet whenever that opens. -->
+<div id="book-home" hidden>
+  <div class="bookframe" id="booking">
+    <iframe src="https://online-booking.workiz.com/?ac=1690d28a7e6a139774d1b7ce0a530c8a4883c7706e70731da52bd026cf462976&amp;ad_group=Chimcare" width="100%" height="700px" style="border:none;" title="Schedule your Chimcare service" loading="lazy"></iframe>
+  </div>
+</div>
+
+<!-- FLOATING ACTIONS -->
+<div class="fcta" id="fcta" aria-label="Quick actions">
+  <a class="call" href="tel:18003624840"><svg class="ico"><use href="#i-phone"/></svg><span>Call</span></a>
+  <a class="mail" href="mailto:harold@chimcare.com"><svg class="ico"><use href="#i-mail"/></svg><span>Email</span></a>
+  <button class="sched" type="button" id="fcta-sched"><svg class="ico"><use href="#i-cal"/></svg><span>Schedule</span></button>
+</div>
+
+<!-- SCHEDULE SHEET — the booking widget, opened from anywhere on the page -->
+<div class="bsheet" id="bsheet" aria-hidden="true">
+  <div class="bsheet-bg" data-bsheet-close></div>
+  <div class="bsheet-panel" role="dialog" aria-modal="true" aria-label="Schedule service" tabindex="-1">
+    <div class="bsheet-top"><p class="eyebrow">__SHEET_LABEL__</p><button class="drawer-close" type="button" data-bsheet-close aria-label="Close"><svg class="ico"><use href="#i-x"/></svg></button></div>
+    <div id="book-mount-sheet"></div>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+===== lib/data/states.ts =====
+import { cache } from 'react';
+import { asc, eq } from 'drizzle-orm';
+import { getDb } from '@/lib/db/client';
+import { branches, cities, pages, states, type Branch, type City } from '@/lib/db/schema';
+
+export const getStates = cache(async () => {
+  const db = await getDb();
+  return db.select().from(states).orderBy(asc(states.sort), asc(states.name));
+});
+
+export const getStateBySlug = cache(async (slug: string) => {
+  const db = await getDb();
+  const [row] = await db.select().from(states).where(eq(states.slug, slug));
+  return row ?? null;
+});
+
+export type CityListing = { city: City; branch: Branch | null; published: boolean };
+
+/** Cities in a state with their serving branch and whether their city page is published. */
+export const getCitiesForState = cache(async (stateId: number): Promise<CityListing[]> => {
+  const db = await getDb();
+  const rows = await db
+    .select({ city: cities, branch: branches, status: pages.status })
+    .from(cities)
+    .leftJoin(branches, eq(cities.branchId, branches.id))
+    .leftJoin(pages, eq(pages.slug, cities.slug))
+    .where(eq(cities.stateId, stateId))
+    .orderBy(asc(cities.name));
+  return rows.map((r) => ({ city: r.city, branch: r.branch, published: r.status === 'published' }));
+});
+
+export const getBranchesForState = cache(async (stateId: number) => {
+  const db = await getDb();
+  return db.select().from(branches).where(eq(branches.stateId, stateId)).orderBy(asc(branches.name));
+});

@@ -1,0 +1,9 @@
+/* Contact block: long URLs and address strings must wrap rather than push the
+   layout past the viewport (measured at 390px). Presentation only. */
+.o1-contact-body { min-width: 0; }
+.o1-contact-body,
+.o1-contact-body address,
+.o1-contact-body p,
+.o1-contact-url a { overflow-wrap: anywhere; word-break: break-word; }
+.o1-hours { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 4px; }
+.o1-hours .days { font-weight: 600; }

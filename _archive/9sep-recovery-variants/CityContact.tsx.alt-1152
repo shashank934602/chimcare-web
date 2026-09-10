@@ -1,0 +1,30 @@
+import type { CityLocationPageData } from "@/lib/types";
+
+/** Business/contact details, strictly from local_seo. Missing stays missing. */
+export function CityContact({ data }: { data: CityLocationPageData }) {
+  const l = data.localSeo;
+  if (!l) return null;
+  const phone = l.telephone ?? l.contact_phone;
+  const telHref = phone ? `tel:${phone.replace(/[^\d+]/g, "")}` : null;
+
+  return (
+    <div className="section o1-contact" id="o1-contact">
+      <div className="wrap">
+        <div className="reveal">
+          {l.business_name ? <h2>{l.business_name}</h2> : null}
+          <address className="addr">
+            {l.geo_formatted_address ??
+              [l.street, l.locality, l.region, l.postal_code].filter(Boolean).join(", ")}
+          </address>
+          {telHref && phone ? (
+            <p><a className="link" href={telHref}>{phone}</a></p>
+          ) : null}
+          {l.hours_specification ? <p className="hours">{l.hours_specification}</p> : null}
+          {l.business_url ? (
+            <p><a className="link" href={l.business_url}>{l.business_url}</a></p>
+          ) : null}
+        </div>
+      </div>
+    </div>
+  );
+}

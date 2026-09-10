@@ -1,0 +1,101 @@
+'use client';
+
+import { useMemo, useState } from 'react';
+import type { LocationCard } from '@/lib/content/assemble-hubs';
+import { Icon } from '@/components/chrome/Icon';
+
+const FIRST = 6; // how many cards a visitor sees before asking for more
+const STEP = 12; // how many each "Load more" adds
+
+/**
+ * The state directory: every city in the state, revealed a few at a time.
+ *
+ * All cards are rendered in the server HTML and stay there — the client only toggles `hidden`.
+ * That matters for SEO: these are the internal links to every city page in the state, and a
+ * crawler must see them all without running JavaScript. It also matters for scale: Minnesota has
+ * 150 cities and Massachusetts would have roughly 220, which is far too many to show at once.
+ */
+export function LocationDirectory({ cards }: { cards: LocationCard[] }) {
+  const [query, setQuery] = useState('');
+  const [shown, setShown] = useState(FIRST);
+
+  const needle = query.trim().toLowerCase();
+  const matching = useMemo(
+    () => (needle ? cards.filter((c) => c.search.toLowerCase().includes(needle)) : cards),
+    [cards, needle],
+  );
+  const visibleIds = useMemo(() => new Set(matching.slice(0, shown).map((c) => c.id)), [matching, shown]);
+  const remaining = Math.max(0, matching.length - shown);
+
+  return (
+    <>
+      <div className="dir-bar">
+        <label className="dir-search">
+          <Icon name="pin" />
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setShown(FIRST);
+            }}
+            placeholder="Find your town or ZIP"
+            aria-label="Find your town or ZIP"
+          />
+        </label>
+        <p className="dir-count" id="dir-count" role="status">
+          Showing <b>{Math.min(shown, matching.length)}</b> of <b>{matching.length}</b>
+          {needle ? ' matching' : ''} location{matching.length === 1 ? '' : 's'}
+        </p>
+      </div>
+
+      <div className="loc-grid" id="loc-grid">
+        {cards.map((c) => (
+          <article
+            className="job_listing loc-card reveal"
+            key={c.id}
+            data-id={c.id}
+            data-search={c.search}
+            hidden={!visibleIds.has(c.id)}
+          >
+            <div className="content-box">
+              {c.href && <a className="job_listing-clickbox" href={c.href} aria-hidden="true" tabIndex={-1}></a>}
+              <header className={c.photo ? 'job_listing-entry-header listing-cover has-image' : 'job_listing-entry-header listing-cover no-image'}>
+                {c.photo && <img className="ph-photo" src={c.photo.src} alt={c.photo.alt} loading="lazy" decoding="async" />}
+              </header>
+              <div className="body">
+                <p className="city">{c.name}{c.kind === 'coverage' ? ' · coverage' : ''}</p>
+                <h3>{c.title}</h3>
+                <div className="meta">
+                  <div>
+                    <Icon name="pin" />
+                    <span>{c.addressLines.length ? <>{c.addressLines[0]}<br />{c.addressLines[1]}</> : c.servedFrom}</span>
+                  </div>
+                </div>
+                <a className="tel" href={c.phoneHref}><Icon name="phone" />{c.phone}</a>
+                <div className="foot">
+                  {c.href ? <a className="go" href={c.href}>View location <Icon name="arrow" /></a> : <span className="go">Page in review</span>}
+                </div>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      {matching.length === 0 && (
+        <p className="dir-empty">
+          No location matches “{query}”. Our service areas overlap, so try a nearby town — or call and we will tell you
+          straight away whether we cover your address.
+        </p>
+      )}
+
+      {remaining > 0 && (
+        <div className="dir-more">
+          <button type="button" className="btn btn-outline" onClick={() => setShown((n) => n + STEP)}>
+            Load more locations <span className="dir-more-count">{remaining} left</span>
+          </button>
+        </div>
+      )}
+    </>
+  );
+}

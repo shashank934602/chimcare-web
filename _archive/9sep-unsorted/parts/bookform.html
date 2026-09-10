@@ -1,0 +1,26 @@
+<!-- BOOKING — styled to match the live Chimcare (Workiz) widget. Step 1 is the
+     working step; steps 2-4 are shown in the progress bar only. -->
+<div id="book-home" hidden>
+<section class="book" id="booking" aria-labelledby="book-title">
+  <div class="book-head">
+    <h3 id="book-title">Schedule Your Chimney Service Today !</h3>
+    <p>we will confirm the appointment by Email / Call</p>
+  </div>
+  <div class="book-body">
+    <ol class="steps" data-step="1" aria-label="Booking steps">
+      <li class="step is-active"><span class="dot"></span><span class="lbl">Service</span></li>
+      <li class="step"><span class="dot"></span><span class="lbl">Schedule</span></li>
+      <li class="step"><span class="dot"></span><span class="lbl">Details</span></li>
+      <li class="step"><span class="dot"></span><span class="lbl">Confirmation</span></li>
+    </ol>
+    <p class="book-q">What service do you need?</p>
+    <div class="svc-opts" role="radiogroup" aria-label="Service">
+      <button class="svc-opt" type="button" role="radio" aria-checked="false" data-svc="sweep">$299 Chimney Sweep + Inspection</button>
+      <button class="svc-opt" type="button" role="radio" aria-checked="false" data-svc="inspect">$69 - Chimney Inspection</button>
+      <button class="svc-opt" type="button" role="radio" aria-checked="false" data-svc="gas">$49 Gas Fireplace Diagnostic</button>
+      <button class="svc-opt" type="button" role="radio" aria-checked="false" data-svc="quote">Repair Quote</button>
+    </div>
+  </div>
+  <div class="book-foot"></div>
+</section>
+</div>

@@ -1,0 +1,55 @@
+// Per-state configuration for the migration agent.
+//
+// Everything here is a fact about the SOURCE (which slugs are city pages, which office is where) or
+// a decision already taken with the business. Nothing here generates content. Adding a state means
+// adding an entry, not writing new migration code.
+
+export { FLAG_CATEGORY } from '../../lib/migration/types.ts.mjs';
+
+export const STATES = {
+  mn: {
+    key: 'mn',
+    stateCode: 'MN',
+    stateName: 'Minnesota',
+    origin: 'https://www.chimcare.com',
+    nationalPhone: '1-800-362-4840',
+    businessInputs: '../chimcare-rebuild-main',
+
+    // Which WordPress slugs are city pages, and which of those are branch pages.
+    cityPagePatterns: ['chimney-sweep-fireplace-in-%-mn', 'chimney-sweep-repair-in-%-mn'],
+    citySlugRe: /^chimney-sweep-(fireplace|repair)-in-(.+)-mn$/,
+    branchSlugRe: /^chimney-sweep-fireplace-in-.+-mn$/,
+    coverageSlugRe: /^chimney-sweep-repair-in-.+-mn$/,
+
+    // The publication gate's thresholds. These are the pilot's values and are NOT to be lowered to
+    // make more pages publishable.
+    minAreas: 4,
+    minLocalLines: 2,
+    serviceCatalogueSize: 92,
+
+    // A derived coordinate further than this from its nearest office is treated as suspect.
+    farFromBranchKm: 88,
+
+    // Geocodes that resolved to a different, same-named place. Their coordinates are dropped rather
+    // than guessed, and the city is flagged for a verified location.
+    rejectedGeocodes: {
+      Becker: 'Geocoder returned Becker County (north-west Minnesota), not the city of Becker in Sherburne County',
+      Grant: 'Geocoder returned Grant County (west-central Minnesota), not the city of Grant in Washington County',
+      'St. Anthony': 'Geocoder returned St. Anthony in Stearns County, not St. Anthony Village next to Minneapolis',
+    },
+
+    // A branch office sits inside these "coverage" cities, so the classification may be wrong.
+    officeConflicts: {
+      'St. Louis Park': 'The "West Minneapolis" branch address (1650 West End Blvd) is in St. Louis Park',
+      'Brooklyn Center': 'The "North Minneapolis" branch address (6160 Summit Dr North) is in Brooklyn Center',
+    },
+
+    // Legacy slugs known to be misspelled. Recorded only; the redirect decision is the business's.
+    slugTypos: {
+      'chimney-sweep-repair-in-farmingon-mn': 'The legacy slug reads "farmingon"; a correctly spelled Farmington page also exists. Redirect decision pending.',
+    },
+
+    // Used to notice an image labelled for another state.
+    foreignStateRe: /\b(MA|WA|OR|CA|GA|IL|OH|WI|NH)\b/,
+  },
+};

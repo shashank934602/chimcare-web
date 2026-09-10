@@ -1,0 +1,220 @@
+// READ-ONLY EXTRACTION — the agent's only contact with WordPress.
+//
+// Reads city pages, their FAQ accordions and their hero attachments straight out of the WordPress
+// database, and downloads each hero from the uploads path byte-for-byte. It issues SELECT statements
+// and GET requests, and nothing else: WordPress is never written to, and no source URL is changed.
+//
+// It copies. It does not write copy, fix grammar, paraphrase, fill gaps, rename or re-encode a file,
+// invent alt text, or repair a defect it finds. Where the source has nothing, the field is null and
+// the page carries a flag.
+//
+// Everything it emits is separated by provenance (see lib/migration/types.ts): `source` is verbatim
+// WordPress, `derived` is what this script computed, and `flags` carry their own category.
+
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import { execFileSync } from 'node:child_process';
+
+// ---- read-only database access ----------------------------------------------------------------
+
+export function makeQuery(db) {
+  return function queryJson(sql) {
+    const out = execFileSync('mysql', ['-h', db.host, '-u', db.user, `--database=${db.database}`, '-N', '-B', '--raw', '-e', sql], {
+      maxBuffer: 1024 * 1024 * 1024,
+      encoding: 'utf8',
+    });
+    const t = out.trim();
+    return t && t !== 'NULL' ? JSON.parse(t) : [];
+  };
+}
+
+// ---- verbatim text handling ---------------------------------------------------------------------
+
+const ENTITIES = { '&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"', '&#039;': "'", '&#39;': "'", '&nbsp;': ' ', '&#8217;': '’', '&#8216;': '‘', '&#8220;': '“', '&#8221;': '”', '&#8211;': '–', '&#8212;': '—', '&#8230;': '…' };
+export const decodeEntities = (s) =>
+  s
+    .replace(/&(amp|lt|gt|quot|nbsp|#0?39|#8217|#8216|#8220|#8221|#8211|#8212|#8230);/g, (m) => ENTITIES[m] ?? ENTITIES[m.replace('#0', '#')] ?? m)
+    .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+    .trim();
+const stripTags = (s) => decodeEntities(s.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' '));
+const SHORTCODE = /\[\/?[a-zA-Z][a-zA-Z0-9_-]*(?:\s[^\]]*)?\]/g;
+
+/**
+ * Page markup with WordPress's builder scaffolding removed and nothing else changed: comments,
+ * shortcode tags and script/style blocks go, all prose stays exactly as written.
+ */
+export const cleanMarkup = (raw) =>
+  raw
+    .replace(/<!--[\s\S]*?-->/g, '')
+    .replace(SHORTCODE, '')
+    .replace(/<(script|style|noscript)[\s\S]*?<\/\1>/gi, '')
+    .replace(/\s+/g, ' ');
+
+/** "Areas we serve" list items, in page order, minus the generic tail lines. */
+export function areasFrom(markup) {
+  const i = markup.search(/<h2>(Areas We Serve|Serving Nearby)/);
+  if (i < 0) return [];
+  return [...markup.slice(i, i + 2000).matchAll(/<li>(.*?)<\/li>/g)]
+    .map((m) => stripTags(m[1]))
+    .filter((t) => t && !/^surrounding|^nearby|^other|^greater|:|^and /i.test(t));
+}
+
+/** Whole sentences from the page's own "why it matters" paragraph. Never rewritten or joined. */
+export function localSpecificsFrom(markup) {
+  const i = markup.search(/<h2>Why [^<]* Important in /);
+  if (i < 0) return {};
+  const p = /<p>(.*?)<\/p>/s.exec(markup.slice(i));
+  if (!p) return {};
+  const sentences = stripTags(p[1]).split(/(?<=[.!?])\s+/).map((s) => s.trim()).filter(Boolean);
+  const out = {};
+  if (sentences[0]) out.climate_line = sentences[0];
+  const housing = sentences.slice(1).find((s) => /\b(homes?|housing|houses|builds?|neighborhoods?)\b/i.test(s));
+  if (housing) out.housing_line = housing.replace(/[.!?]$/, '');
+  return out;
+}
+
+/** The two neighbourhoods the intro sentence names, where the page names any. */
+export function introNeighbourhoods(markup) {
+  const m = /Whether you(?:'|’|&#8217;)re in an? [^,.]*? in ([^,.]+?) or an? [^,.]*? in ([^,.]+?),/.exec(markup);
+  if (!m) return [];
+  return [m[1], m[2]].map((s) => decodeEntities(s).replace(/^the /i, '').replace(/ (neighborhood|area)$/i, ''));
+}
+
+/** Price ranges the page states in its own words. Kept verbatim for review, never rendered. */
+export function legacyPricingCopyFrom(markup) {
+  return stripTags(markup)
+    .split(/(?<=[.!?])\s+/)
+    .filter((s) => /\$\s?\d{2,4}\s*(?:to|through|–|—|-)\s*\$?\s?\d{2,4}/.test(s))
+    .map((s) => s.trim());
+}
+
+const SECTION = /\[vc_tta_section\b([^\]]*)\]([\s\S]*?)\[\/vc_tta_section\]/g;
+/**
+ * The page's FAQ accordion. The question is the section's `title` attribute and the answer is its
+ * body — both copied as written. A section without a title is reported, not filled in.
+ */
+export function faqsFrom(rawContent) {
+  const items = [];
+  const unrecoverable = [];
+  SECTION.lastIndex = 0;
+  let m;
+  while ((m = SECTION.exec(rawContent))) {
+    const question = /\btitle="([^"]*)"/.exec(m[1])?.[1];
+    const answer = decodeEntities(m[2].replace(SHORTCODE, ' ').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' '));
+    if (!question?.trim()) unrecoverable.push({ reason: 'accordion section has no title attribute' });
+    else if (!answer) unrecoverable.push({ reason: 'accordion section has an empty body', question: decodeEntities(question) });
+    else items.push({ question: decodeEntities(question), answer, tabId: /\btab_id="([^"]*)"/.exec(m[1])?.[1] ?? null });
+  }
+  return { items, unrecoverable };
+}
+
+/**
+ * Malformed shortcode closings in the raw content: copy that closes a shortcode with `</name]`
+ * instead of `[/name]`. A naive shortcode strip leaves the stray `</name]` behind, and an HTML
+ * parser then swallows everything after it — which is how the old export lost whole FAQ sections.
+ *
+ * Detection only. The raw source is read and left byte-for-byte identical; nothing is repaired here
+ * or in WordPress, and the rendered page is unaffected.
+ */
+export function markupDefectsFrom(raw, pattern) {
+  const counts = new Map();
+  for (const m of raw.matchAll(pattern)) counts.set(m[0], (counts.get(m[0]) ?? 0) + 1);
+  return [...counts.entries()].map(([text, count]) => ({ text, count }));
+}
+
+/** "st" → "St." title casing of a slug suffix, the naming fallback when a page title is malformed. */
+export const titleCaseSlug = (slug) =>
+  slug.split('-').map((w) => (w === 'st' ? 'St.' : w.charAt(0).toUpperCase() + w.slice(1))).join(' ');
+
+// ---- checksums ----------------------------------------------------------------------------------
+
+export const sha256 = (buf) => crypto.createHash('sha256').update(buf).digest('hex');
+/** Stable hash of an object: keys sorted so re-running cannot change the digest. */
+export const hashJson = (value) => sha256(JSON.stringify(sortKeys(value)));
+function sortKeys(v) {
+  if (Array.isArray(v)) return v.map(sortKeys);
+  if (v && typeof v === 'object') return Object.fromEntries(Object.keys(v).sort().map((k) => [k, sortKeys(v[k])]));
+  return v;
+}
+
+// ---- fetch: WordPress rows ----------------------------------------------------------------------
+
+/** Every published city page for a state, with its raw content and the SEO meta the mapper needs. */
+export function fetchCityPages(query, { cityPagePatterns }) {
+  const like = cityPagePatterns.map((p) => `post_name LIKE '${p}'`).join(' OR ');
+  return query(`
+    SELECT JSON_ARRAYAGG(JSON_OBJECT(
+      'wpPostId', p.ID, 'wpSlug', p.post_name, 'wpTitle', p.post_title, 'modified', p.post_modified,
+      'content', p.post_content,
+      'metaTitle', st.meta_value, 'metaDescription', sd.meta_value,
+      'thumbnailId', th.meta_value, 'redirectInfo', rd.meta_value))
+    FROM wp_posts p
+    LEFT JOIN wp_postmeta st ON st.post_id = p.ID AND st.meta_key = '_yoast_wpseo_title'
+    LEFT JOIN wp_postmeta sd ON sd.post_id = p.ID AND sd.meta_key = '_yoast_wpseo_metadesc'
+    LEFT JOIN wp_postmeta th ON th.post_id = p.ID AND th.meta_key = '_thumbnail_id'
+    LEFT JOIN wp_postmeta rd ON rd.post_id = p.ID AND rd.meta_key = '_yoast_post_redirect_info'
+    WHERE p.post_type = 'job_listing' AND p.post_status = 'publish' AND (${like})`);
+}
+
+/** Geolocation meta, which WordPress stores one key per field. */
+export function fetchGeo(query, ids) {
+  if (!ids.length) return {};
+  const rows = query(`
+    SELECT JSON_ARRAYAGG(JSON_OBJECT('postId', post_id, 'k', meta_key, 'v', meta_value))
+    FROM wp_postmeta
+    WHERE post_id IN (${ids.join(',')})
+      AND meta_key IN ('geolocation_lat','geolocation_long','geolocation_city','geolocation_postcode','_job_location')`);
+  const by = {};
+  for (const r of rows) (by[r.postId] ??= {})[r.k] = r.v;
+  return by;
+}
+
+/** Each page's hero attachment with every field WordPress holds for it. */
+export function fetchHeroAttachments(query, { cityPagePatterns }) {
+  const like = cityPagePatterns.map((p) => `p.post_name LIKE '${p}'`).join(' OR ');
+  return query(`
+    SELECT JSON_ARRAYAGG(JSON_OBJECT(
+      'slug', p.post_name, 'postId', p.ID, 'attachmentId', a.ID,
+      'guid', a.guid, 'mime', a.post_mime_type, 'title', a.post_title,
+      'caption', a.post_excerpt, 'description', a.post_content,
+      'attachedFile', fm.meta_value, 'alt', am.meta_value, 'meta', mm.meta_value))
+    FROM wp_posts p
+    JOIN wp_postmeta t ON t.post_id = p.ID AND t.meta_key = '_thumbnail_id'
+    JOIN wp_posts a ON a.ID = t.meta_value AND a.post_type = 'attachment'
+    LEFT JOIN wp_postmeta fm ON fm.post_id = a.ID AND fm.meta_key = '_wp_attached_file'
+    LEFT JOIN wp_postmeta am ON am.post_id = a.ID AND am.meta_key = '_wp_attachment_image_alt'
+    LEFT JOIN wp_postmeta mm ON mm.post_id = a.ID AND mm.meta_key = '_wp_attachment_metadata'
+    WHERE p.post_type = 'job_listing' AND p.post_status = 'publish' AND (${like})`);
+}
+
+/** width / height / file / filesize out of PHP-serialised _wp_attachment_metadata. */
+export function parseAttachmentMeta(serialized) {
+  if (!serialized) return {};
+  const num = (key) => {
+    const m = new RegExp(`s:${key.length}:"${key}";i:(\\d+);`).exec(serialized);
+    return m ? Number(m[1]) : null;
+  };
+  return { width: num('width'), height: num('height'), filesize: num('filesize'), file: /s:4:"file";s:\d+:"([^"]+)"/.exec(serialized)?.[1] ?? null };
+}
+
+/**
+ * Downloads one attachment under its original name and extension, byte-for-byte, and verifies the
+ * bytes against the size WordPress recorded. An existing verified file is reused, never re-fetched
+ * and never rewritten — that is what makes a second run a no-op.
+ */
+export async function ensureAsset({ attachedFile, filesize, origin, mediaDir, dryRun }) {
+  const dest = path.join(mediaDir, attachedFile);
+  const url = `${origin}/wp-content/uploads/${attachedFile}`;
+  if (fs.existsSync(dest)) {
+    const buf = fs.readFileSync(dest);
+    return { ok: filesize == null || buf.length === filesize, bytes: buf.length, sha256: sha256(buf), url, reused: true };
+  }
+  if (dryRun) return { ok: false, bytes: null, sha256: null, url, missing: true };
+  const res = await fetch(url, { redirect: 'follow' });
+  if (!res.ok) return { ok: false, error: `HTTP ${res.status}`, url };
+  const buf = Buffer.from(await res.arrayBuffer());
+  fs.mkdirSync(path.dirname(dest), { recursive: true });
+  fs.writeFileSync(dest, buf);
+  return { ok: filesize == null || buf.length === filesize, bytes: buf.length, sha256: sha256(buf), url, downloaded: true };
+}

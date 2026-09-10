@@ -1,0 +1,13 @@
+node_modules
+.next
+.pglite
+.env
+.env.local
+*.tsbuildinfo
+
+# Large frozen inputs and regenerable artefacts. Their SHA-256 is recorded in
+# docs/migration/runs/2026-09-10-step-0.md; they are not versioned here.
+data/audits/
+data/inputs/
+data/seed/*.json
+public/uploads/

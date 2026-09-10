@@ -25,6 +25,8 @@ export type LocationIdentity = {
   serviceSlug: string | null;
   citySlug: string | null;
   state: string;
+  /** The state's full name, which is what the mock's breadcrumb shows. */
+  stateName: string;
   city: string;
   service: string;
 };
@@ -39,6 +41,12 @@ export type LocationPageProps = {
     trustLine: Array<{ icon: string; label: string }>;
     image: { src: string; alt: string; width: number; height: number } | null;
     figCaption: string | null;
+    /**
+     * The Google rating pill the mock shows. Rendered only where a rating is recorded against the
+     * branch: the mock's 4.7 is design placeholder, and asserting a rating nobody has measured would
+     * be a claim about the business. Open question Q5.
+     */
+    rating: { value: string; count: number | null } | null;
     /** Award marks beside the rating, from the approved mock. Identical on every page. */
     awards: DesignAsset[];
     addressLine: string | null;
@@ -188,7 +196,13 @@ export function assembleLocationPage(
   const heroImage = src.hero ?? DESIGN.cityHero;
 
   return {
-    identity: { url: src.url, slug: src.slug, serviceSlug: src.serviceSlug, citySlug: src.citySlug, state: ctx.state?.code ?? src.state, city: ctx.city?.name ?? city, service },
+    identity: {
+      url: src.url, slug: src.slug, serviceSlug: src.serviceSlug, citySlug: src.citySlug,
+      state: ctx.state?.code ?? src.state,
+      stateName: ctx.state?.name ?? src.state,
+      city: ctx.city?.name ?? city,
+      service,
+    },
     hero: {
       eyebrow: heroMaster?.eyebrow ?? (city ? `${city}, ${src.state}` : src.state),
       title: src.post_title,
@@ -200,6 +214,7 @@ export function assembleLocationPage(
       ],
       image: heroImage,
       figCaption: heroMaster?.figCaption ?? null,
+      rating: branch?.rating ? { value: String(branch.rating), count: branch.ratingCount } : null,
       awards: DESIGN.awards,
       addressLine,
       phone,

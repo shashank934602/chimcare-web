@@ -36,7 +36,7 @@ export function LocationPage(p: LocationPageProps) {
                   crumbs={[
                     { label: 'Home', href: '/' },
                     { label: 'Locations', href: '/locations/' },
-                    ...(identity.state ? [{ label: identity.state, href: `/locations/${identity.state.toLowerCase()}/` }] : []),
+                    ...(identity.state ? [{ label: identity.stateName, href: `/locations/${identity.state.toLowerCase()}/` }] : []),
                     { label: identity.city || identity.slug },
                   ]}
                   style={{ '--i': 0 } as CSSProperties}
@@ -50,22 +50,37 @@ export function LocationPage(p: LocationPageProps) {
                 <h1 style={{ '--i': 2 } as CSSProperties}>{hero.title}</h1>
                 {hero.lede && <p className="lede" style={{ '--i': 3 } as CSSProperties}>{hero.lede}</p>}
                 <div className="ctas" style={{ '--i': 4 } as CSSProperties}>
-                  <a className="btn btn-primary" href="#booking" data-book>Schedule Service</a>
+                  <a className="btn btn-primary" href="#booking" data-book><em className="fast">Fast</em> Online Booking</a>
                   {hero.phone && hero.phoneHref && (
                     <a className="btn btn-outline" href={hero.phoneHref}><Icon name="phone" />Call {hero.phone}</a>
                   )}
                 </div>
-                {hero.addressLine && (
-                  <p className="addr" style={{ '--i': 5 } as CSSProperties}><Icon name="pin" />{hero.addressLine}</p>
-                )}
-                {hero.awards.length > 0 && (
-                  <div className="hero-proof" style={{ '--i': 6 } as CSSProperties}>
-                    <ul className="hero-awards">
-                      {hero.awards.map((a) => (
-                        <li key={a.src}><img src={a.src} width={a.width} height={a.height} decoding="async" alt={a.alt} /></li>
-                      ))}
-                    </ul>
+                {/* Proof, then the address — the mock's order. The rating and the award marks share
+                    one row; the rating appears only where a rating is actually recorded. */}
+                {(hero.rating || hero.awards.length > 0) && (
+                  <div className="hero-proof" style={{ '--i': 5 } as CSSProperties}>
+                    {hero.rating && (
+                      <p className="rating">
+                        <svg className="glogo" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+                          <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.5 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.7 17.7 9.5 24 9.5z" />
+                          <path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.7 6c4.5-4.2 6.9-10.3 6.9-17.7z" />
+                          <path fill="#FBBC05" d="M10.5 28.7c-.5-1.5-.8-3-.8-4.7s.3-3.2.8-4.7l-7.9-6.1C.9 16.5 0 20.1 0 24s.9 7.5 2.6 10.8l7.9-6.1z" />
+                          <path fill="#34A853" d="M24 48c6.3 0 11.7-2.1 15.6-5.8l-7.7-6c-2.1 1.4-4.8 2.3-7.9 2.3-6.3 0-11.6-4.2-13.5-9.9l-7.9 6.1C6.5 42.6 14.6 48 24 48z" />
+                        </svg>
+                        <span className="stars" aria-hidden="true">★★★★★</span> Rated <b>{hero.rating.value}</b> on Google
+                      </p>
+                    )}
+                    {hero.awards.length > 0 && (
+                      <ul className="hero-awards">
+                        {hero.awards.map((a) => (
+                          <li key={a.src}><img src={a.src} width={a.width} height={a.height} decoding="async" alt={a.alt} /></li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
+                )}
+                {hero.addressLine && (
+                  <p className="addr" style={{ '--i': 6 } as CSSProperties}><Icon name="pin" />{hero.addressLine}</p>
                 )}
                 {hero.image && (
                   <figure className="hero-figure" style={{ '--i': 7 } as CSSProperties}>

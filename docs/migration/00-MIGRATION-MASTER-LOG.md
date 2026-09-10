@@ -7,6 +7,7 @@ record that holds the evidence.
 | --- | --- | --- | --- |
 | 0 — Reconstruct and stabilise the canonical tree | 2026-09-10 | **Complete.** One canonical tree at `~/Desktop/chimcare/chimcare-web`, under git, typecheck clean, `next build` clean. Four of five missing datasets regenerated and verified against the sealed baseline. Five new issues raised, three closed with evidence. | [`runs/2026-09-10-step-0.md`](runs/2026-09-10-step-0.md) |
 | 1 — Next.js template foundation | 2026-09-10 | **Complete.** Five reusable templates, no page-specific components. Four new shared components. 172 automated checks passing across rendering, interaction and responsive suites. Seven issues raised (two resolved in the same run), two closed. | [`runs/2026-09-10-template-foundation-001.md`](runs/2026-09-10-template-foundation-001.md) |
+| 2 — 10-URL real-data smoke test | 2026-09-10 | **SMOKE REVIEW.** Ten real URLs rendered through the real templates from real WordPress source. Four critical failures found, root-caused, fixed and re-run to zero. 243 images, none broken. Four issues raised (one resolved in the run), four decisions. | [`runs/2026-09-10-smoke-10-001.md`](runs/2026-09-10-smoke-10-001.md) |
 
 ---
 
@@ -74,3 +75,46 @@ so `kind='legacy'` still 404s and LegacyPage is reachable only through the previ
 **Decisions recorded:** DECISION-010 through DECISION-015.
 
 **Verdict:** READY FOR REAL-DATA SMOKE TEST.
+
+---
+
+## Step 2 — 2026-09-10
+
+**What changed.** Real Chimcare source data now reaches the templates. Two recovered datasets — 642
+WordPress FAQ pairs and 15 byte-verified hero images — were wired into the city seed. Before this,
+every one of the 134 Minnesota city pages answered 404, because the publication gate was being run
+with an empty FAQ list and a null hero on every city.
+
+**What the smoke test found.** The first parity run failed on four URLs, two of them the highest-traffic
+city pages in the state. The cause was a single extractor: branch pages were skipped outright when
+reading their "why it matters" prose, and the pattern it searched for was the wording only coverage
+pages use. Fourteen city pages were failing the gate on prose that had been in WordPress all along.
+Fixed by reading both heading forms.
+
+That moved the publication counts from 110/24 to 120/14 against a sealed baseline of 109/25. The seal
+was not edited. The gate's conditions and thresholds were not touched either — ten more pages clear
+the same bar because the data they needed is finally being read.
+
+**What was verified.** Ten of ten render through the correct template. 243 images requested, none
+broken. Both verbatim pages match their WordPress source exactly under the documented cleanup. No
+canonical is wrong, no page is unexpectedly noindex, no rating markup is emitted anywhere, and
+LegacyPage emits no structured data at all. Eighteen real-window responsive checks with no horizontal
+overflow and no page that will scroll sideways.
+
+**What remains open.** Every one of the ten carries a REVIEW item, and they are all the same three
+things: WordPress has no per-post title or description for most of these pages so both are currently
+produced by the app rather than the source (ISSUE-025, ISSUE-026); LegacyPage is verified through an
+admin preview because it is not routed (ISSUE-006); and the app emits 308 where production emits 301
+(ISSUE-007). None can be closed by this phase.
+
+**What was deliberately not done.** No production, WordPress, Cloudflare or DNS change. No redirect
+applied, no URL retired, renamed or normalised. No service-catalogue decision. The admin gate was not
+weakened to make the legacy preview work. `mn.migration.json` was not written, so nothing on disk
+contradicts the seal.
+
+**Issues raised:** ISSUE-025, ISSUE-026, ISSUE-027 (resolved in the run), ISSUE-028.
+**Issues updated with real measurements:** ISSUE-004, ISSUE-007.
+**Decisions recorded:** DECISION-016 through DECISION-019.
+
+**Verdict:** SMOKE REVIEW. NOT READY FOR 100-URL PILOT until the title and description decisions are
+made, because the pilot would otherwise publish 100 pages under an unmade SEO decision.

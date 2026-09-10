@@ -794,3 +794,59 @@ Update — 2026-09-10, step 2: one real URL checked, and on this one they agree.
 For `S10`, production 301s to `/location/chimney-sweep-fireplace-in-st-paul-mn/` and the fate map
 names that same destination. That is evidence about one URL. It does not resolve the issue: the audit
 found 11 of 26 sampled conflicts disagreeing, and this sample of one does not touch that.
+
+---
+
+## ISSUE-029 — CityPage is a page type the URL universe does not have
+
+Status: OPEN — awaiting a template from the client
+Severity: HIGH
+Phase: Template foundation / architecture
+Raised: 2026-09-10, after review
+
+Problem:
+The template layer has a `CityPage` and a `ServicePage` as if a city page and a service page were two
+different things. They are not. Every URL under `/location/` is one shape: **service + city**.
+
+Measured across all 20,479 Minnesota URLs in `data/seed/minnesota.generated.json`: **zero** decompose
+to a city without a service.
+
+| URL | service | city |
+| --- | --- | --- |
+| `chimney-sweep-fireplace-in-minneapolis-mn` | chimney sweep & fireplace | Minneapolis |
+| `air-duct-cleaning-in-apple-valley-mn` | air duct cleaning | Apple Valley |
+| `apartment-chimney-services-in-afton-mn` | apartment chimney services | Afton |
+
+The 151 rows carrying `kind='city'` are four service phrases and nothing else:
+`chimney-sweep-repair` (123), `chimney-sweep-fireplace` (14), `chimney-sweep-fireplace-services` (13),
+`chimney-fireplace-services` (1). All of them are the same generic flagship service. A "city page" is
+the service×city page whose service happens to be the generic one.
+
+The state hub already contradicted the naming: every city card links to
+`/location/chimney-sweep-fireplace-in-minneapolis-mn/`, a service URL, while the code called the
+destination a city page.
+
+The hierarchy, as the client states it:
+
+```
+home  →  /locations/            the states
+      →  /locations/{state}/    the cities in that state
+      →  /location/{service}-in-{city}-{state}/   the leaf: city + service
+```
+
+Impact:
+An extra template exists for a page type that has no URLs. `site.pages.kind` splits `city` from
+`service` on a service-phrase match rather than on a real difference, and `assembleCityPage` and
+`assembleServicePage` duplicate most of their work.
+
+What is actually different between them is the amount of source, not the kind of page: the flagship pages
+carry far more WordPress content (Minneapolis post 90807 is 46,925 bytes; the Shakopee
+gas-fireplace-repair page is 12,930).
+
+Agreed direction:
+One leaf template for service×city, with every section optional and rendered only when the source
+supplies it. No variant flag and no second template. The client is supplying the template; no
+refactor has been started.
+
+Blocks the pilot: yes. The 100-URL pilot would otherwise be built on a page model that does not match
+the URLs it is migrating.

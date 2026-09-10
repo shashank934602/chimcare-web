@@ -1,7 +1,10 @@
 import { parseSourceSections, type SourceSections } from './source-sections';
-import { bookingOptions, type BookingOption } from './assemble';
+import { bookingOptions, type BookingOption, type ServiceCard, type CategoryTile, type TrustItem } from './assemble';
+import { buildContext, fillDeep } from './slots';
+import { DESIGN, type DesignAsset } from './design-assets';
 import type { BookingContext } from '@/lib/booking/types';
 import type { Prices } from '@/lib/data/pricing';
+import type { Branch, City, ServiceRow, State } from '@/lib/db/schema';
 
 /**
  * Turns one WordPress location page into the props the leaf template renders.
@@ -35,16 +38,32 @@ export type LocationPageProps = {
     lede: string | null;
     trustLine: Array<{ icon: string; label: string }>;
     image: { src: string; alt: string; width: number; height: number } | null;
+    figCaption: string | null;
+    /** Award marks beside the rating, from the approved mock. Identical on every page. */
+    awards: DesignAsset[];
     addressLine: string | null;
     phone: string | null;
     phoneHref: string | null;
   };
-  intro: { heading: string; paragraphs: string[] } | null;
-  whyTrust: { heading: string; paragraphs: string[] } | null;
+  /** The trust strip under the hero. Design furniture, identical on every page. */
+  trust: TrustItem[];
+  intro: { eyebrow: string; heading: string; paragraphs: string[]; cta: string; teamPhoto: DesignAsset | null } | null;
+  /** The three numbered reasons beside the introduction. Master copy from the mock. */
+  reasons: Array<{ title: string; body: string }>;
+  whyTrust: { heading: string; paragraphs: string[]; art: DesignAsset | null } | null;
+  /** The eight-row service accordion. Master copy from the mock, the same eight on every page. */
+  serviceRows: { eyebrow: string; heading: string; lede: string; rows: ServiceRow[]; image: DesignAsset | null } | null;
+  /** The full catalogue grid with its category tiles. */
+  solutions: { eyebrow: string; heading: string; lede: string; count: number; tiles: CategoryTile[]; cards: ServiceCard[] } | null;
+  /** The pricing panel. Master copy; the figures come from the pricing sheet. */
+  cost: { eyebrow: string; heading: string; paragraph: string; factors: string[]; cta: string } | null;
+  /** The contact block and its "why us" card. */
+  contact: { eyebrow: string; heading: string; paragraph: string; whyHeading: string; why: string[];
+             phone: string | null; phoneHref: string | null; addressLines: string[]; servedFrom: string | null } | null;
   serviceDirectory: { heading: string; lede: string | null; items: string[] } | null;
   process: { heading: string; steps: Array<{ title: string; body: string }>; paragraphs: string[] } | null;
   whyChooseUs: { heading: string; paragraphs: string[]; bullets: string[] } | null;
-  areas: { heading: string; lede: string | null; list: string[] } | null;
+  areas: { eyebrow: string; heading: string; lede: string | null; subHeading: string | null; list: string[]; image: DesignAsset | null } | null;
   faq: { heading: string; items: Array<{ question: string; answer: string }> } | null;
   finalCta: { heading: string; paragraphs: string[] } | null;
   /** Headings the outlines do not cover, rendered plainly so no source content is dropped. */
@@ -70,6 +89,21 @@ function outlineOf(s: SourceSections): LocationPageProps['outline'] {
   if (s.serviceDirectory || s.whyChooseUs) return 'short-legacy';
   return 'unrecognised';
 }
+
+/**
+ * What the page needs beyond its own body: the client's business facts and the approved design copy.
+ * These are the same on every page by design — the mock ships them, and the brief is to keep them
+ * consistent across city and service pages rather than vary or drop them.
+ */
+export type LocationContext = {
+  city?: City | null;
+  state?: State | null;
+  branch?: Branch | null;
+  prices?: Prices | null;
+  /** `site.masters` — the 13 copy blocks extracted from this same mock, with {{slot}} placeholders. */
+  masters?: Record<string, unknown> | null;
+  catalog?: { count: number; tiles: CategoryTile[]; cards: ServiceCard[] } | null;
+};
 
 export type LocationSource = {
   url: string;
@@ -99,67 +133,126 @@ const NATIONAL_PRICES: Prices = {
   isDefault: true,
 };
 
-export function assembleLocationPage(src: LocationSource, siteUrl = 'https://www.chimcare.com'): LocationPageProps {
+export function assembleLocationPage(
+  src: LocationSource,
+  ctx: LocationContext = {},
+  siteUrl = 'https://www.chimcare.com',
+): LocationPageProps {
   const s = parseSourceSections(src.post_content);
   const city = src.citySlug ? titleise(src.citySlug) : '';
   const service = src.serviceSlug ? titleise(src.serviceSlug) : '';
   const missing: string[] = [];
 
-  // The address WordPress stores on the listing, if any. Not composed from anything else.
-  const addressLine = src.location?.trim() ? src.location.trim() : null;
+  const prices = ctx.prices ?? NATIONAL_PRICES;
+  const branch = ctx.branch ?? null;
+
+  // Master copy is the design's own words, with {{slot}} placeholders filled from this page's row.
+  // Where the page's body says the same thing in its own words, the body wins.
+  const slots = ctx.state
+    ? buildContext({ state: ctx.state, city: ctx.city ?? undefined, branch, prices, servicesCount: ctx.catalog?.count })
+    : null;
+  const master = <T,>(key: string): T | null => {
+    const raw = ctx.masters?.[key];
+    if (raw === undefined || raw === null) return null;
+    return (slots ? fillDeep(raw, slots) : raw) as T;
+  };
+
+  const addressLine = branch
+    ? `${branch.street}, ${branch.city}, ${ctx.state?.code ?? src.state} ${branch.zip}`
+    : src.location?.trim() || null;
+  const phone = branch?.phone ?? (src.phone?.trim() || null);
+  const phoneHref = phone ? `tel:${phone.replace(/[^\d+]/g, '')}` : null;
+
   if (!addressLine) missing.push('address');
-  if (!src.phone) missing.push('phone');
-  if (!src.hero) missing.push('hero image');
+  if (!phone) missing.push('phone');
   if (!s.lead) missing.push('lead paragraph');
-  if (!s.faqs || !s.faqs.items.length) missing.push('FAQ');
-  if (!s.areas || !s.areas.list.length) missing.push('service areas');
+  if (!s.faqs?.items.length) missing.push('FAQ');
+  if (!s.areas?.list.length) missing.push('service areas');
   if (!src.yoast_title) missing.push('source title tag');
   if (!src.yoast_metadesc) missing.push('source meta description');
 
-  const phone = src.phone?.trim() || null;
+  const heroMaster = master<{ eyebrow: string; title: string; lede: string; figCaption: string }>('city_hero');
+  const introMaster = master<{ eyebrow: string; heading: string; paragraphs: string[]; cta: string }>('city_intro');
+  const reasonsMaster = master<{ items: Array<{ title: string; body: string }> }>('reasons');
+  const whyTrustMaster = master<{ eyebrow: string; heading: string; paragraph: string }>('why_trust');
+  const rowsMaster = master<{ eyebrow: string; heading: string; lede: string; rows: ServiceRow[] }>('service_rows');
+  const solutionsMaster = master<{ eyebrow: string; heading: string; lede: string }>('solutions');
+  const areasMaster = master<{ eyebrow: string; heading: string; lede: string; subHeading: string }>('areas');
+  const processMaster = master<{ eyebrow: string; heading: string; steps: Array<{ title: string; body: string }> }>('process');
+  const costMaster = master<{ eyebrow: string; heading: string; paragraph: string; factors: string[]; cta: string }>('cost');
+  const faqMaster = master<{ eyebrow: string; heading: string; items: Array<{ question: string; answer: string }> }>('faq_city');
+  const contactMaster = master<{ eyebrow: string; heading: string; paragraph: string; whyHeading: string; why: string[] }>('contact');
+
+  // The page's own hero photograph if it has one, otherwise the mock's. The brief is to keep the
+  // imagery consistent across city and service pages rather than leave a page without one.
+  const heroImage = src.hero ?? DESIGN.cityHero;
 
   return {
-    identity: { url: src.url, slug: src.slug, serviceSlug: src.serviceSlug, citySlug: src.citySlug, state: src.state, city, service },
+    identity: { url: src.url, slug: src.slug, serviceSlug: src.serviceSlug, citySlug: src.citySlug, state: ctx.state?.code ?? src.state, city: ctx.city?.name ?? city, service },
     hero: {
-      eyebrow: city ? `${city}, ${src.state}` : src.state,
+      eyebrow: heroMaster?.eyebrow ?? (city ? `${city}, ${src.state}` : src.state),
       title: src.post_title,
-      lede: s.lead,
-      // Company-level claims only. Nothing here asserts anything about this city.
+      lede: s.lead ?? heroMaster?.lede ?? null,
       trustLine: [
         { icon: 'shield', label: 'CSIA Certified' },
         { icon: 'cal', label: 'Since 1989' },
         { icon: 'pin', label: 'Local' },
       ],
-      image: src.hero ?? null,
+      image: heroImage,
+      figCaption: heroMaster?.figCaption ?? null,
+      awards: DESIGN.awards,
       addressLine,
       phone,
-      phoneHref: phone ? `tel:${phone.replace(/[^\d+]/g, '')}` : null,
+      phoneHref,
     },
-    intro: s.whyImportant,
-    whyTrust: s.whyTrust,
-    serviceDirectory: s.serviceDirectory
+    trust: [
+      { icon: 'cal', title: 'Since 1989', small: 'Family-owned, 30+ years in business' },
+      { icon: 'shield', title: 'Certified', small: 'Licensed & insured technicians' },
+      { icon: 'pin', title: ctx.city ? `Local ${ctx.city.name} Team` : 'Local team', small: addressLine ?? 'Serving this area' },
+    ],
+    // The body's own "why it matters" if it has one; otherwise the design's introduction.
+    intro: s.whyImportant
+      ? { eyebrow: introMaster?.eyebrow ?? 'Chimcare', heading: s.whyImportant.heading, paragraphs: s.whyImportant.paragraphs, cta: introMaster?.cta ?? 'Get a Quote', teamPhoto: DESIGN.cityTeam }
+      : introMaster
+        ? { ...introMaster, teamPhoto: DESIGN.cityTeam }
+        : null,
+    reasons: reasonsMaster?.items ?? [],
+    whyTrust: s.whyTrust
+      ? { heading: s.whyTrust.heading, paragraphs: s.whyTrust.paragraphs, art: DESIGN.trustArt }
+      : whyTrustMaster
+        ? { heading: whyTrustMaster.heading, paragraphs: [whyTrustMaster.paragraph], art: DESIGN.trustArt }
+        : null,
+    serviceRows: rowsMaster ? { ...rowsMaster, image: DESIGN.cityServices } : null,
+    serviceDirectory: s.serviceDirectory && s.serviceDirectory.items.length
       ? { heading: s.serviceDirectory.heading, lede: s.serviceDirectory.paragraphs[0] ?? null, items: s.serviceDirectory.items }
       : null,
-    process: s.process,
-    whyChooseUs: s.whyChooseUs,
-    areas: s.areas
-      ? { heading: s.localExperts?.heading ?? s.areas.heading, lede: s.localExperts?.paragraphs[0] ?? null, list: s.areas.list }
+    solutions: ctx.catalog && solutionsMaster
+      ? { ...solutionsMaster, count: ctx.catalog.count, tiles: ctx.catalog.tiles, cards: ctx.catalog.cards }
       : null,
-    faq: s.faqs && s.faqs.items.length ? { heading: s.faqs.heading, items: s.faqs.items } : null,
-    finalCta: s.bookCta,
+    process: s.process ?? (processMaster ? { heading: processMaster.heading, steps: processMaster.steps, paragraphs: [] } : null),
+    whyChooseUs: s.whyChooseUs,
+    areas: s.areas?.list.length
+      ? { eyebrow: areasMaster?.eyebrow ?? 'Service area', heading: s.localExperts?.heading ?? areasMaster?.heading ?? s.areas.heading,
+          lede: s.localExperts?.paragraphs[0] ?? areasMaster?.lede ?? null, subHeading: areasMaster?.subHeading ?? s.areas.heading,
+          list: s.areas.list, image: DESIGN.cityAreas }
+      : ctx.city?.neighborhoods.length && areasMaster
+        ? { eyebrow: areasMaster.eyebrow, heading: areasMaster.heading, lede: areasMaster.lede, subHeading: areasMaster.subHeading,
+            list: ctx.city.neighborhoods, image: DESIGN.cityAreas }
+        : null,
+    cost: costMaster,
+    faq: s.faqs?.items.length
+      ? { heading: s.faqs.heading, items: s.faqs.items }
+      : faqMaster ? { heading: faqMaster.heading, items: faqMaster.items } : null,
+    contact: contactMaster
+      ? { ...contactMaster, phone, phoneHref, addressLines: branch ? [branch.street, `${branch.city}, ${ctx.state?.code ?? src.state} ${branch.zip}`] : [], servedFrom: branch ? null : addressLine }
+      : null,
+    finalCta: s.bookCta ?? (master<{ heading: string; paragraph: string }>('final_cta')
+      ? { heading: master<{ heading: string }>('final_cta')!.heading, paragraphs: [master<{ paragraph: string }>('final_cta')!.paragraph] }
+      : null),
     other: s.otherSections,
-    booking: bookingOptions(NATIONAL_PRICES),
-    bookingContext: {
-      pageSlug: src.url,
-      pageKind: 'city',
-      label: city ? `Chimcare · ${city}, ${src.state}` : 'Chimcare',
-    },
-    meta: {
-      // Source only. Where WordPress has no title or description, none is produced.
-      title: src.yoast_title ?? null,
-      description: src.yoast_metadesc ?? null,
-      canonical: `${siteUrl}${src.url}`,
-    },
+    booking: bookingOptions(prices),
+    bookingContext: { pageSlug: src.url, pageKind: 'city', label: city ? `Chimcare · ${city}, ${src.state}` : 'Chimcare' },
+    meta: { title: src.yoast_title ?? null, description: src.yoast_metadesc ?? null, canonical: `${siteUrl}${src.url}` },
     missing,
     outline: outlineOf(s),
     sectionsFound: s.sectionsFound,

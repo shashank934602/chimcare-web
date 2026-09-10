@@ -3,8 +3,14 @@ import { notFound, permanentRedirect } from 'next/navigation';
 import { LocationPage } from '@/components/templates/LocationPage';
 import { assembleLocationPage, type LocationSource } from '@/lib/content/assemble-location';
 import { getCityBundle } from '@/lib/data/cities';
+import { getMasters } from '@/lib/data/masters';
+import { getCatalog } from '@/lib/data/services';
+import { getPrices } from '@/lib/data/pricing';
 import { resolvePage } from '@/lib/data/pages';
 import { getPageSource } from '@/lib/data/page-source';
+import { catalogueGrid } from '@/lib/content/assemble';
+import { buildContext } from '@/lib/content/slots';
+import { getPublishedServiceSlugs } from '@/lib/data/pages';
 
 /**
  * The dispatcher. One route for every legacy `/location/{slug}/` URL, and one template behind it.
@@ -32,8 +38,14 @@ async function load(slug: string) {
 
   // The serving branch supplies the phone and the address; WordPress's own listing meta is the
   // fallback, and neither is composed from anything else.
-  const bundle = page.cityId ? await getCityBundle(page.cityId) : null;
+  const [bundle, masters, catalog] = await Promise.all([
+    page.cityId ? getCityBundle(page.cityId) : Promise.resolve(null),
+    getMasters(),
+    getCatalog(),
+  ]);
   const branch = bundle?.branch ?? null;
+  const prices = await getPrices(bundle?.city?.regionId ?? branch?.regionId ?? null);
+  const serviceSlugs = page.cityId ? await getPublishedServiceSlugs(page.cityId) : new Map<number, string>();
   const state = bundle?.state?.code ?? slug.slice(-2).toUpperCase();
   const m = /^(.*?)-in-(.+)-[a-z]{2}$/.exec(slug) ?? /^(.*?)-(.+)-[a-z]{2}$/.exec(slug);
 
@@ -59,7 +71,30 @@ async function load(slug: string) {
       : null,
   };
 
-  return { kind: 'page' as const, props: assembleLocationPage(source), cityName: bundle?.city?.name ?? null };
+  return {
+    kind: 'page' as const,
+    props: assembleLocationPage(source, {
+      city: bundle?.city ?? null,
+      state: bundle?.state ?? null,
+      branch,
+      prices,
+      masters,
+      catalog: catalogueFor(bundle, catalog, prices, serviceSlugs),
+    }),
+  };
+}
+
+/** The catalogue grid for this city, or nothing when the URL has no city row behind it. */
+function catalogueFor(
+  bundle: Awaited<ReturnType<typeof getCityBundle>>,
+  catalog: Awaited<ReturnType<typeof getCatalog>>,
+  prices: Awaited<ReturnType<typeof getPrices>>,
+  serviceSlugs: Map<number, string>,
+) {
+  if (!bundle?.city || !bundle.state) return null;
+  const ctx = buildContext({ state: bundle.state, city: bundle.city, branch: bundle.branch, prices, servicesCount: catalog.services.length });
+  const { cards, tiles } = catalogueGrid(catalog, ctx, serviceSlugs);
+  return { count: catalog.services.length, tiles, cards };
 }
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {

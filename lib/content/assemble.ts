@@ -22,6 +22,34 @@ export type Contact = { phone: string; phoneHref: string; addressLines: string[]
 export type ServiceCard = { key: string; cat: string; title: string; copy: string; href?: string };
 export type CategoryTile = { key: string; name: string; count: number; src: string; alt: string };
 
+/**
+ * The service catalogue as the grid renders it: one card per service, one tile per category.
+ * A card links only where that service has a published page in this city, so the grid can never
+ * point at a URL that 404s. Shared, because the leaf template and the older city template must show
+ * the same catalogue from the same source.
+ */
+export function catalogueGrid(
+  catalog: Catalog,
+  ctx: SlotContext,
+  serviceSlugs: Map<number, string>,
+): { cards: ServiceCard[]; tiles: CategoryTile[] } {
+  const catById = new Map(catalog.categories.map((c) => [c.id, c]));
+  const cards: ServiceCard[] = catalog.services.map((s) => {
+    const cat = catById.get(s.categoryId)!;
+    const sctx = { ...ctx, 'service.name': s.name, 'category.name': cat.name };
+    const slug = serviceSlugs.get(s.id);
+    return { key: s.key, cat: cat.key, title: fill(s.nameTemplate, sctx), copy: fill(s.cardCopyTemplate, sctx), href: slug ? `/location/${slug}/` : undefined };
+  });
+  const tiles: CategoryTile[] = catalog.categories.map((c) => ({
+    key: c.key,
+    name: c.name,
+    count: cards.filter((k) => k.cat === c.key).length,
+    src: '/' + (c.tileImageKey ?? 'img/tile-repair.jpg'),
+    alt: c.tileImageAlt ?? c.name,
+  }));
+  return { cards, tiles };
+}
+
 type Masters = Record<string, unknown>;
 function master<T>(m: Masters, key: string, ctx: SlotContext): T {
   const body = m[key];

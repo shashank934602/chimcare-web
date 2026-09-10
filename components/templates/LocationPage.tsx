@@ -3,7 +3,9 @@ import type { CSSProperties } from 'react';
 import type { LocationPageProps } from '@/lib/content/assemble-location';
 import { Icon } from '@/components/chrome/Icon';
 import { Accordion } from '@/components/islands/Accordion';
-import { Breadcrumbs, SectionHead } from '@/components/sections/shared';
+import { Breadcrumbs, SectionHead, TrustStrip, Faq } from '@/components/sections/shared';
+import { ServiceDirectory } from '@/components/islands/ServiceDirectory';
+import { ServiceDrawer } from '@/components/islands/ServiceDrawer';
 import { FloatingCta } from '@/components/chrome/FloatingCta';
 import { BookingForm } from '@/components/islands/BookingForm';
 import { BookingSheet } from '@/components/islands/BookingSheet';
@@ -56,9 +58,19 @@ export function LocationPage(p: LocationPageProps) {
                 {hero.addressLine && (
                   <p className="addr" style={{ '--i': 5 } as CSSProperties}><Icon name="pin" />{hero.addressLine}</p>
                 )}
+                {hero.awards.length > 0 && (
+                  <div className="hero-proof" style={{ '--i': 6 } as CSSProperties}>
+                    <ul className="hero-awards">
+                      {hero.awards.map((a) => (
+                        <li key={a.src}><img src={a.src} width={a.width} height={a.height} decoding="async" alt={a.alt} /></li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
                 {hero.image && (
                   <figure className="hero-figure" style={{ '--i': 7 } as CSSProperties}>
                     <img src={hero.image.src} width={hero.image.width} height={hero.image.height} fetchPriority="high" decoding="async" alt={hero.image.alt} />
+                    {hero.figCaption && <figcaption>{hero.figCaption}</figcaption>}
                   </figure>
                 )}
               </div>
@@ -70,17 +82,34 @@ export function LocationPage(p: LocationPageProps) {
             </div>
           </div>
 
+          <TrustStrip items={p.trust} className="o1-trust" awards={false} />
+
           {/* WHY IT MATTERS — outline A */}
           {p.intro && (
             <div className="section o1-intro" id="o1-intro">
               <div className="wrap">
                 <div className="reveal">
-                  <p className="eyebrow">{identity.city ? `Chimcare in ${identity.city}` : 'Chimcare'}</p>
+                  <p className="eyebrow">{p.intro.eyebrow}</p>
                   <h2>{p.intro.heading}</h2>
+                  {p.reasons.length > 0 && (
+                    <ol className="o1-reasons">
+                      {p.reasons.map((r, i) => (
+                        <li key={r.title}>
+                          <span className="n">{pad(i)}</span>
+                          <div><b>{r.title}</b><span>{r.body}</span></div>
+                        </li>
+                      ))}
+                    </ol>
+                  )}
                 </div>
                 <div className="copy reveal">
+                  {p.intro.teamPhoto && (
+                    <figure className="team-photo">
+                      <img src={p.intro.teamPhoto.src} width={p.intro.teamPhoto.width} height={p.intro.teamPhoto.height} loading="lazy" decoding="async" alt={p.intro.teamPhoto.alt} />
+                    </figure>
+                  )}
                   {p.intro.paragraphs.map((t) => <p key={t.slice(0, 40)}>{t}</p>)}
-                  <div className="ctas"><a className="btn btn-primary" href="#booking" data-book>Get a Quote</a></div>
+                  <div className="ctas"><a className="btn btn-primary" href="#booking" data-book>{p.intro.cta}</a></div>
                 </div>
               </div>
             </div>
@@ -95,11 +124,69 @@ export function LocationPage(p: LocationPageProps) {
                   <h2>{p.whyTrust.heading}</h2>
                   {p.whyTrust.paragraphs.map((t) => <p key={t.slice(0, 40)}>{t}</p>)}
                 </div>
+                {p.whyTrust.art && (
+                  <figure className="trust-art reveal">
+                    <img src={p.whyTrust.art.src} width={p.whyTrust.art.width} height={p.whyTrust.art.height} loading="lazy" decoding="async" alt={p.whyTrust.art.alt} />
+                  </figure>
+                )}
               </div>
             </div>
           )}
 
-          {/* SERVICE DIRECTORY — outline B and C */}
+          {/* THE EIGHT HEADLINE SERVICES — the mock's accordion, with its illustration */}
+          {p.serviceRows && (
+            <div className="section o1-svc" id="o1-services">
+              <div className="wrap">
+                <SectionHead eyebrow={p.serviceRows.eyebrow} heading={p.serviceRows.heading} lede={p.serviceRows.lede} figure={p.serviceRows.image} figureId="ph-services" />
+                <Accordion mode="single" className="o1-list reveal" id="svc-lib">
+                  {p.serviceRows.rows.map((r, i) => (
+                    <article className={i === 0 ? 'o1-row is-open' : 'o1-row'} key={r.key} data-service={r.key} data-acc-item>
+                      <button className="o1-row-btn" type="button" aria-expanded={i === 0} aria-controls={`o1-p${i + 1}`} data-acc-trigger>
+                        <span className="num">{pad(i)}</span>
+                        <span className="ic"><Icon name={r.icon} /></span>
+                        <span>
+                          <h3 className="svc-name">{r.name}</h3>
+                          <p className="short svc-short">{r.short}</p>
+                        </span>
+                        <span className="plus"><Icon name="plus" /></span>
+                      </button>
+                      <div className="acc-panel" id={`o1-p${i + 1}`}>
+                        <div>
+                          <div className="body">
+                            <div className="svc-body svc-main">
+                              {r.paragraphs.map((t) => <p key={t.slice(0, 40)}>{t}</p>)}
+                            </div>
+                            <div className="side svc-body svc-side">
+                              <h4>What&rsquo;s included</h4>
+                              <ul className="svc-list">
+                                {r.included.map((x) => <li key={x}><Icon name="check" />{x}</li>)}
+                              </ul>
+                              <div className="ctas">
+                                <a className="btn btn-primary" href="#booking" data-book>{r.cta}</a>
+                                <button className="btn btn-ghost" type="button" data-drawer-open={r.key}>Open full detail</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </article>
+                  ))}
+                </Accordion>
+              </div>
+            </div>
+          )}
+
+          {/* THE FULL CATALOGUE — category tiles and the filterable grid */}
+          {p.solutions && (
+            <div className="section o1-solutions" id="o1-solutions">
+              <div className="wrap">
+                <SectionHead eyebrow={p.solutions.eyebrow} heading={p.solutions.heading} lede={p.solutions.lede} />
+                <ServiceDirectory tiles={p.solutions.tiles} cards={p.solutions.cards} count={p.solutions.count} />
+              </div>
+            </div>
+          )}
+
+          {/* SERVICE DIRECTORY FROM THE SOURCE — outline B and C */}
           {p.serviceDirectory && p.serviceDirectory.items.length > 0 && (
             <div className="section o1-solutions" id="o1-solutions">
               <div className="wrap">
@@ -142,11 +229,19 @@ export function LocationPage(p: LocationPageProps) {
             <div className="section areas" id="o1-areas">
               <div className="wrap">
                 <div className="reveal">
-                  <p className="eyebrow">Service area</p>
+                  <p className="eyebrow">{p.areas.eyebrow}</p>
                   <h2>{p.areas.heading}</h2>
                   {p.areas.lede && <p className="lede">{p.areas.lede}</p>}
                 </div>
                 <div className="reveal">
+                  {p.areas.image && (
+                    <figure className="ph-img" id="ph-areas">
+                      <img src={p.areas.image.src} width={p.areas.image.width} height={p.areas.image.height} loading="lazy" decoding="async" alt={p.areas.image.alt} />
+                    </figure>
+                  )}
+                  {p.areas.subHeading && (
+                    <h3 style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-.01em', margin: '0 0 8px' }}>{p.areas.subHeading}</h3>
+                  )}
                   <ul className="area-list">
                     {p.areas.list.map((a) => <li key={a}><Icon name="pin" />{a}</li>)}
                   </ul>
@@ -181,6 +276,35 @@ export function LocationPage(p: LocationPageProps) {
             </div>
           )}
 
+          {/* CONTACT */}
+          {p.contact && (
+            <div className="section o1-contact" id="o1-contact">
+              <div className="wrap">
+                <div className="reveal">
+                  <p className="eyebrow">{p.contact.eyebrow}</p>
+                  <h2 style={{ fontSize: 'clamp(30px,3.4vw,44px)', letterSpacing: '-.02em', lineHeight: 1.06, margin: '12px 0 18px' }}>{p.contact.heading}</h2>
+                  <p style={{ color: 'var(--text-2)', maxWidth: '46ch' }}>{p.contact.paragraph}</p>
+                  <div className="contact-lines">
+                    {p.contact.addressLines.length > 0 && (
+                      <span className="row"><Icon name="pin" /><span>{p.contact.addressLines[0]}<br />{p.contact.addressLines[1]}</span></span>
+                    )}
+                    {p.contact.servedFrom && <span className="row"><Icon name="pin" /><span>{p.contact.servedFrom}</span></span>}
+                    {p.contact.phone && p.contact.phoneHref && (
+                      <span className="row"><Icon name="phone" /><a href={p.contact.phoneHref}>{p.contact.phone}</a></span>
+                    )}
+                    <span className="row"><Icon name="cal" /><a href="#booking" data-book>Schedule online</a></span>
+                  </div>
+                </div>
+                {p.contact.why.length > 0 && (
+                  <div className="why-card reveal">
+                    <h3>{p.contact.whyHeading}</h3>
+                    <ul>{p.contact.why.map((w) => <li key={w}><Icon name="check" /><span>{w}</span></li>)}</ul>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* ANYTHING THE OUTLINES DO NOT COVER — rendered plainly rather than dropped */}
           {p.other.map((o) => (
             <div className="section" key={o.heading}>
@@ -191,22 +315,34 @@ export function LocationPage(p: LocationPageProps) {
             </div>
           ))}
 
+          {/* COST */}
+          {p.cost && (
+            <div className="section o1-cost" id="o1-cost">
+              <div className="wrap">
+                <div className="panel reveal">
+                  <div>
+                    <p className="eyebrow">{p.cost.eyebrow}</p>
+                    <h2>{p.cost.heading}</h2>
+                    <p>{p.cost.paragraph}</p>
+                    <div className="factors">{p.cost.factors.map((f) => <span key={f}>{f}</span>)}</div>
+                  </div>
+                  <div className="ctas" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
+                    <a className="btn btn-primary" href="#booking" data-book>{p.cost.cta}</a>
+                    {hero.phone && hero.phoneHref && (
+                      <a className="btn btn-ghost" href={hero.phoneHref}><Icon name="phone" />{hero.phone}</a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* FAQ */}
           {p.faq && (
             <div className="section" id="o1-faq">
               <div className="wrap">
                 <SectionHead eyebrow="Questions" heading={p.faq.heading} />
-                <Accordion mode="single" className="faq reveal" style={{ maxWidth: 820 }}>
-                  {p.faq.items.map((f, i) => (
-                    <div className={i === 0 ? 'faq-item is-open' : 'faq-item'} key={f.question} data-acc-item>
-                      <button className="faq-q" type="button" aria-expanded={i === 0} data-acc-trigger>
-                        {f.question}
-                        <Icon name="plus" />
-                      </button>
-                      <div className="acc-panel"><div><p className="faq-a">{f.answer}</p></div></div>
-                    </div>
-                  ))}
-                </Accordion>
+                <Faq items={p.faq.items} />
               </div>
             </div>
           )}
@@ -234,6 +370,9 @@ export function LocationPage(p: LocationPageProps) {
         </section>
       </main>
       <BookingSheet options={p.booking} context={p.bookingContext} />
+      {p.serviceRows && p.serviceRows.rows.length > 0 && hero.phone && hero.phoneHref && (
+        <ServiceDrawer rows={p.serviceRows.rows} eyebrow={hero.eyebrow} phone={hero.phone} phoneHref={hero.phoneHref} />
+      )}
       {hero.phone && hero.phoneHref && (
         <FloatingCta phone={hero.phone} phoneHref={hero.phoneHref} email="harold@chimcare.com" quoteHref="#booking" />
       )}

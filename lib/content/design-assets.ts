@@ -23,6 +23,18 @@ function asset(name: string, fallbackW: number, fallbackH: number): DesignAsset 
   return { src: a.url, alt: a.alt, width: a.width ?? fallbackW, height: a.height ?? fallbackH };
 }
 
+/** The eight category tiles the mock shows above the service grid, in the mock's own order. */
+const TILES: Array<{ key: string; name: string; src: string; alt: string }> = [
+  { key: 'sweep', name: 'Chimney Sweep', src: '/img/tile-sweep.jpg', alt: 'Chimcare technician sweeping a chimney from the roof' },
+  { key: 'inspection', name: 'Chimney Inspection', src: '/img/tile-inspection.jpg', alt: 'Technician inspecting a fireplace and documenting findings' },
+  { key: 'repair', name: 'Chimney Repair', src: '/img/tile-repair.jpg', alt: 'Mason repairing a masonry chimney on a rooftop' },
+  { key: 'gas', name: 'Gas Fireplace Service', src: '/img/tile-gas.jpg', alt: 'Serviced gas fireplace burning behind a screen' },
+  { key: 'gas-inserts', name: 'Gas Fireplace Inserts', src: '/img/tile-gas-inserts.jpg', alt: 'Gas fireplace insert set into a stone surround' },
+  { key: 'wood-inserts', name: 'Wood Burning Inserts', src: '/img/tile-wood-inserts.jpg', alt: 'Wood burning insert with a fire lit in a brick hearth' },
+  { key: 'caps', name: 'Chimney Caps', src: '/img/tile-caps.jpg', alt: 'Stainless chimney cap fitted to a masonry flue' },
+  { key: 'outdoor', name: 'Outdoor Fireplaces', src: '/img/tile-outdoor.jpg', alt: 'Outdoor masonry fireplace built into a patio' },
+];
+
 export const DESIGN = {
   /** Header accreditation badge. Rendered only when the real asset is present. */
   bbbBadge: asset('5333e04be04a.webp', 300, 300),
@@ -38,4 +50,10 @@ export const DESIGN = {
   cityAreas: asset('f6f84751cc7f.webp', 1400, 788),
   /** The crew photograph in the city page's introduction. */
   cityTeam: asset('68c77f141766.jpg', 1600, 905),
+  /** The hero photograph the mock ships. Used where a page has no distinct image of its own. */
+  cityHero: asset('398d30b9b709.jpg', 1000, 749),
+  /** The illustration in the dark "why homeowners trust us" band. */
+  trustArt: { src: '/img/trust-art.webp', alt: 'Local and trusted, dust-free cleaning, safety first, transparent pricing', width: 361, height: 302 } as DesignAsset,
+  /** The eight category tiles above the service grid. */
+  tiles: TILES,
 } as const;

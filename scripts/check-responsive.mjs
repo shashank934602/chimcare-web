@@ -60,7 +60,20 @@ class Cdp {
 }
 
 const MEASURE = `(() => {
-  const vw = window.innerWidth;
+  // Force a layout before reading. Chrome can hold a scrollWidth computed before the last style or
+  // font change — measured as a phantom 16px overflow that disappeared the moment anything on the
+  // page was touched. Reading offsetWidth after a class no-op flushes it.
+  const probe = document.createElement('div');
+  document.body.appendChild(probe);
+  void document.documentElement.offsetWidth;
+  probe.remove();
+  void document.documentElement.offsetWidth;
+
+  // The LAYOUT viewport, which is what CSS breakpoints and overflow are measured against.
+  // window.innerWidth is wrong here: under Chrome's mobile emulation it reports the emulated window
+  // rather than the layout viewport (436 for a 390px device), so comparing against it hides real
+  // overflow at exactly the widths that matter most.
+  const vw = document.documentElement.clientWidth;
   const doc = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth);
   const offenders = [];
   for (const el of document.querySelectorAll('body *')) {
@@ -69,6 +82,17 @@ const MEASURE = `(() => {
     if (r.right > vw + 1) {
       const cs = getComputedStyle(el);
       if (cs.position === 'fixed') continue;
+      // A closed dialog is parked off-canvas by design — that is how it slides in. Its children are
+      // laid out inside a fixed ancestor, so they report a right edge past the viewport without any
+      // of it being scrollable. Skip anything inside a fixed or off-canvas ancestor, and anything
+      // the page has already hidden.
+      let a = el, skip = false;
+      for (let n = 0; a && n < 12; n++, a = a.parentElement) {
+        const acs = getComputedStyle(a);
+        if (acs.position === 'fixed' || acs.visibility === 'hidden' || acs.display === 'none') { skip = true; break; }
+        if (a.hasAttribute('hidden') || a.getAttribute('aria-hidden') === 'true') { skip = true; break; }
+      }
+      if (skip) continue;
       offenders.push({
         tag: el.tagName.toLowerCase(),
         cls: (el.className && typeof el.className === 'string' ? el.className : '').split(' ').filter(Boolean).slice(0, 3).join('.'),
@@ -101,6 +125,9 @@ for (const url of urls) {
       width, height: 900, deviceScaleFactor: mobile ? 2 : 1, mobile,
       screenWidth: width, screenHeight: 900,
     }, sessionId);
+    // Mobile emulation otherwise lets Chrome pick its own page scale, which reports a layout
+    // viewport wider than the device width and quietly measures the wrong breakpoint.
+    await cdp.send('Emulation.setPageScaleFactor', { pageScaleFactor: 1 }, sessionId);
     await cdp.send('Page.navigate', { url: base + url }, sessionId);
     await new Promise((r) => setTimeout(r, 1400));
     const { result } = await cdp.send('Runtime.evaluate', { expression: MEASURE, returnByValue: true, awaitPromise: false }, sessionId);

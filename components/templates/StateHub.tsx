@@ -6,11 +6,24 @@ import { JsonLd } from '@/components/seo/JsonLd';
 import { Accordion } from '@/components/islands/Accordion';
 import { Breadcrumbs, SectionHead, TrustStrip } from '@/components/sections/shared';
 import { BookingSheet } from '@/components/islands/BookingSheet';
+import { HeroSearch } from '@/components/islands/HeroSearch';
+import { LocationDirectory } from '@/components/islands/LocationDirectory';
+import { MapPanel } from '@/components/islands/MapPanel';
+import { FloatingCta } from '@/components/chrome/FloatingCta';
 
-export function StateHub(p: StateHubProps) {
+/**
+ * The state hub. Washington is one instance of this template, not a page: everything specific to a
+ * state arrives in `StateHubProps`, and nothing here names one.
+ *
+ * `query` is the `?q=` the route was asked for, so a shared or reloaded search filters on the server
+ * before any JavaScript runs. `stateSlug` is where the search form posts back to.
+ */
+export function StateHub(p: StateHubProps & { query?: string; stateSlug: string }) {
+  const query = p.query ?? '';
   const style = { '--img-state': `url(${p.imgState})` } as CSSProperties;
   return (
-    <main id="main" className="tpl-state" style={style}>
+    <>
+      <main id="main" className="tpl-state" style={style}>
       <JsonLd data={p.jsonLd} />
       {/* HERO */}
       <section className="hero">
@@ -20,16 +33,13 @@ export function StateHub(p: StateHubProps) {
             <div className="hero-copy">
               <h1><span className="hl">Chimcare</span> Locations in {p.hero.name}</h1>
               <p className="lede">{p.hero.lede}</p>
-              <div className="hero-search" id="finder">
-                <div className="searchbar">
-                  <Icon name="search" />
-                  <input id="f-q" type="search" placeholder="Search by ZIP or City." autoComplete="off" spellCheck={false} aria-label="Search Chimcare locations" />
-                </div>
-                <p className="finder-note" id="finder-note" role="status">
-                  <Icon name="pin" />
-                  <span>Showing <b>all {p.hero.count} {p.hero.name} locations</b>.</span>
-                </p>
-              </div>
+              <HeroSearch
+                action={`/locations/${p.stateSlug}/`}
+                initialQuery={query}
+                searchIndex={p.directory.cards.map((c) => c.search)}
+                totalCount={p.hero.count}
+                stateName={p.hero.name}
+              />
               <div className="ctas">
                 <a className="btn btn-primary" href="#directory">Find Your Location <Icon name="arrow" /></a>
                 <a className="btn btn-outline" href="#booking" data-book>Schedule Service</a>
@@ -56,46 +66,8 @@ export function StateHub(p: StateHubProps) {
           <SectionHead eyebrow={p.directory.eyebrow} heading={p.directory.heading} lede={p.directory.lede} />
           <div className="grid">
             <div>
-              <div className="dir-bar">
-                <p className="dir-count" id="dir-count"><b>{p.directory.cards.length}</b> locations</p>
-              </div>
-              <div className="loc-grid" id="loc-grid">
-                {p.directory.cards.map((c) => (
-                  <article className="job_listing loc-card reveal" key={c.id} data-id={c.id} data-search={c.search}>
-                    <div className="content-box">
-                      {c.href && <a className="job_listing-clickbox" href={c.href} aria-hidden="true" tabIndex={-1}></a>}
-                      <header className={c.photo ? 'job_listing-entry-header listing-cover has-image' : 'job_listing-entry-header listing-cover no-image'}>
-                        {c.photo && <img className="ph-photo" src={c.photo.src} alt={c.photo.alt} loading="lazy" decoding="async" />}
-                      </header>
-                      <div className="body">
-                        <p className="city">{c.name}{c.kind === 'coverage' ? ' · coverage' : ''}</p>
-                        <h3>{c.title}</h3>
-                        <div className="meta">
-                          <div>
-                            <Icon name="pin" />
-                            <span>
-                              {c.addressLines.length ? <>{c.addressLines[0]}<br />{c.addressLines[1]}</> : c.servedFrom}
-                            </span>
-                          </div>
-                        </div>
-                        <a className="tel" href={c.phoneHref}><Icon name="phone" />{c.phone}</a>
-                        <div className="foot">
-                          {c.href ? <a className="go" href={c.href}>View location <Icon name="arrow" /></a> : <span className="go">Page in review</span>}
-                        </div>
-                      </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </div>
-            <div className="map-panel reveal" id="map-panel">
-              <div className="lmap" id="lmap" style={{ display: 'grid', placeItems: 'center', color: 'var(--text-2)', fontSize: 14 }}>
-                Map island (Leaflet, M3) mounts here — {p.directory.cards.length} pins
-              </div>
-              <div className="map-legend">
-                <span><i></i>Chimcare location</span>
-                <span>Hover a pin or a card to link the two.</span>
-              </div>
+              <LocationDirectory cards={p.directory.cards} initialQuery={query} />
+              <MapPanel cards={p.directory.cards} />
             </div>
           </div>
         </div>
@@ -203,7 +175,10 @@ export function StateHub(p: StateHubProps) {
           </div>
         </div>
       </section>
+      </main>
+      {/* Siblings of <main>, as in the mocks — see CityPage. */}
       <BookingSheet options={p.booking} context={p.bookingContext} />
-    </main>
+      <FloatingCta phone={p.phone} phoneHref={p.phoneHref} email="harold@chimcare.com" quoteHref="#directory" />
+    </>
   );
 }

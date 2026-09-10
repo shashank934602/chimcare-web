@@ -15,14 +15,40 @@ export function Breadcrumbs({ crumbs, style }: { crumbs: Crumb[]; style?: React.
   );
 }
 
-export function SectionHead({ eyebrow, heading, lede, left }: { eyebrow: string; heading: string; lede?: string; left?: boolean }) {
+/**
+ * A section heading. `figure` is the optional illustration the newest city mock places beside the
+ * heading (`.ph-img`); when no asset is supplied the head renders exactly as before, so the hub and
+ * state templates are unaffected.
+ */
+export function SectionHead({
+  eyebrow,
+  heading,
+  lede,
+  left,
+  figure,
+  figureId,
+}: {
+  eyebrow: string;
+  heading: string;
+  lede?: string;
+  left?: boolean;
+  figure?: { src: string; alt: string; width: number; height: number } | null;
+  figureId?: string;
+}) {
   return (
     <div className={left ? 'sec-head left reveal' : 'sec-head reveal'}>
       <div>
         <p className="eyebrow">{eyebrow}</p>
         <h2>{heading}</h2>
+        {figure && lede && <p className="sec-head-lede">{lede}</p>}
       </div>
-      {lede && <p>{lede}</p>}
+      {figure ? (
+        <figure className="ph-img" id={figureId}>
+          <img src={figure.src} width={figure.width} height={figure.height} loading="lazy" decoding="async" alt={figure.alt} />
+        </figure>
+      ) : (
+        lede && <p>{lede}</p>
+      )}
     </div>
   );
 }

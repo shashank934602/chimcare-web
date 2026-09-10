@@ -6,6 +6,8 @@ import { JsonLd } from '@/components/seo/JsonLd';
 import { Breadcrumbs, Faq, SectionHead, TrustStrip } from '@/components/sections/shared';
 import { BookingForm } from '@/components/islands/BookingForm';
 import { BookingSheet } from '@/components/islands/BookingSheet';
+import { ServiceDrawer } from '@/components/islands/ServiceDrawer';
+import { FloatingCta } from '@/components/chrome/FloatingCta';
 
 const pad = (n: number) => String(n + 1).padStart(2, '0');
 
@@ -13,11 +15,17 @@ const pad = (n: number) => String(n + 1).padStart(2, '0');
  * ServicePage — what a Tier A/B service×city URL renders if decision Q1 keeps those URLs as pages.
  * Derived from the city template: same hero/booking, the category's long-form row as the body,
  * then process, pricing, FAQ and links to sibling services and the city page.
+ *
+ * Service identity (`row`, `initialService`), location identity (`hero`, `contact`), content, SEO,
+ * images, FAQs and CTAs all arrive as separate slots, so one template serves every service × city
+ * combination. It decides nothing about which services exist: the catalogue is supplied, and a URL
+ * whose service is not modelled never reaches this template.
  */
 export function ServicePage(p: ServicePageProps) {
   const style = { '--img-city': `url(${p.imgCity})` } as CSSProperties;
   return (
-    <main id="main">
+    <>
+      <main id="main">
       <JsonLd data={p.jsonLd} />
       <section className="option o1 tpl-city tpl-service" style={style}>
         <div className="hero o1-hero" id="o1-hero">
@@ -142,7 +150,13 @@ export function ServicePage(p: ServicePageProps) {
           </div>
         </div>
       </section>
+      </main>
+      {/* Siblings of <main>, as in the mocks — see CityPage. */}
       <BookingSheet options={p.booking} context={p.bookingContext} />
-    </main>
+      {p.row && (
+        <ServiceDrawer rows={[p.row]} eyebrow={p.hero.eyebrow} phone={p.contact.phone} phoneHref={p.contact.phoneHref} />
+      )}
+      <FloatingCta phone={p.contact.phone} phoneHref={p.contact.phoneHref} email="harold@chimcare.com" quoteHref="#o1-cost" />
+    </>
   );
 }

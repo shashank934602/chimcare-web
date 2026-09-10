@@ -244,7 +244,7 @@ Keep source immutable; perform only render-time cleanup.
 
 ## ISSUE-012 — Shared template gaps
 
-Status: OPEN
+Status: RESOLVED (2026-09-10, step 1)
 Severity: MEDIUM
 
 Problem:
@@ -261,6 +261,16 @@ Examples:
 Required:
 Implement shared/template-level behavior rather than page-specific components.
 
+Update — 2026-09-10, step 1: RESOLVED.
+All six named elements are implemented as shared components, none inside a page template:
+floating CTA cluster (`components/chrome/FloatingCta.tsx`, on all five templates), header trust
+elements (BBB badge, icon call button, "Fast Online Booking" CTA — `components/chrome/Header.tsx`,
+each an optional prop rendered only from a real asset), city service drawer
+(`components/islands/ServiceDrawer.tsx`), map toggle (`components/islands/MapPanel.tsx`), load-more
+controls (state cards, city directory, solutions grid) and state directory controls
+(`components/islands/StateDirectory.tsx`). Verified by 43 interaction checks in
+`scripts/test/interactions.mjs`. Status: RESOLVED.
+
 Update — 2026-09-10, step 0:
 Partly addressed as an input, not as an implementation. The 9 Sep tree's directory and search islands
 (`components/islands/{HeroSearch,LocationDirectory,locationSearch}`, `lib/content/search.ts`,
@@ -274,7 +284,7 @@ load-more controls, state directory controls. No template work was done in this 
 
 ## ISSUE-013 — Two authoritative versions of StateHub.tsx
 
-Status: OPEN
+Status: RESOLVED (2026-09-10, step 1)
 Severity: MEDIUM
 Phase: Template foundation
 Raised: 2026-09-10, step 0
@@ -302,6 +312,14 @@ The template phase decides. Adopting the refactor is a two-file change: pass `qu
 from the route, and swap the import.
 
 Blocks the pilot: no.
+
+Update — 2026-09-10, step 1: RESOLVED.
+The 9 September island refactor was adopted, as the two-file change predicted: `StateHub` now takes
+`StateHubProps & { query?, stateSlug }` and renders `HeroSearch` and `LocationDirectory`, and
+`app/locations/[state]/page.tsx` passes `?q=` and the slug. `MapPanel` was added alongside them for
+the map toggle the earlier version had no equivalent of. The 4 September inline markup is gone from
+the template; the archived copy at `_archive/9sep-deferred-to-template-phase/StateHub.tsx` is now
+redundant and is kept only as provenance.
 
 ---
 
@@ -447,3 +465,185 @@ Confirm they are Massachusetts pilot leftovers and drop them, or recover `lib/ty
 components carry design work worth keeping. Low priority either way.
 
 Blocks the pilot: no.
+
+---
+
+## ISSUE-018 — The state hub map is a list, not a map
+
+Status: OPEN
+Severity: LOW
+Phase: Template foundation
+Raised: 2026-09-10, step 1
+
+Problem:
+The state mock draws pins with Leaflet from a `MAPDATA` blob. Leaflet is not a dependency of this
+application, and adding one is a separate decision (milestone M3 in `CLAUDE.md`).
+
+Current treatment:
+`components/islands/MapPanel.tsx` renders the degraded state the mock itself specifies for when
+Leaflet or the tile server cannot be reached: every location listed, each with its phone number. The
+toggle, the panel, the legend and the responsive behaviour are the mock's. Nothing about the map is
+faked and no pin is drawn.
+
+Resolution required:
+Decide whether the map ships. If it does, the island's shape does not change — only what fills
+`#lmap`. The card-to-pin linkage the mock implements is not built either.
+
+Blocks the pilot: no.
+
+---
+
+## ISSUE-019 — The mock ships the national city directory hidden
+
+Status: OPEN (decision needed)
+Severity: LOW
+Phase: Template foundation
+Raised: 2026-09-10, step 1
+
+Problem:
+In `locations new3.html` the city directory section is `<section class="section" id="directory"
+hidden style="display:none">`, while the finder code that filters it — group opening, city matching,
+ZIP resolution, counts, empty state — is complete and running. The mock filters an invisible list.
+
+Impact:
+Taken literally, the approved design has a search field on the national hub that visibly does
+nothing.
+
+Current treatment:
+Implemented visible. The section is the finder's only target, and the chips are the internal links to
+every city page — SEO value that a hidden section does not deliver. See DECISION-011.
+
+Resolution required:
+Design confirmation that the directory should be visible, or an instruction to hide it and remove the
+finder with it.
+
+Blocks the pilot: no.
+
+---
+
+## ISSUE-020 — The mock's drawer trigger is not in the approved markup
+
+Status: OPEN (decision needed)
+Severity: LOW
+Phase: Template foundation
+Raised: 2026-09-10, step 1
+
+Problem:
+`spokane.html` contains the full service drawer — markup, CSS and behaviour — but its opener binds to
+`.o2-card`, and no element with that class exists anywhere in the approved markup. The mock ships
+option 1 (`.option.o1`); the drawer belongs to an option 2 layout that was not kept.
+
+Current treatment:
+The drawer is implemented as a reusable island and opened from the eight headline service rows, which
+already carry exactly the data the drawer reads: `why`, `imgAlt` and `tone` are fields on
+`ServiceRow`, and the mock's rows carry them as `data-why`, `data-img` and `data-tone`. Each row gains
+an "Open full detail" control. See DECISION-012.
+
+Resolution required:
+Confirm that the service rows are the intended trigger, or supply the option 2 card layout the drawer
+was designed for.
+
+Blocks the pilot: no.
+
+---
+
+## ISSUE-021 — ZIP-to-state lookup not ported
+
+Status: OPEN
+Severity: LOW
+Phase: Template foundation
+Raised: 2026-09-10, step 1
+
+Problem:
+The mocks' finders resolve a 5-digit ZIP to a state name through a public USPS prefix table
+(`Chimcare.location.stateOfZip`) and open that state's group. The current implementation matches by
+state and city name only; a ZIP finds nothing.
+
+Impact:
+A visitor typing a ZIP — which the placeholder invites — gets the empty state.
+
+Resolution required:
+Port the prefix table, or change the placeholder to stop inviting a ZIP. The table says only which
+state a ZIP sits in and nothing about Chimcare coverage, so porting it asserts nothing new.
+
+Blocks the pilot: no.
+
+---
+
+## ISSUE-022 — The BBB badge now renders on every template
+
+Status: OPEN (decision needed)
+Severity: LOW
+Phase: Template foundation
+Raised: 2026-09-10, step 1
+
+Problem:
+The header is one shared component. The BBB accreditation badge exists only in the city mock, so
+adopting it into the shared header puts it on the national and state hubs too, which their own mocks
+do not show.
+
+Current treatment:
+Rendered site-wide, from the real approved asset extracted out of the city mock. The badge is an
+optional prop, so restricting it to city and service pages is a one-line change.
+
+Resolution required:
+Design confirmation. Also worth confirming the accreditation is current before it ships anywhere —
+the template renders the asset, it does not verify the claim.
+
+Blocks the pilot: no.
+
+---
+
+## ISSUE-023 — Chrome CSS was silently dropped by the porter
+
+Status: RESOLVED (2026-09-10, step 1)
+Severity: MEDIUM
+Phase: Template foundation
+Raised: 2026-09-10, step 1
+
+Problem:
+`scripts/port-css.mjs` took every chrome rule from the state mock and discarded chrome from the hub
+and city mocks, so any chrome the state mock did not define had no CSS at all. Measured: the entire
+service drawer (28 rules), `.hdr-bbb`, `.hdr-call`, `.hdr-book`, `.phone-bar`, `.phone-panel` and
+`.fab-tip`. Separately, `styles/city.css` was 82 lines behind the current city mock, including
+`.ph-img`, `.hero-trust`, `.hero-proof`, `.hero-awards`, `.team-photo` and `.o1-trust{display:none}`.
+
+Impact:
+Five of the six "missing design elements" the phase brief lists were missing because their CSS had
+never been ported, not because the markup was absent. The city page also rendered a trust strip that
+the current design hides.
+
+Resolution:
+The porter now lets the city mock ADD a chrome rule the state mock never wrote at that exact media
+query, and never override one it did. Re-running it is purely additive: 65 lines gained in
+`base.css`, 82 in `city.css`, none removed, and `tokens.css`, `hub.css` and `state.css` are
+byte-identical. See DECISION-010.
+
+---
+
+## ISSUE-024 — Two measurement faults in the responsive check
+
+Status: RESOLVED (2026-09-10, step 1)
+Severity: MEDIUM
+Phase: Template foundation
+Raised: 2026-09-10, step 1
+
+Problem:
+`scripts/check-responsive.mjs` reported 15/15 clean while the city page overflowed at two widths.
+Two causes:
+
+1. It compared the document against `window.innerWidth`. Under Chrome's mobile emulation that
+   reports the emulated window, not the layout viewport — 436 for a 390px device. Both sides of the
+   comparison were wrong by the same amount, so real overflow at exactly the width that matters most
+   was invisible.
+2. Chrome can hold a `scrollWidth` computed before the last style or font change. It reported a
+   phantom 16px overflow that vanished the moment anything on the page was touched.
+
+Resolution:
+Measure against `document.documentElement.clientWidth`, and force a structural reflow before reading.
+The check also now skips elements inside a fixed or hidden ancestor, so a closed dialog parked
+off-canvas is not reported as overflow.
+
+What the corrected check then found: a real 17px overflow from the sticky call/book bar, whose flex
+items would not shrink below their own content width. Fixed in `styles/shared.css` with
+`min-width: 0`, in the shared component rather than per template.

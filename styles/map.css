@@ -1,0 +1,17 @@
+/* map.css — the map panel's degraded (list) state.
+   The mock's Leaflet styling lives in state.css; these rules only cover the fallback the mock
+   specifies for when the map cannot load, plus the toggle button, which the mock renders inline.
+   Hand-written, in a new file, because the mocks contain no styling for the fallback list. */
+.map-toggle { display: none; }
+.lmap-fallback { margin: 0 0 14px; font-size: 14px; color: var(--text-2); }
+.lmap-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; max-height: 100%; overflow: auto; }
+.lmap-list li { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; padding: 7px 2px; border-bottom: 1px solid var(--line, rgba(0,0,0,.08)); font-size: 14px; }
+.lmap-list li:last-child { border-bottom: 0; }
+.lmap-list .tel { color: var(--text-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tpl-state .lmap { display: block; overflow: auto; padding: 16px; }
+
+@media (max-width: 900px) {
+  .map-toggle { display: inline-flex; margin-top: 18px; }
+  .tpl-state .map-panel { display: none; }
+  .tpl-state .map-panel.is-shown { display: block; }
+}

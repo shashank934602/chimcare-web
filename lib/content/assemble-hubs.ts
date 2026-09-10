@@ -156,6 +156,12 @@ export type NationalHubProps = {
   hero: { states: number; cities: number };
   trust: TrustItem[];
   stateCards: StateCard[];
+  /**
+   * The city directory: every state with the cities Chimcare lists in it, for the `#dirlist`
+   * accordion the finder filters. Cities with a published page carry an href; the rest are listed
+   * without one rather than linked to a 404.
+   */
+  directoryGroups: Array<{ name: string; coverageOnly: boolean; cities: Array<{ name: string; href?: string }> }>;
   coverageOnly: string[];
   crew: StateHubProps['crew'];
   phone: string;
@@ -166,8 +172,15 @@ export type NationalHubProps = {
   jsonLd: unknown[];
 };
 
-export function assembleNationalHub(input: { states: State[]; citiesByState: Map<number, City[]>; branchesByState: Map<number, Branch[]>; prices: Prices }): NationalHubProps {
-  const { states, citiesByState, prices } = input;
+export function assembleNationalHub(input: {
+  states: State[];
+  citiesByState: Map<number, City[]>;
+  branchesByState: Map<number, Branch[]>;
+  prices: Prices;
+  /** Slugs whose city page is published. Omit and the directory lists every city without linking. */
+  publishedCitySlugs?: string[];
+}): NationalHubProps {
+  const { states, citiesByState, prices, publishedCitySlugs } = input;
   const canonical = `${SITE_URL}/locations/`;
   const stateCards: StateCard[] = states.map((s) => {
     const cities = (citiesByState.get(s.id) ?? []).map((c) => c.name);
@@ -182,6 +195,17 @@ export function assembleNationalHub(input: { states: State[]; citiesByState: Map
     };
   });
   const cityCount = stateCards.reduce((n, s) => n + s.cities.length, 0);
+  // The chip directory. A city is linked only where its own page is published, so the directory can
+  // never point at a URL that 404s; the rest are still listed, because the coverage is real.
+  const directoryGroups = states.map((s) => {
+    const cities = citiesByState.get(s.id) ?? [];
+    const published = new Set(publishedCitySlugs ?? []);
+    return {
+      name: s.name,
+      coverageOnly: !(s.verified && cities.length > 0),
+      cities: cities.map((c) => ({ name: c.name, href: published.has(c.slug) ? `/location/${c.slug}/` : undefined })),
+    };
+  });
   const meta = {
     title: 'Chimcare Service Locations | Chimney Sweep, Repair & Masonry',
     description: `Find your local Chimcare chimney sweep, repair and masonry crew. Serving homeowners in ${states.length} states.`,
@@ -196,6 +220,7 @@ export function assembleNationalHub(input: { states: State[]; citiesByState: Map
       { icon: 'wrench', title: 'Free repair & masonry quotes', small: 'Priced on site before work starts' },
     ],
     stateCards,
+    directoryGroups,
     coverageOnly: stateCards.filter((s) => !s.verified).map((s) => s.name),
     crew: [
       { src: '/img/crew-sweeping.jpg', alt: 'A Chimcare technician sweeping a chimney from a rooftop', title: 'Sweeping', small: 'Dust-controlled, roof or hearth side' },

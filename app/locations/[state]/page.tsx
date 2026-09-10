@@ -8,6 +8,7 @@ import { getCitiesForState, getStateBySlug } from '@/lib/data/states';
 export const dynamic = 'force-dynamic';
 
 type Params = Promise<{ state: string }>;
+type Search = Promise<{ q?: string }>;
 
 async function load(slug: string) {
   const state = await getStateBySlug(slug);
@@ -24,9 +25,11 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   return { title: p.meta.title, description: p.meta.description, alternates: { canonical: p.meta.canonical } };
 }
 
-export default async function StatePage({ params }: { params: Params }) {
+export default async function StatePage({ params, searchParams }: { params: Params; searchParams: Search }) {
   const { state } = await params;
+  const { q } = await searchParams;
   const p = await load(state);
   if (!p) notFound();
-  return <StateHub {...p} />;
+  // `?q=` filters on the server too, so a shared link renders already filtered without JavaScript.
+  return <StateHub {...p} query={q ?? ''} stateSlug={state} />;
 }

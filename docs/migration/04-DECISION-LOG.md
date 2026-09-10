@@ -162,3 +162,126 @@ unpatched, and `--apply` was not run, so no dataset exists that contradicts the 
 
 Reason:
 A baseline that is edited whenever it disagrees with the code is not a baseline.
+
+---
+
+## DECISION-010 — The newest mock may add chrome, never override it
+
+Date: 2026-09-10
+Phase: Step 1
+
+Decision:
+`scripts/port-css.mjs` keeps the state mock as the authority for site chrome. The city mock — the
+newest of the three — may add a rule the state mock never wrote at that exact media query. It may
+never change one the state mock did write. The hub mock contributes no chrome, as before.
+
+Reason:
+Chrome came from the state mock alone so the header and footer would be identical everywhere. The
+side effect was that any chrome only the newer mock defines had markup and no CSS: the whole service
+drawer, the header BBB badge, the icon-only call button, the "Fast Online Booking" CTA, both header
+phone variants and the floating-action tooltips. Five of the six elements the phase brief calls
+missing were missing for this reason alone.
+
+Why this rule and not "newest wins":
+"Newest wins" would silently restyle the header on every template. This rule cannot: where both mocks
+define the same selector at the same breakpoint, the state mock's value stands. Re-running the porter
+is additive — 65 lines gained in `base.css`, 82 in `city.css`, none removed, and `tokens.css`,
+`hub.css` and `state.css` byte-identical.
+
+---
+
+## DECISION-011 — The national city directory is rendered visible
+
+Date: 2026-09-10
+Phase: Step 1
+Related: ISSUE-019
+
+The contradiction:
+`locations new3.html` ships `#directory` as `hidden style="display:none"`, while the finder code that
+filters it is complete and running. Reproducing the mock exactly means shipping a search field that
+visibly does nothing.
+
+Decision:
+Render it visible, and flag it for design confirmation rather than deciding it here.
+
+Reason:
+The section is the finder's only target, so hiding it makes the field inert. The chips are also the
+internal links to every city page — SEO value a hidden section does not deliver. Being wrong this way
+is visible and reversible in one line; being wrong the other way ships a dead control nobody notices.
+
+---
+
+## DECISION-012 — The service drawer opens from the service rows
+
+Date: 2026-09-10
+Phase: Step 1
+Related: ISSUE-020
+
+The contradiction:
+`spokane.html` contains the drawer complete — markup, CSS, behaviour — but binds its opener to
+`.o2-card`, a class that appears nowhere in the approved markup. The mock ships option 1; the drawer
+was designed for an option 2 layout that was not kept.
+
+Decision:
+Implement the drawer as a reusable island and open it from the eight headline service rows. Record
+the mismatch rather than resolve it silently.
+
+Reason:
+The rows already carry the drawer's exact data contract: `why`, `imgAlt` and `tone` are fields on
+`ServiceRow`, and the mock's rows carry them as `data-why`, `data-img` and `data-tone`. Nothing was
+invented to make the drawer work, and nothing was discarded. If the option 2 layout returns, the
+island takes it without change — the trigger is any element with `data-drawer-open`.
+
+---
+
+## DECISION-013 — LegacyPage gets minimal hand-written styling
+
+Date: 2026-09-10
+Phase: Step 1
+
+Decision:
+`styles/legacy.css` is hand-written, in a new file, and deliberately minimal: measure, spacing, safe
+overflow for tables, images and code, and the site's own type and colour tokens. It does not restyle
+the source's own structure.
+
+Reason:
+No mock covers a page whose body is arbitrary WordPress markup, so there is no approved design to
+port. Styling it further would be authoring a design nobody approved, on content nobody has reviewed.
+The generated stylesheets stay exactly as `port-css.mjs` produces them.
+
+Not decided here:
+Whether legacy pages get a designed treatment at all. That needs a mock.
+
+---
+
+## DECISION-014 — Dialogs render as siblings of `<main>`
+
+Date: 2026-09-10
+Phase: Step 1
+
+Decision:
+The booking sheet, the service drawer and the floating quick-action cluster render outside `<main>`
+in every template, as they do in the mocks.
+
+Reason:
+Nested inside a section they position against that section rather than the viewport, and a closed
+panel parked off-canvas widens the document. Measured on the city template before the change: an 18px
+horizontal overflow at 834px that disappeared when the dialogs moved out.
+
+---
+
+## DECISION-015 — Fixture data is quarantined by construction, not by convention
+
+Date: 2026-09-10
+Phase: Step 1
+
+Decision:
+Test data lives in `lib/fixtures/templates.ts` and is reachable only through
+`app/preview/[template]/page.tsx`. Every string contains FIXTURE, every place name is invented, every
+phone number is in the 555-01xx range reserved for fiction, every preview page carries a visible red
+banner, the route is `noindex, nofollow`, and it returns 404 when `NODE_ENV === 'production'`.
+
+Reason:
+The brief requires fixtures that could not accidentally reach production. A naming convention alone
+is not that guarantee; four independent barriers are. If any of this content ever appeared on a real
+page it would be obvious on sight rather than plausible.

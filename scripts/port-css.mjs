@@ -4,14 +4,16 @@
 //
 // Reads locations_new3.html, washington-locations.html, spokane.html from <mocks-dir> and writes:
 //   styles/tokens.css   one :root token set (hub values; city-only tokens appended)
-//   styles/base.css     resets, chrome (header/footer/booking/floating CTAs), keyframes, .reveal/.enter — unscoped
+//   styles/base.css     resets, chrome (header/footer/booking/floating CTAs/drawer), keyframes, .reveal/.enter — unscoped
 //   styles/hub.css      every other hub rule, scoped under .tpl-hub
 //   styles/state.css    every other state rule, scoped under .tpl-state
 //   styles/city.css     every other city rule, scoped under .option (the mock's own wrapper class)
 //   public/img/css-*.*  images that were embedded as base64 inside the CSS
 //
 // Scoping keeps each template pixel-faithful to its own mock while letting the three coexist in one app.
-// Chrome rules are taken from the state mock only, so header/footer look identical everywhere.
+// Chrome rules are taken from the state mock, so header/footer look identical everywhere. Chrome the
+// state mock never defines (the city mock's drawer, header BBB badge, icon call button, "Fast Online
+// Booking" CTA and fab tooltips) is appended from the city mock — added, never overridden.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -86,6 +88,34 @@ const out = { tokens: [], base: [], hub: [], state: [], city: [] };
 const seenBase = new Set();
 const keyframes = new Map();
 
+// Chrome is taken from the state mock so the header, footer and booking widget look identical on
+// every template. The city mock is newer and introduces chrome the state mock never had — the
+// service drawer, the header's BBB badge, the icon-only call button, the "Fast Online Booking" CTA,
+// the two header phone variants and the floating-action tooltips. Dropping those left the markup
+// unstyled.
+//
+// So the state mock still wins for everything it defines, and the city mock may ADD a rule whose
+// every selector names at least one class the state mock never mentions. `.hdr .phone-bar` is added
+// because `phone-bar` is new; `.hdr .wrap` is not, because the state mock owns both. The hub mock
+// contributes no chrome, exactly as before.
+const CHROME_SOURCES = new Set(['state', 'city']);
+const stateChromeRules = new Set(); // "<media>|<selector>" pairs the state mock actually wrote
+const ruleKey = (atParams, sel) => `${atParams ?? ''}|${sel.replace(/\s+/g, ' ').trim()}`;
+
+function claimChrome(tpl, node, atParams) {
+  if (!CHROME_SOURCES.has(tpl)) return false;
+  const sels = splitSelectors(node.selector).filter(isChrome);
+  if (!sels.length) return false;
+  if (tpl === 'state') {
+    for (const sel of sels) stateChromeRules.add(ruleKey(atParams, sel));
+    return true;
+  }
+  // The city mock may add a rule the state mock never wrote at this exact breakpoint. It may not
+  // change one the state mock did write: where both define the same selector at the same media
+  // query, the state mock's value stands and every template keeps the header it has today.
+  return sels.every((sel) => !stateChromeRules.has(ruleKey(atParams, sel)));
+}
+
 function emit(bucket, rule, atParams, scope) {
   const selectors = splitSelectors(rule.selector).map((s) => (scope ? scopeSelector(s, scope) : s));
   const body = rule.nodes.map((n) => n.toString()).join(';');
@@ -138,14 +168,16 @@ for (const [tpl, file] of Object.entries(MOCKS)) {
         continue;
       }
       if (chrome) {
-        if (tpl === 'state') { emit('base', node, atParams, null); stats.chrome++; } else stats.dropped++;
+        if (claimChrome(tpl, node, atParams)) { emit('base', node, atParams, null); stats.chrome++; } else stats.dropped++;
         continue;
       }
       if (sels.some(isChrome)) {
         // mixed list: split chrome part to base (state only) and page part to the template
         const pageSels = sels.filter((s) => !isChrome(s));
         const chromeSels = sels.filter(isChrome);
-        if (tpl === 'state' && chromeSels.length) emit('base', node.clone({ selector: chromeSels.join(',') }), atParams, null);
+        if (chromeSels.length && claimChrome(tpl, node.clone({ selector: chromeSels.join(',') }), atParams)) {
+          emit('base', node.clone({ selector: chromeSels.join(',') }), atParams, null);
+        }
         if (pageSels.length) emit(tpl, node.clone({ selector: pageSels.join(',') }), atParams, SCOPE[tpl]);
         stats.scoped++;
         continue;

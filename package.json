@@ -9,7 +9,11 @@
     "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate",
     "seed": "tsx scripts/seed.ts",
-    "port:css": "node scripts/port-css.mjs"
+    "port:css": "node scripts/port-css.mjs",
+    "assets:mock": "node scripts/extract-mock-assets.mjs",
+    "test:templates": "node scripts/test/templates.mjs",
+    "test:interactions": "node scripts/test/interactions.mjs",
+    "test:responsive": "node scripts/check-responsive.mjs http://localhost:3000 --widths 390,834,1440 --url /preview/national/ --url /preview/state/ --url /preview/city/ --url /preview/service/ --url /preview/legacy/"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.5.8",

@@ -9,10 +9,34 @@ const NAV = [
   { label: 'Contact', href: '#' },
 ];
 
-export function Header({ phone, phoneHref, current = 'Locations' }: { phone: string; phoneHref: string; current?: string }) {
+/**
+ * The one site header, shared by every template.
+ *
+ * The city mock (the newest of the three) adds three elements the earlier hub and state mocks do not
+ * have: the BBB accreditation badge, an icon-only call button for narrow screens, and a booking CTA
+ * labelled "Fast Online Booking". All three are optional here and default to the older mocks'
+ * behaviour, so a template opts in rather than every page silently changing.
+ *
+ * `bbb` carries a real image path or nothing. No accreditation, certification or award is asserted
+ * by markup alone — if the asset is not supplied the badge is not rendered.
+ */
+export function Header({
+  phone,
+  phoneHref,
+  current = 'Locations',
+  bbb,
+  bookLabel,
+}: {
+  phone: string;
+  phoneHref: string;
+  current?: string;
+  bbb?: { src: string; alt: string; width: number; height: number };
+  bookLabel?: 'schedule' | 'fast-online-booking';
+}) {
   return (
     <header className="hdr" id="hdr">
       <div className="wrap">
+        <HeaderMenu />
         <a className="logo" href="/">
           <span className="sr-only">Chimcare home</span>
           <img src="/img/logo.svg" alt="Chimcare" width={202} height={62} />
@@ -25,15 +49,28 @@ export function Header({ phone, phoneHref, current = 'Locations' }: { phone: str
               </a>
             ))}
           </nav>
-          <a className="phone" href={phoneHref}>
+          <a className="phone phone-panel" href={phoneHref}>
             <Icon name="phone" />
             {phone}
           </a>
         </div>
-        <a className="btn btn-primary" href="#booking" data-book>
-          Schedule Service
+        {bbb && <img className="hdr-bbb" src={bbb.src} width={bbb.width} height={bbb.height} decoding="async" alt={bbb.alt} />}
+        <a className="phone phone-bar" href={phoneHref}>
+          <Icon name="phone" />
+          {phone}
         </a>
-        <HeaderMenu />
+        <a className="hdr-call" href={phoneHref} aria-label={`Call Chimcare on ${phone}`}>
+          <Icon name="phone" />
+        </a>
+        {bookLabel === 'fast-online-booking' ? (
+          <a className="btn btn-primary hdr-book" href="#booking" data-book>
+            <em className="fast">Fast</em> Online Booking
+          </a>
+        ) : (
+          <a className="btn btn-primary" href="#booking" data-book>
+            Schedule Service
+          </a>
+        )}
       </div>
     </header>
   );

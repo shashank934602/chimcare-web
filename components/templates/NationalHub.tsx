@@ -5,8 +5,8 @@ import { Icon } from '@/components/chrome/Icon';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { Breadcrumbs, SectionHead, TrustStrip } from '@/components/sections/shared';
 import { BookingSheet } from '@/components/islands/BookingSheet';
-
-const PREVIEW = 4;
+import { NationalFinder, StateDirectory } from '@/components/islands/StateDirectory';
+import { FloatingCta } from '@/components/chrome/FloatingCta';
 
 const FEATS = [
   { title: 'Experienced Technicians', body: 'With decades of experience and certifications from the Chimney Safety Institute of America (CSIA), our technicians are equipped to handle any chimney issue.' },
@@ -17,7 +17,8 @@ const FEATS = [
 
 export function NationalHub(p: NationalHubProps) {
   return (
-    <main id="main" className="tpl-hub">
+    <>
+      <main id="main" className="tpl-hub">
       <JsonLd data={p.jsonLd} />
       <section className="hero">
         <div className="wrap enter">
@@ -28,16 +29,8 @@ export function NationalHub(p: NationalHubProps) {
               <p className="lede">
                 Top-quality chimney sweeping, repair and masonry across {p.hero.states} {p.hero.states === 1 ? 'state' : 'states'}.<br className="br-lg" /> Trusted local teams who know your roofs, weather and codes.
               </p>
-              <div className="hero-search" id="finder">
-                <div className="searchbar">
-                  <Icon name="search" className="ico s-ico" />
-                  <input id="f-q" type="search" placeholder="Search by ZIP, city or state" autoComplete="off" spellCheck={false} aria-label="Search Chimcare locations by ZIP code, city or state" />
-                </div>
-                <p className="finder-note" id="finder-note" role="status">
-                  <Icon name="pin" />
-                  <span>Showing <b>all {p.hero.cities} locations</b> across {p.hero.states} {p.hero.states === 1 ? 'state' : 'states'}.</span>
-                </p>
-              </div>
+              {/* The finder sits in the hero and filters both directories below, through the shared store. */}
+              <NationalFinder groups={p.directoryGroups} totalCities={p.hero.cities} stateCount={p.hero.states} />
               <div className="ctas">
                 <a className="btn btn-primary" href="#states">Find Your Location <Icon name="arrow" /></a>
                 <a className="btn btn-outline" href="#booking" data-book>Schedule Service</a>
@@ -78,39 +71,20 @@ export function NationalHub(p: NationalHubProps) {
         </div>
       </section>
 
-      {/* STATE CARDS — the mock built these client-side from window.CHIMCARE_LOCATIONS; here they come from site.states */}
+      {/* STATE CARDS + CITY DIRECTORY — one island, one search field, as in the mock */}
       <section className="section tinted" id="states">
         <div className="wrap">
-          <SectionHead eyebrow="Where we work" heading={`${p.stateCards.length} ${p.stateCards.length === 1 ? 'state' : 'states'}, one standard of work.`} lede="Open a state to see every city its crew covers, or jump straight to the location nearest you." />
-          <div className="states" id="state-cards">
-            {p.stateCards.map((s) => (
-              <article className="state-card reveal" key={s.code}>
-                {s.photo ? (
-                  <div className="ph"><img className="ph-photo" loading="lazy" decoding="async" src={s.photo} alt={`Chimney service in ${s.name}`} /></div>
-                ) : (
-                  <div className="ph ph-plain"><span className="ph-plain-name">{s.name}</span><span className="ph-plain-note">Local photo to come</span></div>
-                )}
-                <span className="abbr">{s.code}</span>
-                <div className="body">
-                  <h3>{s.href ? <a href={s.href}>{s.name}</a> : s.name}</h3>
-                  <p className="desc">{s.blurb}</p>
-                  <div className="cities">
-                    {s.verified ? (
-                      <>
-                        {s.cities.slice(0, PREVIEW).map((c) => <span key={c}>{c}</span>)}
-                        {s.cities.length > PREVIEW && <span className="more">+{s.cities.length - PREVIEW} more</span>}
-                      </>
-                    ) : (
-                      <span className="more">Cities to be confirmed</span>
-                    )}
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-          {p.coverageOnly.length > 0 && (
-            <p className="dir-coverage" style={{ marginTop: 26 }}><b>Also covered:</b> {p.coverageOnly.join(' · ')}. City-level listings for these states are pending confirmation from Chimcare.</p>
-          )}
+          <SectionHead
+            eyebrow="Where we work"
+            heading={`${p.stateCards.length} ${p.stateCards.length === 1 ? 'state' : 'states'}, one standard of work.`}
+            lede="Open a state to see every city its crew covers, or jump straight to the location nearest you."
+          />
+          <StateDirectory
+            cards={p.stateCards}
+            groups={p.directoryGroups}
+            totalCities={p.hero.cities}
+            coverageOnly={p.coverageOnly}
+          />
         </div>
       </section>
 
@@ -159,7 +133,10 @@ export function NationalHub(p: NationalHubProps) {
           </div>
         </div>
       </section>
+      </main>
+      {/* Siblings of <main>, as in the mocks — see CityPage. */}
       <BookingSheet options={p.booking} context={p.bookingContext} />
-    </main>
+      <FloatingCta phone={p.phone} phoneHref={p.phoneHref} email="harold@chimcare.com" quoteHref="#booking" />
+    </>
   );
 }

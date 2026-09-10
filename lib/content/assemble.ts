@@ -6,6 +6,7 @@ import type { Prices } from '@/lib/data/pricing';
 import type { Catalog } from '@/lib/data/services';
 import { buildContext, fill, fillDeep, money, phoneHref, type SlotContext } from './slots';
 import type { BookingContext, ServiceKey } from '@/lib/booking/types';
+import { DESIGN, type DesignAsset } from './design-assets';
 
 export const SITE_URL = (process.env.SITE_URL ?? 'https://www.chimcare.com').replace(/\/$/, '');
 const NATIONAL_PHONE = '1-800-362-4840';
@@ -126,15 +127,23 @@ export type CityPageProps = {
     rating: { value: string; count: number | null } | null;
     image: { src: string; alt: string; width: number; height: number };
     figCaption: string;
+    /**
+     * The hero trust line the newest city mock introduced. It carries the same claims the trust
+     * strip already made — the strip is `display:none` in that mock — so nothing new is asserted
+     * here; the claims simply moved above the fold. An empty list renders no line.
+     */
+    trustLine: Array<{ icon: string; label: string }>;
+    /** Award marks beside the rating. Only real approved assets; never a drawn stand-in. */
+    awards: DesignAsset[];
   };
   contact: Contact;
   trust: TrustItem[];
-  intro: { eyebrow: string; heading: string; paragraphs: string[]; cta: string };
+  intro: { eyebrow: string; heading: string; paragraphs: string[]; cta: string; teamPhoto: DesignAsset | null };
   reasons: Array<{ title: string; body: string }>;
   whyTrust: { eyebrow: string; heading: string; paragraph: string };
-  serviceRows: { eyebrow: string; heading: string; lede: string; rows: ServiceRow[] };
+  serviceRows: { eyebrow: string; heading: string; lede: string; rows: ServiceRow[]; image: DesignAsset | null };
   solutions: { eyebrow: string; heading: string; lede: string; count: number; tiles: CategoryTile[]; cards: ServiceCard[] };
-  areas: { eyebrow: string; heading: string; lede: string; subHeading: string; subLede: string; list: string[]; cta: string };
+  areas: { eyebrow: string; heading: string; lede: string; subHeading: string; subLede: string; list: string[]; cta: string; image: DesignAsset | null };
   process: { eyebrow: string; heading: string; lede: string; steps: Array<{ title: string; body: string }> };
   cost: { eyebrow: string; heading: string; paragraph: string; factors: string[]; cta: string };
   faq: { eyebrow: string; heading: string; items: FaqItem[] };
@@ -220,15 +229,22 @@ export function assembleCityPage(input: {
       addressLine: city.kind === 'branch' && branch ? `${branch.street}, ${branch.city}, ${state.code} ${branch.zip}` : contact.servedFrom ?? '',
       rating: branch?.rating ? { value: String(branch.rating), count: branch.ratingCount } : null,
       image: heroImage(city),
+      // The same three claims the trust strip carried, moved above the fold by the newest mock.
+      trustLine: [
+        { icon: 'shield', label: 'CSIA Certified' },
+        { icon: 'cal', label: 'Since 1989' },
+        { icon: 'pin', label: 'Local' },
+      ],
+      awards: DESIGN.awards,
     },
     contact,
     trust,
-    intro: m('city_intro'),
+    intro: { ...m<{ eyebrow: string; heading: string; paragraphs: string[]; cta: string }>('city_intro'), teamPhoto: DESIGN.cityTeam },
     reasons: m<{ items: Array<{ title: string; body: string }> }>('reasons').items,
     whyTrust: m('why_trust'),
-    serviceRows: m('service_rows'),
+    serviceRows: { ...m<{ eyebrow: string; heading: string; lede: string; rows: ServiceRow[] }>('service_rows'), image: DESIGN.cityServices },
     solutions: { ...solutionsMaster, count: cards.length, tiles, cards },
-    areas: { ...areasMaster, list: [...city.neighborhoods, 'Surrounding areas'] },
+    areas: { ...areasMaster, list: [...city.neighborhoods, 'Surrounding areas'], image: DESIGN.cityAreas },
     process: m('process'),
     cost: m('cost'),
     faq: { eyebrow: masterFaq.eyebrow, heading: masterFaq.heading, items: [...masterFaq.items.slice(0, 4), ...cityFaqs, ...masterFaq.items.slice(4)] },

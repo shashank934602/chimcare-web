@@ -1,0 +1,21 @@
+/* shared.css — structural corrections to shared chrome, in a new file so the generated
+   styles/{tokens,base,hub,state,city}.css stay exactly as scripts/port-css.mjs produces them.
+   (styles/booking.css set this pattern.) Every rule here fixes a structural fault measured by
+   scripts/check-responsive.mjs; none of them changes the design. */
+
+/* The sticky call/book bar is two flex items at `flex: 1 1 50%`. A flex item will not shrink below
+   its own min-content width unless told to, so at a width where the two labels plus their icons are
+   wider than half the bar each, the bar grows past the viewport and takes the document with it —
+   measured at 834px on the city template, 851px document against an 834px viewport. `min-width: 0`
+   lets them shrink, which is what the design assumes. Fixed in the shared component rather than per
+   template: the bar is the same bar on all five. */
+.sfoot { max-width: 100vw; }
+.sfoot-btn { min-width: 0; }
+
+/* Long labels wrap rather than force the bar wider. */
+.sfoot-btn { text-align: center; }
+
+/* The floating quick-action cluster is off until the page scrolls past the booking form; the mock
+   turns it on with a class. Without this it would be visible from the first paint. */
+.fcta { opacity: 0; visibility: hidden; pointer-events: none; }
+.fcta.is-on { opacity: 1; visibility: visible; pointer-events: auto; }

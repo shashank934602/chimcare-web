@@ -5,16 +5,27 @@ import { Icon } from '@/components/chrome/Icon';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { Accordion } from '@/components/islands/Accordion';
 import { ServiceDirectory } from '@/components/islands/ServiceDirectory';
-import { Breadcrumbs, Faq, SectionHead, TrustStrip } from '@/components/sections/shared';
+import { Breadcrumbs, Faq, SectionHead } from '@/components/sections/shared';
 import { BookingForm } from '@/components/islands/BookingForm';
 import { BookingSheet } from '@/components/islands/BookingSheet';
+import { ServiceDrawer } from '@/components/islands/ServiceDrawer';
+import { FloatingCta } from '@/components/chrome/FloatingCta';
 
 const pad = (n: number) => String(n + 1).padStart(2, '0');
 
+/**
+ * The city page. Spokane is one instance of this template — every city-specific value arrives in
+ * `CityPageProps` and nothing here names a city.
+ *
+ * The trust strip the earlier mocks put under the hero is `display:none` in the newest city mock;
+ * its three claims moved into the hero as `hero.trustLine`. The strip is therefore not rendered,
+ * rather than rendered invisibly.
+ */
 export function CityPage(p: CityPageProps) {
   const style = { '--img-city': `url(${p.imgCity})` } as CSSProperties;
   return (
-    <main id="main">
+    <>
+      <main id="main">
       <JsonLd data={p.jsonLd} />
       <section className="option o1 tpl-city" style={style}>
         {/* HERO: location message left · booking right */}
@@ -22,6 +33,13 @@ export function CityPage(p: CityPageProps) {
           <div className="wrap">
             <div className="enter">
               <Breadcrumbs crumbs={p.crumbs} style={{ '--i': 0 } as CSSProperties} />
+              {p.hero.trustLine.length > 0 && (
+                <ul className="hero-trust" aria-label="Trust" style={{ '--i': 1 } as CSSProperties}>
+                  {p.hero.trustLine.map((t) => (
+                    <li key={t.label}><Icon name={t.icon} />{t.label}</li>
+                  ))}
+                </ul>
+              )}
               <p className="eyebrow" style={{ '--i': 1 } as CSSProperties}>{p.hero.eyebrow}</p>
               <h1 style={{ '--i': 2 } as CSSProperties}>{p.hero.title}</h1>
               <p className="lede" style={{ '--i': 3 } as CSSProperties}>{p.hero.lede}</p>
@@ -32,10 +50,21 @@ export function CityPage(p: CityPageProps) {
               {p.hero.addressLine && (
                 <p className="addr" style={{ '--i': 5 } as CSSProperties}><Icon name="pin" />{p.hero.addressLine}</p>
               )}
-              {p.hero.rating && (
-                <p className="rating" style={{ '--i': 6 } as CSSProperties}>
-                  <span className="stars" aria-hidden="true">★★★★★</span> Rated <b>{p.hero.rating.value}</b> on Google
-                </p>
+              {(p.hero.rating || p.hero.awards.length > 0) && (
+                <div className="hero-proof" style={{ '--i': 5 } as CSSProperties}>
+                  {p.hero.rating && (
+                    <p className="rating">
+                      <span className="stars" aria-hidden="true">★★★★★</span> Rated <b>{p.hero.rating.value}</b> on Google
+                    </p>
+                  )}
+                  {p.hero.awards.length > 0 && (
+                    <ul className="hero-awards">
+                      {p.hero.awards.map((a) => (
+                        <li key={a.src}><img src={a.src} width={a.width} height={a.height} decoding="async" alt={a.alt} /></li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
               )}
               <figure className="hero-figure" style={{ '--i': 7 } as CSSProperties}>
                 <img src={p.hero.image.src} width={p.hero.image.width} height={p.hero.image.height} fetchPriority="high" decoding="async" alt={p.hero.image.alt} />
@@ -47,8 +76,6 @@ export function CityPage(p: CityPageProps) {
             </div>
           </div>
         </div>
-
-        <TrustStrip items={p.trust} className="o1-trust" />
 
         {/* INTRODUCTION */}
         <div className="section o1-intro" id="o1-intro">
@@ -69,6 +96,11 @@ export function CityPage(p: CityPageProps) {
               </ol>
             </div>
             <div className="copy reveal">
+              {p.intro.teamPhoto && (
+                <figure className="team-photo">
+                  <img src={p.intro.teamPhoto.src} width={p.intro.teamPhoto.width} height={p.intro.teamPhoto.height} loading="lazy" decoding="async" alt={p.intro.teamPhoto.alt} />
+                </figure>
+              )}
               {p.intro.paragraphs.map((t) => <p key={t.slice(0, 40)}>{t}</p>)}
               <div className="ctas"><a className="btn btn-primary" href="#booking" data-book>{p.intro.cta}</a></div>
             </div>
@@ -92,7 +124,7 @@ export function CityPage(p: CityPageProps) {
         {/* SERVICE DIRECTORY: expandable rows */}
         <div className="section o1-svc" id="o1-services">
           <div className="wrap">
-            <SectionHead eyebrow={p.serviceRows.eyebrow} heading={p.serviceRows.heading} lede={p.serviceRows.lede} />
+            <SectionHead eyebrow={p.serviceRows.eyebrow} heading={p.serviceRows.heading} lede={p.serviceRows.lede} figure={p.serviceRows.image} figureId="ph-services" />
             <Accordion mode="single" className="o1-list reveal" id="svc-lib">
               {p.serviceRows.rows.map((r, i) => (
                 <article className={i === 0 ? 'o1-row is-open' : 'o1-row'} key={r.key} data-service={r.key} data-acc-item>
@@ -116,7 +148,12 @@ export function CityPage(p: CityPageProps) {
                           <ul className="svc-list">
                             {r.included.map((x) => <li key={x}><Icon name="check" />{x}</li>)}
                           </ul>
-                          <div className="ctas"><a className="btn btn-primary" href="#booking" data-book>{r.cta}</a></div>
+                          <div className="ctas">
+                            <a className="btn btn-primary" href="#booking" data-book>{r.cta}</a>
+                            <button className="btn btn-ghost" type="button" data-drawer-open={r.key}>
+                              Open full detail
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -144,6 +181,11 @@ export function CityPage(p: CityPageProps) {
               <p className="lede">{p.areas.lede}</p>
             </div>
             <div className="reveal">
+              {p.areas.image && (
+                <figure className="ph-img" id="ph-areas">
+                  <img src={p.areas.image.src} width={p.areas.image.width} height={p.areas.image.height} loading="lazy" decoding="async" alt={p.areas.image.alt} />
+                </figure>
+              )}
               <h3 style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-.01em', margin: '0 0 8px' }}>{p.areas.subHeading}</h3>
               <p style={{ color: 'var(--text-2)', marginBottom: 22 }}>{p.areas.subLede}</p>
               <ul className="area-list">
@@ -242,7 +284,18 @@ export function CityPage(p: CityPageProps) {
           </div>
         </div>
       </section>
+      </main>
+      {/* Dialogs and the floating cluster are siblings of <main>, as in the mocks. Nested inside a
+          section they would be positioned against it rather than the viewport, and a closed panel
+          parked off-canvas would widen the document. */}
       <BookingSheet options={p.booking} context={p.bookingContext} />
-    </main>
+      <ServiceDrawer
+        rows={p.serviceRows.rows}
+        eyebrow={p.hero.eyebrow}
+        phone={p.contact.phone}
+        phoneHref={p.contact.phoneHref}
+      />
+      <FloatingCta phone={p.contact.phone} phoneHref={p.contact.phoneHref} email="harold@chimcare.com" quoteHref="#o1-cost" />
+    </>
   );
 }

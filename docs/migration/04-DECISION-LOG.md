@@ -285,3 +285,92 @@ Reason:
 The brief requires fixtures that could not accidentally reach production. A naming convention alone
 is not that guarantee; four independent barriers are. If any of this content ever appeared on a real
 page it would be obvious on sight rather than plausible.
+
+---
+
+## DECISION-016 — Fixing an extractor is not editing the seal
+
+Date: 2026-09-10
+Phase: Step 2
+Related: ISSUE-027, ISSUE-015
+
+The situation:
+The smoke test found that all 14 branch city pages failed the gate on prose that exists in WordPress
+and was never read. Fixing the extractor moves the Minnesota publication counts away from the sealed
+baseline of 109 publishable / 25 needs_review, to 120 / 14.
+
+Decision:
+Fix the extractor. Leave the seal exactly as it is. Record the movement, its cause and its size.
+
+Reason:
+The seal records what the pipeline produced on a given day; it is a baseline, not a target. Declining
+to read source data in order to keep a number matching would be the wrong way round — it would mean
+knowingly serving 404 on the two highest-traffic city pages in the state to protect a count.
+
+The distinction that matters: this run changed **extraction**, not the **gate**. The gate's six
+conditions and thresholds are untouched, and no page was made publishable by lowering a bar. Ten more
+pages clear the same bar because the data they needed is now being read.
+
+What was not done:
+`reports/PROJECT_CONTEXT_HANDOFF.md` §4 was not edited. `mn.migration.json` was not written, so no
+dataset now contradicts the seal. Re-sealing is a separate act that needs the migration agent working
+first (ISSUE-015).
+
+---
+
+## DECISION-017 — LegacyPage is verified through an admin preview, not by routing it
+
+Date: 2026-09-10
+Phase: Step 2
+Related: ISSUE-006
+
+Decision:
+`LegacyPage` is rendered from real WordPress source at `/admin/preview/legacy/{pilot}/`, behind the
+same admin gate the existing migration preview uses. `/location/[slug]/` still answers 404 for
+`kind='legacy'`. The 404 is recorded in the parity report as an expected state rather than passed
+over.
+
+Reason:
+The phase brief requires LegacyPage to be proven against real source and forbids activating global
+legacy routing. A preview route satisfies both: the template, the props and the render-time cleanup
+are all exercised on real content, and no production routing behaviour changes.
+
+The admin gate was not weakened to make this work. ISSUE-008 stands unchanged.
+
+---
+
+## DECISION-018 — Canonical and robots are route properties, not template properties
+
+Date: 2026-09-10
+Phase: Step 2
+
+Decision:
+Where a template is rendered through a preview route, the parity check records canonical and robots
+as untestable rather than passing or failing them.
+
+Reason:
+The preview is deliberately `noindex, nofollow` with no canonical. Asserting against it would measure
+the preview, and making the preview indexable to satisfy a check would be tuning the system to the
+test. Both values become testable for LegacyPage the moment it is routed, and not before.
+
+---
+
+## DECISION-019 — Titles and descriptions are reported, not changed, in this phase
+
+Date: 2026-09-10
+Phase: Step 2
+Related: ISSUE-025, ISSUE-026
+
+Decision:
+The smoke test found that rendered titles come from a master pattern rather than the WordPress title,
+and that meta descriptions are generated on every page whose source has none. Both are recorded with
+per-URL evidence. Neither was changed.
+
+Reason:
+The phase brief forbids globally changing SEO, and both fixes are global by nature: one changes the
+title of every page, the other removes a description from every page that lacks one. Making that
+change quietly at the end of a smoke test is exactly the kind of silent migration decision this
+project has been burned by.
+
+Both need settling before the 100-URL pilot, because the pilot would otherwise publish 100 titles and
+100 descriptions under an unmade decision.

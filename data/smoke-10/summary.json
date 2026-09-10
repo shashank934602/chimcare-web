@@ -1,0 +1,29 @@
+{
+ "generatedAt": "2026-09-10T11:08:06.801Z",
+ "urls": 10,
+ "verdict": "SMOKE REVIEW",
+ "counts": {
+  "PASS": 0,
+  "FAIL": 0,
+  "REVIEW": 10
+ },
+ "templates": {
+  "CityPage": 4,
+  "ServicePage": 2,
+  "StateHub": 1,
+  "NationalHub": 1,
+  "LegacyPage": 2
+ },
+ "production": {
+  "200": 9,
+  "404": 1
+ },
+ "sourceRows": 8,
+ "imagesChecked": 243,
+ "imagesBroken": 0,
+ "conflicts": {
+  "total": 27,
+  "critical": 0,
+  "review": 27
+ }
+}

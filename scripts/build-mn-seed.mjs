@@ -107,13 +107,33 @@ function areasFromHtml(html) {
   return items.filter((t) => t && !/^surrounding|^nearby|^other|^greater|:|^and /i.test(t));
 }
 
-/** First paragraph of "Why <service> Is Important in X": sentence 1 = climate line, first sentence about homes = housing line. */
+/**
+ * The city's own "why it matters" prose: sentence 1 = climate line, first sentence about homes =
+ * housing line. Both are taken verbatim from the page; nothing is written here.
+ *
+ * Two headings lead this paragraph, because the two page shapes word it differently:
+ *   coverage pages  <h2>Why {service} Is Important in {City}</h2>
+ *   branch pages    <h2>Why {City}, MN Homeowners Trust Chimcare</h2>
+ * Only the first was matched, and branch pages were additionally skipped before this function was
+ * even called, so all 14 branch cities reported zero local lines and failed the gate on prose that
+ * was in WordPress the whole time. Measured on Minneapolis (post 90807), the highest-traffic city
+ * page in the state.
+ */
 function specificsFromHtml(html) {
-  const i = html.search(/<h2>Why [^<]* Important in /);
+  const i = [/<h2>Why [^<]* Important in /, /<h2>Why [^<]*Homeowners Trust /]
+    .map((re) => html.search(re))
+    .filter((n) => n >= 0)
+    .sort((a, b) => a - b)[0] ?? -1;
   if (i < 0) return {};
-  const p = /<p>(.*?)<\/p>/s.exec(html.slice(i));
-  if (!p) return {};
-  const sentences = stripTags(p[1])
+  // Take everything between this heading and the next one, then strip tags. The two page shapes wrap
+  // the paragraph differently — coverage pages in <p>, branch pages in a styled <span> — and looking
+  // for <p> alone either missed it or reached past it into an unrelated section.
+  const after = html.slice(i);
+  const end = after.slice(4).search(/<h[1-4][\s>]/);
+  const block = end >= 0 ? after.slice(0, end + 4) : after.slice(0, 3000);
+  const prose = block.replace(/<h[1-4][^>]*>[\s\S]*?<\/h[1-4]>/gi, ' ').replace(/<a\b[^>]*class="cta-button"[\s\S]*?<\/a>/gi, ' ');
+  if (!prose.trim()) return {};
+  const sentences = stripTags(prose)
     .split(/(?<=[.!?])\s+/)
     .map((s) => s.trim())
     .filter(Boolean);
@@ -235,7 +255,8 @@ async function main() {
       lng: coords?.lng ?? null,
       coordsSource: coords?.source ?? null,
       neighborhoods,
-      localSpecifics: isBranch ? {} : specificsFromHtml(r.html),
+      // Branch pages carry this prose too, under their own heading — see specificsFromHtml.
+      localSpecifics: specificsFromHtml(r.html),
       metaTitle: r.seoTitle,
       metaDescription: r.metadesc,
       legacyPostId: r.id,

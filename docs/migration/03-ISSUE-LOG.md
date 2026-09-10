@@ -647,3 +647,150 @@ off-canvas is not reported as overflow.
 What the corrected check then found: a real 17px overflow from the sticky call/book bar, whose flex
 items would not shrink below their own content width. Fixed in `styles/shared.css` with
 `min-width: 0`, in the shared component rather than per template.
+
+---
+
+## ISSUE-025 — Rendered titles are not the WordPress title
+
+Status: OPEN
+Severity: HIGH
+Phase: Real-data smoke test
+Raised: 2026-09-10, step 2
+
+Problem:
+Measured on all ten smoke URLs. WordPress has **no** `_yoast_wpseo_title` for any of the eight pages
+that have a source row, so the rendered `<title>` comes from a master pattern in
+`lib/content/assemble.ts` rather than from the source. On four of the eight it visibly differs from
+what production serves.
+
+| id | production | rendered |
+| --- | --- | --- |
+| S01 | `Chimney Sweep in Bloomington,MN - Chimcare` | `Chimney Sweep & Fireplace Services in Bloomington, MN - Chimcare` |
+| S02 | `Chimney Sweep in Chanhassen,MN - Chimcare` | `Chimney Sweep & Fireplace Services in Chanhassen, MN - Chimcare` |
+| S03 | `Gas Fireplace Repair in Shakopee,MN - Chimcare` | `Gas Fireplace Repair in Shakopee, MN - Chimcare` |
+| S09 | `Chimney Sweep & Fireplace Services in Minneapolis, MN - Chimcare` | identical |
+
+Production's title is WordPress's own `post_title` with Yoast's site-wide suffix. That value is
+already in the dataset as `legacyTitle` on every city row, so reproducing production exactly is
+possible from data we hold — S03's difference is a single space after the comma.
+
+Why it was not fixed here:
+Changing how every page's title is produced is a global SEO change, which this phase is explicitly
+forbidden from making. The finding is recorded with its evidence instead.
+
+Resolution required:
+Decide whether the migrated title is the WordPress title (exact preservation) or the master pattern
+(a deliberate improvement). If it is the former, the change is to read `legacyTitle`; if the latter,
+it is a recorded SEO decision with a before-and-after per URL.
+
+Blocks the pilot: this should be settled before 100 URLs are migrated, because it changes the title
+of every page.
+
+---
+
+## ISSUE-026 — Meta descriptions are invented where WordPress has none
+
+Status: OPEN
+Severity: HIGH
+Phase: Real-data smoke test
+Raised: 2026-09-10, step 2
+Related: implementation specification §18 item 10
+
+Problem:
+Nine of the ten smoke URLs render a meta description that WordPress does not have. None of the eight
+pages with a source row carries a `_yoast_wpseo_metadesc`, and `assembleCityPage` falls back to
+`city.metaDescription ?? 'Chimney sweep, inspection…'`. The specification already flagged this as a
+contradiction; this run is the first measurement of it on real pages.
+
+Impact:
+The rule is "never generate metadata". The code generates it on every page whose source has none,
+which on this sample is all of them.
+
+Resolution required:
+Either emit no description when the source has none, or record the fallback as an approved decision
+with its exact wording. The specification's own recommendation is the former, with the fallback
+enabled only as a recorded `CREATE_PAGE` decision.
+
+Blocks the pilot: yes, in the sense that migrating 100 URLs would publish 100 generated descriptions.
+
+---
+
+## ISSUE-027 — Branch-page prose was never extracted, and it cost 14 pages
+
+Status: RESOLVED (2026-09-10, step 2)
+Severity: HIGH
+Phase: Real-data smoke test
+Raised: 2026-09-10, step 2
+
+Problem:
+Every one of the 14 Minnesota branch city pages failed the distinctness gate on `local specifics
+(0/2)` and answered 404 locally while production served 200. Minneapolis and St Paul — the two
+highest-traffic city pages in the state, 89 and 236 clicks — were among them.
+
+Two causes in `scripts/build-mn-seed.mjs`, both in the same extractor:
+
+1. `localSpecifics: isBranch ? {} : specificsFromHtml(r.html)` — branch pages were skipped before the
+   extractor was even called.
+2. `specificsFromHtml` searched for `<h2>Why … Important in {City}`, the wording coverage pages use.
+   Branch pages write `<h2>Why {City}, MN Homeowners Trust Chimcare</h2>`, and put the paragraph in a
+   styled `<span>` rather than a `<p>`, so even the heading match would have found nothing.
+
+The prose was in WordPress the whole time. Minneapolis, post 90807:
+
+> "For decades, Chimcare has been the trusted choice for chimney and fireplace repair in Minneapolis,
+> MN. We bring deep knowledge of regional building codes, Minnesota weather, and historic homes to
+> every project."
+
+Resolution:
+Match both heading forms, and take the block between that heading and the next heading rather than
+the next `<p>`. Nothing is written or reworded; the two lines are the page's own sentences.
+
+Effect on the counts:
+
+| | publishable | needs_review | branch cities publishable |
+| --- | ---: | ---: | ---: |
+| before | 110 | 24 | 0 of 14 |
+| after | 120 | 14 | 3 of 14 |
+
+The sealed baseline (109 / 25) was **not edited**. See DECISION-016. Eleven branch cities still fail,
+now on neighbourhood count rather than local prose; that is a separate extraction question.
+
+---
+
+## ISSUE-028 — The state hub URL does not exist in production
+
+Status: OPEN (decision needed)
+Severity: MEDIUM
+Phase: Real-data smoke test
+Raised: 2026-09-10, step 2
+
+Problem:
+`/locations/mn/` returns **404** in production and is not in the audit universe. The state hub is a
+URL shape the rebuild introduces; nothing links to it today and it has no traffic or history.
+
+Impact:
+It is not a migration in the sense the rest of this work uses — it is a new page. It needs a
+decision about its URL before it ships, and Q2b (`/locations/mn/` versus `/locations/minnesota/`) is
+still open. Whatever is chosen has to be linked from somewhere and added to the sitemap, or it will
+be an orphan.
+
+Blocks the pilot: no, but the 100-URL pilot should not include it as if it were a migrated URL.
+
+---
+
+## ISSUE-007 — 301 vs 308
+
+Update — 2026-09-10, step 2: measured on a real URL for the first time.
+`S10` (`/location/chimney-sweep-fireplace-services-in-saint-paul-mn/`, 236 clicks, the highest of any
+Minnesota URL) is answered **301** by production and **308** by the application. The destination is
+the same in both — `/location/chimney-sweep-fireplace-in-st-paul-mn/` — so only the status differs.
+The issue stands as written; the edge layer answers the exact production status at cutover.
+
+---
+
+## ISSUE-004 — Production redirects differ from fate maps
+
+Update — 2026-09-10, step 2: one real URL checked, and on this one they agree.
+For `S10`, production 301s to `/location/chimney-sweep-fireplace-in-st-paul-mn/` and the fate map
+names that same destination. That is evidence about one URL. It does not resolve the issue: the audit
+found 11 of 26 sampled conflicts disagreeing, and this sample of one does not touch that.

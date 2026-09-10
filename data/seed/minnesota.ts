@@ -5,10 +5,18 @@
 // scripts/build-mn-seed.mjs builds from the WordPress export and the migration repo's fate maps.
 // Regenerate that file; never edit it by hand.
 //
-// Nothing here writes copy. Where WordPress could not supply a field — the export dropped every FAQ
-// question, no city hero has been imported yet — the field stays null and the city carries a review
-// flag naming what is missing. No FAQ, area name, local line, branch assignment or meta description
-// is invented to make a page publishable.
+// Nothing here writes copy. Where WordPress could not supply a field the field stays null and the
+// city carries a review flag naming what is missing. No FAQ, area name, local line, branch
+// assignment or meta description is invented to make a page publishable.
+//
+// Two source datasets are read alongside the generated file, both recovered straight from WordPress:
+//   minnesota.faq.json    the FAQ questions the JSONL export dropped (the exporter strips shortcode
+//                         attributes, and a question is a `[vc_tta_section title="…"]` attribute).
+//                         scripts/recover-mn-faqs.mjs reads them out of wp_posts.post_content.
+//   minnesota.media.json  each city page's `_thumbnail_id`, its attachment record and the binary
+//                         verified byte-for-byte by scripts/recover-mn-media.mjs.
+// Both are keyed by the city's own WordPress slug. A city missing from either keeps a null field and
+// a flag; nothing is substituted from another city.
 //
 // Migration and publication are separate decisions:
 //   a live WordPress city page  → always migrated, always renders through the same template
@@ -24,6 +32,8 @@
 import type { AccordionItem, ClimateNote, EditorialBlock, LocalSpecifics, ReviewFlag } from '@/lib/db/schema';
 import { distinctnessGate } from '@/lib/content/assemble';
 import generated from './minnesota.generated.json';
+import recoveredFaqs from './minnesota.faq.json';
+import recoveredMedia from './minnesota.media.json';
 
 // ---- shape of the generated file (kept explicit so tsc does not infer a 6 MB literal type) ----
 
@@ -89,6 +99,35 @@ export type GeneratedSeed = {
 };
 
 const g = generated as unknown as GeneratedSeed;
+
+// ---- recovered WordPress source, keyed by city slug -------------------------------------------
+
+type RecoveredFaq = { question: string; answer: string; tabId: string; sort: number; legacyPostId: number };
+type MediaAsset = {
+  attachmentId: number;
+  filename: string;
+  publicPath: string;
+  alt: string | null;
+  title: string | null;
+  width: number | null;
+  height: number | null;
+  usedByPages: number;
+  verified: boolean;
+  sha256: string | null;
+};
+
+const faqBySlug = (recoveredFaqs as unknown as { faqs: Record<string, RecoveredFaq[]> }).faqs;
+const media = recoveredMedia as unknown as { byPage: Record<string, number>; media: Record<string, MediaAsset> };
+
+/** The hero WordPress attached to this city page, or null. Never another city's image. */
+function heroFor(slug: string): MediaAsset | null {
+  const id = media.byPage?.[slug];
+  if (id == null) return null;
+  const asset = media.media?.[String(id)];
+  // An asset that failed byte verification is not used: a hero that is not the file WordPress
+  // serves is not the source hero.
+  return asset && asset.verified ? asset : null;
+}
 
 // ---- state ----------------------------------------------------------------------------------
 
@@ -238,11 +277,20 @@ export type CitySeed = {
 export const citySeed: CitySeed[] = g.cities.map((c) => {
   const hasSourcePage = !c.noCityPage;
 
-  // Source data only. The export carried FAQ answers but no questions, so no city FAQ can be
-  // migrated; the row therefore has none. No hero has been imported (media import is M6), so the
-  // key is null and the WordPress attachment id is kept for that import to resolve later.
-  const faqs: CitySeed['faqs'] = [];
-  const heroImageKey = null;
+  // Source data only, verbatim. The FAQ questions and answers are the ones in this page's own
+  // WordPress body; the hero is the attachment WordPress has on this post. Neither is written here,
+  // reworded, ordered by anything but the source's own `sort`, or borrowed from another city.
+  const faqs: CitySeed['faqs'] = (faqBySlug[c.slug] ?? [])
+    .slice()
+    .sort((a, b) => a.sort - b.sort)
+    .map((f) => ({ question: f.question, answer: f.answer }));
+
+  const hero = heroFor(c.slug);
+  const heroImageKey = hero ? hero.publicPath : null;
+  // WordPress's own alt text, exactly as stored. Where WordPress has none the field stays null and
+  // the page is flagged — alt text is content, and writing it here would be authoring.
+  const heroImageAlt = hero ? hero.alt : null;
+  const legacyThumbnailId = hero ? hero.attachmentId : c.legacyThumbnailId ?? null;
 
   // The one gate, run on migrated data. Region pricing is always the MN region here, so the
   // pricing condition passes; everything else reflects what WordPress actually supplied.
@@ -268,11 +316,11 @@ export const citySeed: CitySeed[] = g.cities.map((c) => {
     neighborhoods: c.neighborhoods,
     localSpecifics: c.localSpecifics,
     heroImageKey,
-    heroImageAlt: null,
+    heroImageAlt,
     metaTitle: c.metaTitle,
     metaDescription: c.metaDescription,
     legacyPostId: c.legacyPostId,
-    legacyThumbnailId: c.legacyThumbnailId,
+    legacyThumbnailId,
     legacyPricingCopy: c.legacyPricingCopy,
     tier: c.keepTier ?? 'B',
     hasSourcePage,

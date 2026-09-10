@@ -154,3 +154,9 @@ Final commit recorded in §9.
 
 ## 9. Final commit
 
+```
+commit   95467d814d195095f15ad2b5270b36f8bfdb318a
+short    95467d8
+date     2026-09-10T16:10:24+05:30
+files    262 tracked
+```

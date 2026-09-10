@@ -53,9 +53,28 @@ export function Header({
             <Icon name="phone" />
             {phone}
           </a>
-          {/* On phones the badge moves into this panel with the phone number, so the bar keeps only
-              the menu button and the logo. Same file as the one in the bar, so nothing extra loads. */}
-          {bbb && <img className="hdr-bbb-panel" src={bbb.src} width={bbb.width} height={bbb.height} decoding="async" alt={bbb.alt} />}
+          {/*
+            On phones the badge moves into this panel with the phone number, so the bar keeps only the
+            menu button and the logo. Same file as the one in the bar, so nothing extra downloads.
+
+            Its intrinsic size is declared at the size it is actually shown, not the asset's 300x300.
+            The first version inherited 300x300 and was held back only by a CSS rule; a stale or late
+            stylesheet then rendered a 300px badge across the middle of the header. Sized this way the
+            worst case is a 34px badge in the wrong place, not a broken header.
+
+            The `hidden` attribute is deliberately NOT used: the reset declares
+            `[hidden]{display:none!important}`, so nothing could reveal it again at phone widths.
+          */}
+          {bbb && (
+            <img
+              className="hdr-bbb-panel"
+              src={bbb.src}
+              width={34}
+              height={34}
+              decoding="async"
+              alt={bbb.alt}
+            />
+          )}
         </div>
         {bbb && <img className="hdr-bbb" src={bbb.src} width={bbb.width} height={bbb.height} decoding="async" alt={bbb.alt} />}
         <a className="phone phone-bar" href={phoneHref}>

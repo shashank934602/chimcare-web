@@ -26,6 +26,8 @@
    instead, so the bar carries only the menu button and the logo, and both are still one tap away.
    A deliberate departure from the mock, at the client's request. */
 
+/* Hidden above 520px. Its intrinsic size is 34px, so if this stylesheet is ever stale or late the
+   worst case is a small badge out of place rather than the 300px one that broke the header. */
 .hdr-bbb-panel { display: none; }
 
 @media (max-width: 520px) {

@@ -37,21 +37,23 @@
      but the bar carries only three (menu, badge, call), the booking action lives in the sticky
      footer on mobile, and the client's own reference page fits all three at 390px with the badge at
      290 and the call button at 328. Measured, not assumed. */
-  .hdr .hdr-bbb,
-  .hdr .hdr-call { display: inline-flex; }
+  .hdr .hdr-bbb { display: inline-flex; }
+
+  /* `grid` + `place-items`, not `inline-flex`. The mock centres the glyph with
+     `.hdr-call{display:grid;place-items:center}` (specificity 0-1-0); a `.hdr .hdr-call`
+     rule here is 0-2-0 and wins, and under flex `justify-items` is inert, so
+     `justify-content` fell back to flex-start and the phone icon sat hard against the
+     left edge of the red button — measured 0/20 offset against the mock's 10/10. */
+  .hdr .hdr-call {
+    display: grid;
+    place-items: center;
+  }
 
   /* The panel copy would now duplicate the badge that is visible in the bar. */
   .hdr.open .hdr-bbb-panel { display: none; }
 }
 
-/* Below ~360px the badge is the first thing to go: the call button is the conversion, the badge is
-   reassurance, and a cramped bar costs taps. */
-@media (max-width: 359px) {
-  .hdr .hdr-bbb { display: none; }
-  .hdr.open .hdr-bbb-panel {
-    display: block;
-    height: 34px;
-    width: auto;
-    margin: 14px clamp(20px, 5vw, 32px) 18px;
-  }
-}
+/* The badge stays at every width, as the reference does — it renders 28px at ≤360px, and the bar
+   still fits: measured x226 on the reference at 320px. An earlier revision here dropped it below
+   360px, which was a judgement call the spec does not ask for. */
+

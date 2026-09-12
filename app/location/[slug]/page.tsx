@@ -22,13 +22,13 @@ import { getPageSource } from '@/lib/data/page-source';
 import { getCatalog } from '@/lib/data/services';
 import { getMasters } from '@/lib/data/masters';
 import { ServiceDirectory } from '@/components/islands/ServiceDirectory';
-// Every JSON file below is read on a per-request path (`dynamic = 'force-dynamic'`), so each read
+// Every JSON file below is read on a render path, so each read
 // goes through the mtime+size-keyed cache rather than re-parsing the file for every request. See
 // `lib/json-cache.ts` for why a plain module-level constant would be wrong here.
 import { readJsonCached } from '@/lib/json-cache';
 // The migrated pages themselves do NOT come from a JSON file any more: they are one row each in the
 // pipeline's SQLite store, read by slug. See `lib/route-store.ts` for why.
-import { readRoute, readRedirect } from '@/lib/route-store';
+import { readRoute, readRedirect, listRouteSlugs } from '@/lib/route-store';
 
 /**
  * The dispatcher. One route for every legacy `/location/{slug}/` URL, and ONE template behind it.
@@ -57,7 +57,29 @@ import { readRoute, readRedirect } from '@/lib/route-store';
  * real prices, a seeded hero photo and the serving branch's phone and address. A manifest route has
  * none of those, so those parts of the page are simply omitted rather than invented.
  */
-export const dynamic = 'force-dynamic';
+/**
+ * These pages change only when the migration pipeline runs and the site is redeployed, so rebuilding
+ * one on every request was pure waste: Vercel reported `cache-control: no-store` and `age: 0`, the CDN
+ * cached nothing, and every visit cost a serverless invocation and a ~400ms time-to-first-byte.
+ *
+ * `revalidate` lets the CDN serve a cached copy and refresh it in the background at most once an hour.
+ * A redeploy invalidates everything, which is the only moment the content actually changes. The
+ * booking card is a client island, so caching the document does not freeze anything interactive.
+ */
+export const revalidate = 3600;
+
+/**
+ * Prerender every migrated page at build time.
+ *
+ * Without this the first visitor to each URL pays for a cold render. With 1,000 pages that is 1,000
+ * people getting the slow version. `dynamicParams` stays true so a slug added to the store after the
+ * build still renders on demand rather than 404ing.
+ */
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  return listRouteSlugs().map((slug) => ({ slug }));
+}
 
 type Params = Promise<{ slug: string }>;
 

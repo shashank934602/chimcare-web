@@ -180,3 +180,21 @@ export function readRedirect(slug: string): string | null {
     return null;
   }
 }
+
+/**
+ * Every slug the store holds, for prerendering at build time.
+ *
+ * Reading them once during the build costs one query; rendering each page on first request instead
+ * would cost a cold serverless invocation per page, paid by whoever happens to arrive first.
+ */
+export function listRouteSlugs(): string[] {
+  try {
+    const handle = open();
+    if (!handle) return [];
+    const rows = handle.db.prepare('SELECT slug FROM routes').all() as Array<{ slug: string }>;
+    return rows.map((r) => r.slug);
+  } catch (err) {
+    warnOnce(storePath() ?? 'route-store', '', err, 'route-store');
+    return []; // no prerender list: pages still render on demand
+  }
+}

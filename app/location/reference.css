@@ -404,3 +404,25 @@
 .option.o1-migrated .areas .rail.one-row {
   grid-template-rows: auto;
 }
+
+/* ALTERNATING SECTION GROUND.
+   The reference alternates grey and white down its middle run — services, solutions, areas,
+   process, cost, FAQ — and `template.css` gives each of those a literal ground of its own. That
+   holds only while the run is fixed, and this page's is not: the solutions band is omitted on a
+   city with no published service pages (52 of the first thousand), the areas band needs areas copy
+   and the FAQ needs questions that resolve. Two greys then land next to each other.
+
+   CSS cannot alternate a sequence whose members appear and disappear, so the decision is made in
+   the renderer, which knows what it is about to emit, and arrives here as one of these two classes
+   on the section itself. (The `.o1-svc + .areas` sibling rule that used to live here was the wrong
+   mechanism: it fixed one pair and created a white-on-white with the next.)
+
+   Both grounds are the design's own tokens — `--surface` and `--surface-2`, see `:root` in
+   template.css — so the run stays in step with the palette. The selector is one class deeper than
+   `template.css`'s own `.o1-svc` / `.areas` / `.o1-cost`, which is what lets it override them. */
+.option.o1-migrated .alt-grey {
+  background: var(--surface-2);
+}
+.option.o1-migrated .alt-white {
+  background: var(--surface);
+}

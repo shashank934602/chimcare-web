@@ -1202,6 +1202,38 @@ function TrustGrid({ tiles }: { tiles: TrustTile[] }) {
   );
 }
 
+/* =====================================================================
+   THE ALTERNATING GROUND
+   The reference alternates grey and white all the way down its middle run —
+   services, solutions, areas, process, cost, FAQ — and each of those sections
+   carries its ground as a literal in `template.css`. That only works while the
+   run is fixed, and this page's is not: the solutions band is omitted on a city
+   with no published service pages, the areas band needs areas copy, and the FAQ
+   needs questions that resolve. Two greys then end up adjacent and read as one
+   very tall band.
+
+   CSS cannot alternate a sequence whose members appear and disappear — `:nth-of-
+   type` counts every sibling, and a `+` rule only ever fixes one pair while
+   breaking the next. The renderer, on the other hand, knows exactly which
+   sections it is about to emit, so the ground is decided here: each participating
+   section asks for the next one as it is laid out, and the sections with a fixed
+   treatment — the hero, the trust strip, the introduction, the dark band and the
+   closing red panel — never ask and never shift the sequence.
+
+   The run starts on grey, so `o1-svc` keeps the ground the reference gives it.
+   ===================================================================== */
+const GROUNDS = ['alt-grey', 'alt-white'] as const;
+
+/**
+ * A generator of grounds, in order. Call it once per section that actually renders; a section that
+ * is omitted simply never calls it, which is the whole point — the alternation follows the emitted
+ * markup rather than a list written down in advance.
+ */
+function alternatingGround(): () => string {
+  let n = 0;
+  return () => GROUNDS[n++ % GROUNDS.length];
+}
+
 /**
  * The reference page — THE template. Every `/location/{slug}/` URL renders through this function,
  * whether its `PageView` was built from the migration manifest or from the database.
@@ -1312,6 +1344,24 @@ function ReferencePage({ view }: { view: PageView }) {
     : areasCopy
       ? [localise(areasCopy.subLede, place)].filter((t): t is string => t !== null)
       : [];
+
+  /* WHICH SECTIONS THIS PAGE ACTUALLY EMITS, and therefore which grounds it uses. Each flag is the
+     section's own render condition, named once here and used both to decide the ground and to gate
+     the markup below, so the two can never disagree. The process band and the pricing panel are
+     unconditional — the panel's FIGURES are conditional, the section is not. */
+  const showSvc = standard.length > 0;
+  const showSolutions = flow.length > 0 || !!directory;
+  const showAreas = !!areasCopy && (!!areasHeading || areaItems.length > 0);
+  const showFaq = faqs.length > 0;
+
+  // Read in the order the sections appear below; an omitted one takes no turn.
+  const nextGround = alternatingGround();
+  const svcGround = showSvc ? nextGround() : '';
+  const solutionsGround = showSolutions ? nextGround() : '';
+  const areasGround = showAreas ? nextGround() : '';
+  const processGround = nextGround();
+  const costGround = nextGround();
+  const faqGround = showFaq ? nextGround() : '';
 
   return (
     <>
@@ -1506,8 +1556,8 @@ function ReferencePage({ view }: { view: PageView }) {
               order and markup. This is brand copy, the same on every page, with this page's city
               filled into the two places the reference named its own. It is NOT this page's body:
               everything the migration carried over renders in the full-service section below. */}
-          {standard.length > 0 && (
-            <div className="section o1-svc">
+          {showSvc && (
+            <div className={`section o1-svc ${svcGround}`}>
               <div className="wrap">
                 <div className={svcArt ? 'sec-head reveal' : 'sec-head one-col reveal'}>
                   <div>
@@ -1590,8 +1640,8 @@ function ReferencePage({ view }: { view: PageView }) {
               its own copy and imagery, in body order. The directory lists ONLY the services this
               city actually has a page for, so a city with none renders no directory (and, with no
               body flow either, no section at all) rather than an empty grid. */}
-          {(flow.length > 0 || directory) && (
-            <div className="section o1-solutions" id="o1-solutions">
+          {showSolutions && (
+            <div className={`section o1-solutions ${solutionsGround}`} id="o1-solutions">
               <div className="wrap">
                 {directory ? (
                   <div className={directory.lede ? 'sec-head reveal' : 'sec-head one-col reveal'}>
@@ -1618,8 +1668,8 @@ function ReferencePage({ view }: { view: PageView }) {
 
           {/* SERVICE AREA — the reference's own band. It renders on every page that has a city to
               name or a list of its own; the chips are the page's own towns, or there are none. */}
-          {areasCopy && (areasHeading || areaItems.length > 0) && (
-            <div className="section areas">
+          {showAreas && areasCopy && (
+            <div className={`section areas ${areasGround}`}>
               <div className="wrap">
                 {/* Copy left, the band's photograph right; one column on a narrow screen. */}
                 <div className="e-top">
@@ -1690,7 +1740,7 @@ function ReferencePage({ view }: { view: PageView }) {
           )}
 
           {/* PROCESS — the reference's four steps. Brand boilerplate, identical on every page. */}
-          <div className="section">
+          <div className={`section ${processGround}`}>
             <div className="wrap">
               <div className="sec-head reveal">
                 <div>
@@ -1714,7 +1764,7 @@ function ReferencePage({ view }: { view: PageView }) {
           {/* PRICING — prose and the factors that move a quote, always. Figures ONLY when a region
               that belongs to this page resolved real amounts; otherwise the paragraph says how the
               quote is reached and names no number at all. The national fallback is never printed. */}
-          <div className="section o1-cost">
+          <div className={`section o1-cost ${costGround}`}>
             <div className="wrap">
               <div className="panel reveal">
                 <div>
@@ -1758,8 +1808,8 @@ function ReferencePage({ view }: { view: PageView }) {
           {/* FAQ — the reference's own seven questions, in the reference's own position (this is
               where its contact band sat; the page's phone and address are in the hero already).
               Only the questions this page can honestly ask: see `renderedFaqs`. */}
-          {faqs.length > 0 && (
-            <div className="section">
+          {showFaq && (
+            <div className={`section ${faqGround}`}>
               <div className="wrap">
                 <div className="sec-head one-col reveal">
                   <div>

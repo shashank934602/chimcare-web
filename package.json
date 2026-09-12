@@ -34,6 +34,7 @@
     "drizzle-kit": "^0.31.10",
     "postcss": "^8.5.28",
     "postcss-prefix-selector": "^2.2.0",
+    "puppeteer-core": "^25.10.0",
     "tsx": "^4.23.13",
     "typescript": "^5.9.3"
   }

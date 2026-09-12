@@ -31,11 +31,23 @@
 .hdr-bbb-panel { display: none; }
 
 @media (max-width: 520px) {
-  /* out of the bar */
+  /* The call button and the badge stay IN the bar, as the header spec requires: calling is the
+     primary conversion and it has to sit in the same place on every page. An earlier revision moved
+     both into the drop panel below 520px, on the grounds that four controls competed for ~320px —
+     but the bar carries only three (menu, badge, call), the booking action lives in the sticky
+     footer on mobile, and the client's own reference page fits all three at 390px with the badge at
+     290 and the call button at 328. Measured, not assumed. */
   .hdr .hdr-bbb,
-  .hdr .hdr-call { display: none; }
+  .hdr .hdr-call { display: inline-flex; }
 
-  /* into the panel, beside the phone number */
+  /* The panel copy would now duplicate the badge that is visible in the bar. */
+  .hdr.open .hdr-bbb-panel { display: none; }
+}
+
+/* Below ~360px the badge is the first thing to go: the call button is the conversion, the badge is
+   reassurance, and a cramped bar costs taps. */
+@media (max-width: 359px) {
+  .hdr .hdr-bbb { display: none; }
   .hdr.open .hdr-bbb-panel {
     display: block;
     height: 34px;

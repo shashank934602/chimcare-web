@@ -7,6 +7,7 @@ import { notFound, permanentRedirect } from 'next/navigation';
 import '../template.css';
 import '../reference.css';
 import { Icon } from '@/components/chrome/Icon';
+import { LocationQuickActions } from '@/components/chrome/LocationQuickActions';
 import { BookingForm } from '@/components/islands/BookingForm';
 import { BookingSheet } from '@/components/islands/BookingSheet';
 import { Accordion } from '@/components/islands/Accordion';
@@ -921,6 +922,14 @@ function parsePlace(slug: string): { city: string; code: string; state: string }
   return { city, code, state: STATE_NAMES[code] ?? code };
 }
 
+/**
+ * The address the site's own footer publishes (`components/chrome/Footer.tsx`, Contact column). It
+ * is brand data, not page data — there is no branch-level address on a `PageView` — so it is named
+ * here and passed in, the way `app/layout.tsx` names `NATIONAL_PHONE` for the header. No component
+ * downstream carries an address of its own.
+ */
+const BRAND_EMAIL = 'harold@chimcare.com';
+
 /** `tel:` needs the digits, and nothing else in the string is ours to reformat. */
 function telHref(phone: string): string {
   return `tel:${phone.replace(/[^\d+]/g, '')}`;
@@ -1373,7 +1382,10 @@ function ReferencePage({ view }: { view: PageView }) {
           {/* HERO — the page's only h1. With a photograph the reference promotes the figure to a
               full-bleed background plate; without one the section keeps its dark treatment, which
               `.no-photo` warms so an image-less hero still reads as a designed band, not a gap. */}
-          <div className={view.heroImage ? 'hero o1-hero' : 'hero o1-hero no-photo'}>
+          {/* `id` is what the sticky mobile bar watches: it stays hidden until this element's bottom
+              passes the top of the viewport, so it can never cover the hero's own Call and Book
+              buttons. See components/chrome/StickyBar.tsx. */}
+          <div id="o1-hero" className={view.heroImage ? 'hero o1-hero' : 'hero o1-hero no-photo'}>
             <div className="wrap">
               <div className="enter">
                 <nav className="crumbs" aria-label="Breadcrumb">
@@ -1764,7 +1776,10 @@ function ReferencePage({ view }: { view: PageView }) {
           {/* PRICING — prose and the factors that move a quote, always. Figures ONLY when a region
               that belongs to this page resolved real amounts; otherwise the paragraph says how the
               quote is reached and names no number at all. The national fallback is never printed. */}
-          <div className={`section o1-cost ${costGround}`}>
+          {/* `id` is the quick-actions rail's "Get a quote" target — the reference points that
+              action at `#o1-cost`, and this section is our pricing block. It had the class and no
+              id, so the anchor had nothing to land on. */}
+          <div id="o1-cost" className={`section o1-cost ${costGround}`}>
             <div className="wrap">
               <div className="panel reveal">
                 <div>
@@ -1864,6 +1879,14 @@ function ReferencePage({ view }: { view: PageView }) {
           </div>
         </section>
       </main>
+      {/* The reference's desktop quick-actions rail. It lives outside `<main>`, as a sibling of the
+          sheet it opens, exactly as in the reference markup. */}
+      <LocationQuickActions
+        phone={view.phone ?? undefined}
+        phoneHref={view.phone ? telHref(view.phone) : undefined}
+        email={BRAND_EMAIL}
+        quoteHref="#o1-cost"
+      />
       {/* The layout's sticky mobile bar opens this sheet; without it the bar's Book button is inert. */}
       <BookingSheet options={booking} context={bookingContext} />
     </>

@@ -37,6 +37,12 @@ export type SourceSections = {
   heading: string | null;
   /** The opening paragraph, before any section heading. */
   lead: string | null;
+  /**
+   * The same opening prose, still split the way the body wrote it. `lead` joins it into one string
+   * for the hero lede; the introduction renders these, so a source that wrote two paragraphs keeps
+   * two paragraphs in the copy column — which is what the approved mock shows.
+   */
+  leadParagraphs: string[];
   whyImportant: { heading: string; paragraphs: string[] } | null;
   /** Outline B's trust band: "Why {city} Homeowners Trust Chimcare". */
   whyTrust: { heading: string; paragraphs: string[] } | null;
@@ -143,7 +149,7 @@ export function parseSourceSections(postContent: string): SourceSections {
   const parts = body.split(/(<h2\b[^>]*>[\s\S]*?<\/h2>)/i);
 
   const result: SourceSections = {
-    heading: null, lead: null, whyImportant: null, whyTrust: null, serviceDirectory: null,
+    heading: null, lead: null, leadParagraphs: [], whyImportant: null, whyTrust: null, serviceDirectory: null,
     localExperts: null, process: null, whyChooseUs: null, areas: null, faqs: null, bookCta: null,
     otherSections: [], sectionsFound: [],
   };
@@ -155,7 +161,10 @@ export function parseSourceSections(postContent: string): SourceSections {
     const h = text(firstHeading[1]);
     if (!RULES.some((r) => r.test.test(h))) result.heading = h;
   }
-  if (leadParas.length) result.lead = leadParas.join(' ');
+  if (leadParas.length) {
+    result.lead = leadParas.join(' ');
+    result.leadParagraphs = leadParas;
+  }
 
   for (let i = 1; i < parts.length; i += 2) {
     const heading = text(parts[i]);
@@ -164,7 +173,10 @@ export function parseSourceSections(postContent: string): SourceSections {
     if (result.heading === heading) {
       // The title heading: its prose is the lead when the body had none before it.
       const p = paragraphsIn(section);
-      if (!result.lead && p.length) result.lead = p.join(' ');
+      if (!result.lead && p.length) {
+        result.lead = p.join(' ');
+        result.leadParagraphs = p;
+      }
       continue;
     }
 

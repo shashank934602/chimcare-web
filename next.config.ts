@@ -5,6 +5,13 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
   // Native / WASM database drivers must not be bundled into the server build.
   serverExternalPackages: ['@electric-sql/pglite', 'postgres'],
+  // The route store is a data file, not an import, so nothing in the module graph points at it and
+  // the build would leave it out of the serverless bundle. That failure is silent: every page works
+  // locally and 404s in production, because the lookup finds no store and falls through. Naming it
+  // here is what puts it in the function's filesystem.
+  outputFileTracingIncludes: {
+    '/location/[slug]': ['./data/routes.sqlite'],
+  },
 };
 
 export default nextConfig;

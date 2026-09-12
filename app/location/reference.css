@@ -1,0 +1,406 @@
+/* =====================================================================
+   Overrides for the client reference stylesheet (`template.css`), for the
+   pages rendered from the migration manifest.
+
+   `template.css` is the reference page's own stylesheet, and `styles/city.css`
+   is the same mock ported and `.option`-scoped; both load on this route. The
+   page now renders the reference's FULL section set, so the overrides that
+   existed only to paper over a missing section are gone: the blanket forcing
+   of `.sec-head` and `.o1-intro .wrap` to one column, and both `.o1-contact`
+   rules — the reference's contact band is no longer rendered here at all (the
+   page's phone and address are in the hero), so `template.css`'s own
+   `.o1-contact{display:none!important}` is left to stand.
+   What remains is either genuinely data-driven — a second column that this
+   page's own source may or may not fill — or the treatment the carried-over
+   WordPress imagery needs.
+
+   Everything below is scoped to `.o1-migrated`, the marker class on this
+   page's wrapper only, so neither the app's header and footer nor any other
+   template is touched.
+   ===================================================================== */
+
+/* The hero is the reference's two-column grid again: the page's own words on
+   the left, the application's real booking card on the right. (This file used
+   to force one column, because the right-hand column was empty.) */
+
+/* Without a photograph the hero keeps its dark ground; a warm plate over it
+   makes an image-less hero read as a designed band rather than a flat panel.
+   `template.css` kills `.hero::before` globally, so this has to outrank it. */
+.option.o1-migrated .o1-hero.no-photo::before {
+  content: "" !important;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(120% 90% at 78% 62%, rgba(249, 168, 37, .22) 0%, rgba(249, 168, 37, 0) 60%),
+    linear-gradient(100deg, rgba(28, 17, 8, .55) 0%, rgba(38, 22, 10, .28) 60%, rgba(46, 26, 11, 0) 100%);
+}
+
+/* STILL NEEDED, and data-driven rather than structural: a `.sec-head` is a
+   two-column grid (copy left, plate right), and the plate comes from
+   `template-assets.json`, which may legitimately have none for that section.
+   The renderer adds `.one-col` exactly when it drew no second child, so the
+   head collapses instead of leaving an empty half-band. */
+.option.o1-migrated .sec-head.one-col {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 760px;
+}
+
+/* Same rule, same reason, inside a service row: the panel is copy left and the
+   "what's included" list right, and a service whose body is a single paragraph
+   has nothing left for the copy column once the summary line is lifted out. */
+.option.o1-migrated .o1-row .body.one-col {
+  grid-template-columns: minmax(0, 1fr);
+}
+.option.o1-migrated .o1-row .body.one-col .side {
+  border-left: 0;
+  padding-left: 0;
+}
+
+/* Body copy that the reference only ever had inside a styled container. The
+   migrated bodies carry paragraphs directly under a section heading. */
+.option.o1-migrated .o1-solutions .wrap > p,
+.option.o1-migrated .o1-solutions .wrap > ul:not(.svc-tiles) {
+  color: var(--text-2);
+  font-size: 16.5px;
+  line-height: 1.72;
+  max-width: 70ch;
+  margin: 0 0 18px;
+}
+.option.o1-migrated .o1-solutions .svc-grid + .sec-head,
+.option.o1-migrated .o1-solutions .svc-more + .sec-head {
+  margin-top: 72px;
+}
+
+/* The reference's service cards are plain text, and so are these, so nothing
+   here restyles them. The only rule the migrated grid still needs is the one
+   below, for a card whose copy runs to more than one paragraph. */
+.option.o1-migrated .svc-card p + p {
+  margin-top: 12px;
+}
+
+/* ---------------------------------------------------------------------
+   CARRIED-OVER IMAGERY
+   Remote WordPress files, rendered as plain <img> because `next.config.ts`
+   declares no `images.remotePatterns` for www.chimcare.com. Every figure is
+   held to its column and reserves its space before the file arrives: with the
+   manifest's own width/height when it has them, and with an aspect-ratio box
+   (`.no-dims`) when it does not.
+   --------------------------------------------------------------------- */
+.option.o1-migrated figure.ph-img,
+.option.o1-migrated figure.team-photo {
+  max-width: 100%;
+  margin: 26px 0;
+}
+.option.o1-migrated .o1-solutions .wrap > figure.ph-img {
+  max-width: min(100%, 70ch);
+}
+.option.o1-migrated figure.ph-img > img,
+.option.o1-migrated figure.team-photo > img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+.option.o1-migrated figure.no-dims > img {
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+/* The introduction opens on the reference's team plate, which sits flush at
+   the top of the copy column. */
+.option.o1-migrated .o1-intro .copy > figure.team-photo:first-child {
+  margin-top: 0;
+}
+/* Inside a service card the figure spans the card and keeps its corners. */
+.option.o1-migrated .svc-card figure.ph-img {
+  margin: 16px 0 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+/* The areas column puts its photograph above the town list, as the reference does. */
+.option.o1-migrated .areas figure.ph-img {
+  margin-top: 0;
+}
+
+/* ---------------------------------------------------------------------
+   SERVICE AREA — the two-row rail
+
+   `template.css` lays this band out as one two-column grid and lets the chips
+   (`.area-list`) wrap freely. That works for the reference's six chips and
+   fails for a real migrated list: the measured pages carry 4-13 areas, and a
+   city with forty would make the band ten rows tall and push the button off
+   the screen. So the band is restructured here: the copy and the photograph
+   stay as a two-column head (`.e-top`), and the chips become a HORIZONTAL rail
+   that is always exactly two rows tall whatever the list's length —
+   `grid-auto-flow:column` over two auto rows, overflowing sideways with scroll
+   snapping. The arrows above it are an island; the rail itself scrolls by swipe
+   with no JavaScript, and every chip is in the server HTML.
+
+   Colours are the design's own custom properties (`--brand-primary`/`--line`/
+   `--surface`, see `:root` in template.css) rather than literal hexes, so the
+   band stays in step with the brand palette.
+   --------------------------------------------------------------------- */
+.option.o1-migrated .areas .wrap {
+  display: block;
+}
+.option.o1-migrated .areas .e-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 30px 64px;
+  align-items: center;
+}
+/* `template.css` makes the band's first column sticky; with a rail below the
+   head there is nothing to stick to. */
+.option.o1-migrated .areas .wrap > .e-top,
+.option.o1-migrated .areas .e-top > div:first-child {
+  position: static;
+}
+
+/* The reference used an inline style attribute for the sub-heading, the line
+   under it and the gap above the button, so there is no class to inherit. */
+.option.o1-migrated .areas .areas-sub {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin: 0 0 8px;
+}
+.option.o1-migrated .areas .areas-line {
+  color: var(--text-2);
+  margin: 0 0 22px;
+}
+.option.o1-migrated .areas .rail-head .areas-line:last-child {
+  margin-bottom: 0;
+}
+.option.o1-migrated .areas .areas-ctas {
+  margin-top: 26px;
+}
+
+.option.o1-migrated .areas .rail-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 44px 0 18px;
+}
+.option.o1-migrated .areas .rail-ctrls {
+  display: flex;
+  gap: 10px;
+  flex: none;
+}
+.option.o1-migrated .areas .rail-btn {
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+.option.o1-migrated .areas .rail-btn:hover {
+  border-color: var(--brand-primary);
+  color: var(--brand-primary);
+}
+.option.o1-migrated .areas .rail-btn:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
+}
+
+/* ALWAYS two rows: the columns grow sideways, never downwards. */
+.option.o1-migrated .areas .rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(2, auto);
+  grid-auto-columns: max-content;
+  gap: 12px;
+  margin: 0;
+  padding: 2px;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+}
+.option.o1-migrated .areas .rail > li {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  scroll-snap-align: start;
+  white-space: nowrap;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--text);
+}
+.option.o1-migrated .areas .rail svg {
+  font-size: 16px;
+  color: var(--brand-primary);
+  flex: none;
+}
+.option.o1-migrated .areas .rail:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 4px;
+}
+
+/* The 23 pages in 100 whose migrated body names no area at all. Brand
+   boilerplate with the page's own place in it — never an invented town. */
+.option.o1-migrated .areas .areas-empty {
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  text-align: center;
+  background: var(--surface);
+}
+.option.o1-migrated .areas .areas-empty-head {
+  margin: 0 0 6px;
+  font-weight: 800;
+  font-size: 17px;
+  color: var(--text);
+}
+.option.o1-migrated .areas .areas-empty-line {
+  margin: 0;
+  color: var(--text-2);
+}
+
+/* Phones: no arrows, the swipe does the work. */
+@media (max-width: 900px) {
+  .option.o1-migrated .areas .e-top {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 26px;
+  }
+}
+@media (max-width: 560px) {
+  .option.o1-migrated .areas .rail-ctrls {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .option.o1-migrated .areas .rail {
+    scroll-behavior: auto;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Density corrections for migrated pages.
+
+   The reference's rhythm is built for sections that are full of photography:
+   120px of padding above and below reads as generous there, and as a void here,
+   where a migrated body is often a heading and three paragraphs. These rules
+   tighten the vertical rhythm without touching the reference's own pages.
+   --------------------------------------------------------------------------- */
+.option.o1-migrated .section {
+  --sec: 72px;
+}
+.option.o1-migrated .sec-head {
+  margin-bottom: 32px;
+}
+
+/* Images carried out of WordPress are whatever size the editor inserted, and a
+   good number are small logos and badges rather than photographs. Stretching a
+   300px logo across a 600px column makes it soft and leaves a band of empty
+   space under it, so nothing is scaled up past its own dimensions. */
+.option.o1-migrated figure.ph-img > img,
+.option.o1-migrated figure.team-photo > img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+
+/* Headings from the migrated body. The reference carries four section heads on a
+   whole page; a WordPress article brings dozens, so they read as article headings
+   in the flow rather than as repeated title blocks. Sizes step down from the
+   section head so the hierarchy stays legible without competing with it. */
+.option.o1-migrated .o1-solutions .wrap > .flow-head {
+  max-width: 70ch;
+  margin: 40px 0 12px;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.option.o1-migrated .o1-solutions .wrap > h2.flow-head { font-size: clamp(24px, 2.2vw, 30px); }
+.option.o1-migrated .o1-solutions .wrap > h3.flow-head { font-size: 20px; }
+.option.o1-migrated .o1-solutions .wrap > h4.flow-head,
+.option.o1-migrated .o1-solutions .wrap > h5.flow-head,
+.option.o1-migrated .o1-solutions .wrap > h6.flow-head { font-size: 17px; }
+.option.o1-migrated .o1-solutions .wrap > .flow-head:first-child { margin-top: 0; }
+
+/* WHY-CHIMCARE TRUST GRID
+   The reference draws this band's right-hand column as one flat WebP — a picture of a 2x2 grid of
+   tiles, with the four labels living only inside that image's alt text. That means the labels can
+   never be selected, translated, or read properly by a screen reader, and the image itself softens
+   on a high-density display. `standard-trust.json` carries the same four labels and icons as real
+   data, so this replaces the flat image with real markup: a sprite icon per tile plus a genuine text
+   label, laid out as the reference's own 2x2 grid on the section's existing dark ground (`on-dark` —
+   never the red-filled tile look, which is not what the reference draws here).
+   `--brand-red` is the design's own brand-red custom property (see `:root` in template.css); the
+   icons use it rather than a literal hex so they stay in step with the rest of the brand palette. */
+.option.o1-migrated .trust-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  max-width: 460px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.option.o1-migrated .trust-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+  padding: 32px 20px;
+  border-right: 1px solid rgba(255, 255, 255, 0.14);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+.option.o1-migrated .trust-tile:nth-child(2n) {
+  border-right: 0;
+}
+.option.o1-migrated .trust-tile:nth-child(n+3) {
+  border-bottom: 0;
+}
+.option.o1-migrated .trust-tile .ico {
+  font-size: 30px;
+  color: var(--brand-red);
+}
+.option.o1-migrated .trust-tile span {
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-variant: small-caps;
+  color: rgba(255, 255, 255, 0.88);
+}
+@media (max-width: 900px) {
+  .option.o1-migrated .trust-grid {
+    max-width: 420px;
+    margin-inline: auto;
+  }
+}
+
+/* The "Why Chimcare" eyebrow in red, as asked, rather than the reference's amber.
+   Worth recording: on this band's dark ground (#2C2B2E) the brand red measures
+   3.05:1 against the amber's 7.14:1. Small uppercase text at 3.05:1 is below the
+   4.5:1 WCAG AA threshold, so the size and weight are lifted a little to keep it
+   legible. If it should pass AA outright, the lighter tint is the lever. */
+.option.o1-migrated .o1-trust-copy .eyebrow {
+  color: var(--brand-red);
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+/* A short list sits on one line. The rail is two rows so that a city with forty areas cannot make
+   the band ten rows tall; with five areas that same rule leaves a ragged second row, so below the
+   threshold the grid collapses to a single row and the chips simply wrap out to their natural width. */
+.option.o1-migrated .areas .rail.one-row {
+  grid-template-rows: auto;
+}

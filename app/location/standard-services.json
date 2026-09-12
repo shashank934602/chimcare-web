@@ -1,0 +1,196 @@
+{
+  "generatedAt": "2026-09-10T09:16:55Z",
+  "source": "send-to-client/spokane.html",
+  "services": [
+    {
+      "key": "sweeping",
+      "n": "01",
+      "icon": "broom",
+      "name": "Chimney Sweeping",
+      "summary": "Creosote and soot removed with our dust-free process, so your fireplace vents safely all winter.",
+      "paragraphs": [
+        "A professional chimney sweep removes the creosote, soot and debris that build up every time you burn. Our technicians use rotary brushes and HEPA-filtered vacuums so nothing ends up on your floors — the dust-free cleaning Chimcare is known for.",
+        "Every sweep includes a visual check of the firebox, damper, smoke chamber and flue, and we'll tell you honestly if anything needs attention — and just as honestly if it doesn't."
+      ],
+      "included": [
+        "Firebox and smoke chamber cleaning",
+        "Flue brushing from cap to damper",
+        "Damper operation check",
+        "Visual condition report"
+      ],
+      "cta": "Schedule a sweep",
+      "image": {
+        "file": "/reference/img-36afdee9.jpg",
+        "alt": "Chimcare technician sweeping a chimney from the roof",
+        "width": 600,
+        "height": 450
+      },
+      "droppedSentences": [
+        {
+          "text": "In Spokane, where fireplaces run from October through March, that buildup is the leading cause of chimney fires.",
+          "reason": "climate claim — false for the Arizona and Georgia cities in this run, and unfixable by substituting the city name"
+        }
+      ]
+    },
+    {
+      "key": "inspection",
+      "n": "02",
+      "icon": "camera",
+      "name": "Chimney Inspection",
+      "summary": "A certified look at your chimney's condition — from an annual safety check to camera-assisted Level 2 and 3 inspections.",
+      "paragraphs": [
+        "Our inspections follow the industry's three-level standard. A Level 1 inspection covers the readily accessible parts of the system and is right for annual maintenance. A Level 2 inspection adds a video scan of the flue and is recommended when you buy or sell a home, change fuel type or after any incident.",
+        "A Level 3 inspection goes beyond the surface to examine concealed areas when serious damage is suspected — after a chimney fire or a major weather event. You always receive a clear written report with photos and recommendations, not a sales pitch."
+      ],
+      "included": [
+        "Level 1, 2 and 3 inspections",
+        "Video camera scan of the flue",
+        "Written report with photos",
+        "Real-estate transaction inspections"
+      ],
+      "cta": "Book an inspection",
+      "image": {
+        "file": "/reference/img-fae73b66.jpg",
+        "alt": "Technician inspecting a fireplace and documenting findings",
+        "width": 600,
+        "height": 450
+      },
+      "droppedSentences": []
+    },
+    {
+      "key": "repair",
+      "n": "03",
+      "icon": "wrench",
+      "name": "Chimney Repair",
+      "summary": "From damaged flues to failing crowns and dampers, we fix the parts that keep your chimney from doing its job.",
+      "paragraphs": [
+        "We repair the components that fail most often — crowns, caps and chase covers, dampers, flue liners, smoke chambers, flashing and firebox surfaces — using materials rated for the job.",
+        "Catching a cracked crown or a rusted damper early is what keeps a minor repair from turning into a major rebuild. We show you what we find, explain the options and quote clearly before any work starts."
+      ],
+      "included": [
+        "Crown repair and replacement",
+        "Cap and chase cover installation",
+        "Damper repair and top-sealing dampers",
+        "Flue, smoke chamber and firebox repair"
+      ],
+      "cta": "Request a repair quote",
+      "image": null,
+      "droppedSentences": [
+        {
+          "text": "Chimney repair in Spokane has to stand up to heavy snow loads, months of freezing temperatures and wet springs.",
+          "reason": "climate claim — 'months of freezing temperatures' is false for the Arizona and Georgia cities in this run"
+        }
+      ]
+    },
+    {
+      "key": "masonry",
+      "n": "04",
+      "icon": "brick",
+      "name": "Masonry Repair",
+      "summary": "Spalling brick, crumbling mortar and structural cracks restored by masons who work on {{city.name}}'s historic homes.",
+      "paragraphs": [
+        "Masonry chimneys are exposed to more weather than any other part of your home. Water gets into the brick and mortar, freezes, expands and pushes the surface apart — a process called spalling. Our masonry repair restores both structural integrity and appearance.",
+        "We replace cracked or missing bricks, rebuild deteriorated sections, repair footing and structural issues, and match brick, mortar color and joint profile so the repair blends in — from a few loose bricks to a full restoration of a century-old chimney in {{city.name}}."
+      ],
+      "included": [
+        "Brick replacement and spalling repair",
+        "Crack, stucco and concrete repair",
+        "Structural and footing repair",
+        "Partial and full rebuilds"
+      ],
+      "cta": "Request a masonry quote",
+      "image": {
+        "file": "/reference/img-393b2d46.jpg",
+        "alt": "Mason repairing a masonry chimney on a rooftop",
+        "width": 600,
+        "height": 450
+      },
+      "droppedSentences": []
+    },
+    {
+      "key": "leak",
+      "n": "05",
+      "icon": "drop",
+      "name": "Chimney Leak Repair",
+      "summary": "We find where water is getting in — crown, flashing, cap or masonry — and stop it for good.",
+      "paragraphs": [
+        "Water stains on the ceiling near the fireplace, a musty smell after rain, or white mineral deposits on the brick all point to a chimney leak. Because a chimney has several possible entry points, we start with a diagnosis rather than a guess: the crown, the flashing where chimney meets roof, the cap and chase cover, and the masonry itself.",
+        "Then we fix the actual source — resealing or replacing flashing, repairing the crown, installing a proper cap and applying breathable waterproofing so the problem doesn't come back next spring."
+      ],
+      "included": [
+        "Leak diagnosis",
+        "Flashing repair, sealing and installation",
+        "Crown sealing and repair",
+        "Waterproofing and moisture control"
+      ],
+      "cta": "Stop the leak",
+      "image": null,
+      "droppedSentences": []
+    },
+    {
+      "key": "creosote",
+      "n": "06",
+      "icon": "flame",
+      "name": "Creosote Removal",
+      "summary": "Glazed, tar-like creosote is a fire waiting to happen. We remove it safely — including stage 3 deposits.",
+      "paragraphs": [
+        "Creosote is the byproduct of burning wood: unburned gases condense on the cool flue walls and harden into a flammable coating. Light, flaky creosote comes off with a standard sweep. The hard, glazed stage-3 creosote found in chimneys that burn slow, smoldering fires or unseasoned wood needs specialized removal.",
+        "We use rotary cleaning systems and, where needed, treatments that break the glaze down so it can be removed without damaging the liner — then show you how to burn so it builds more slowly next season."
+      ],
+      "included": [
+        "Stage 1–3 creosote removal",
+        "Smoke chamber and liner cleaning",
+        "Rotary cleaning for glazed deposits",
+        "Burning-habit advice"
+      ],
+      "cta": "Schedule creosote removal",
+      "image": null,
+      "droppedSentences": []
+    },
+    {
+      "key": "flue",
+      "n": "07",
+      "icon": "wind",
+      "name": "Flue Cleaning",
+      "summary": "Clearing the flue liner, smoke chamber and vents so smoke and gases exit the way they should.",
+      "paragraphs": [
+        "The flue is the passage that carries smoke and combustion gases out of your home. When it's coated with creosote or blocked by debris, nests or fallen tile, smoke backs up into the room — and carbon monoxide can follow.",
+        "We clear the full length of the liner from firebox to cap, clean the smoke chamber, remove blockages and verify draft. We also service flues serving wood stoves, inserts and gas appliances."
+      ],
+      "included": [
+        "Full-length liner cleaning",
+        "Smoke chamber cleaning",
+        "Blockage and nest removal",
+        "Draft verification"
+      ],
+      "cta": "Schedule flue cleaning",
+      "image": {
+        "file": "/reference/img-e24c0a2f.webp",
+        "alt": "A Chimcare technician on a roof running a rotary brush down a chimney flue",
+        "width": 1200,
+        "height": 900
+      },
+      "droppedSentences": []
+    },
+    {
+      "key": "tuckpointing",
+      "n": "08",
+      "icon": "joints",
+      "name": "Tuckpointing",
+      "summary": "Deteriorated mortar joints ground out and repacked — the single best way to extend a brick chimney's life.",
+      "paragraphs": [
+        "Mortar is softer than brick by design, so it wears first. When joints recede, crack or crumble, water gets behind the brick and the freeze-thaw cycle takes over. Tuckpointing — also called repointing — removes the failing mortar to a proper depth and repacks the joints with new mortar matched in color, strength and profile.",
+        "Done on time, it prevents brick replacement and rebuilds. Our {{city.name}} masons tuckpoint everything from a few joints near the crown to a full chimney."
+      ],
+      "included": [
+        "Mortar removal and repacking",
+        "Color and profile matching",
+        "Crown and cap check",
+        "Waterproofing after cure"
+      ],
+      "cta": "Request a tuckpointing quote",
+      "image": null,
+      "droppedSentences": []
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+# Stage output is regenerable from the WordPress database and the live site. It also contains full
+# page bodies, which are large and are not this repository's copy of the truth.
+out/
+
+# The reports are regenerated on every run. Commit one deliberately if a run is worth keeping.
+URLS/*.md
+
+__pycache__/
+*.pyc

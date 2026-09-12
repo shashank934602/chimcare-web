@@ -1,0 +1,22 @@
+{
+  "generatedAt": "2026-09-10T09:16:55Z",
+  "source": "send-to-client/spokane.html",
+  "areas": {
+    "eyebrow": "Service area",
+    "heading": "Your {{city.name}} Fireplace Experts",
+    "lede": "Whether you're in the heart of {{city.name}} or in nearby neighborhoods, Chimcare brings trusted chimney, fireplace, and vent services throughout {{city.name}}, {{state.code}}.",
+    "subHeading": "Serving Nearby Areas",
+    "subLede": "We proudly serve {{city.name}}, {{state.code}} and the surrounding communities.",
+    "cta": "Get a Quote",
+    "droppedSentences": [
+      {
+        "text": "From historic homes to modern builds, our certified team ensures warmth, safety, and reliability — season after season.",
+        "reason": "claim about the city rather than about Chimcare — it asserts what the local housing stock is and that there is a season-after-season heating cycle; neither is a fact for the Arizona and Georgia cities in this run, and substituting the city name would not make it one"
+      }
+    ],
+    "droppedAreaItems": {
+      "count": 6,
+      "reason": "the reference's own area chips are neighbourhoods of the reference city (and one generic entry that names no place); a neighbourhood of one city is not a neighbourhood of another, so none is carried and none is quoted here. The renderer uses the page's own migrated 'areas we serve' list instead, and renders no chips at all where the page has none."
+    }
+  }
+}

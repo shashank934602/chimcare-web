@@ -1,0 +1,50 @@
+{
+  "source": "/Users/vss-2/Desktop/chimcare/chimcare-web-2-RECOVERED/send-to-client/spokane.html",
+  "sectionClasses": [
+    "hero o1-hero",
+    "o1-trust",
+    "section o1-intro",
+    "o1-trust-copy on-dark",
+    "section o1-svc",
+    "o1-list reveal",
+    "section o1-solutions",
+    "section areas",
+    "section o1-cost",
+    "section o1-contact",
+    "section o1-final"
+  ],
+  "headMetaKeys": [
+    "viewport",
+    "title",
+    "description",
+    "robots",
+    "canonical",
+    "og:locale",
+    "og:type",
+    "og:title",
+    "og:description",
+    "og:url",
+    "og:site_name",
+    "og:image",
+    "og:image:width",
+    "og:image:height",
+    "og:image:type",
+    "twitter:card",
+    "twitter:title",
+    "twitter:description",
+    "twitter:image",
+    "geo.region",
+    "geo.placename",
+    "geo.position",
+    "ICBM"
+  ],
+  "jsonldTypes": [
+    "WebPage",
+    "ImageObject",
+    "BreadcrumbList",
+    "WebSite",
+    "Organization"
+  ],
+  "cssBytesWritten": 70482,
+  "assetFilesWritten": 21
+}

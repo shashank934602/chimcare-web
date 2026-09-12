@@ -1,0 +1,1236 @@
+
+/* Manrope, embedded */
+/* Manrope 400 latin-ext */
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/reference/font-ce093b34.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* Manrope 400 latin */
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/reference/font-e310b55a.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* Manrope 500 latin-ext */
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/reference/font-ce093b34.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* Manrope 500 latin */
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/reference/font-e310b55a.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* Manrope 600 latin-ext */
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/reference/font-ce093b34.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* Manrope 600 latin */
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/reference/font-e310b55a.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* Manrope 700 latin-ext */
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/reference/font-ce093b34.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* Manrope 700 latin */
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/reference/font-e310b55a.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* Manrope 800 latin-ext */
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(/reference/font-ce093b34.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* Manrope 800 latin */
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(/reference/font-e310b55a.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* =====================================================================
+   0. BRAND + EXPLORER TOKENS
+   Brand values come from the live Chimcare site (red CTA/form bar, amber
+   Schedule button, charcoal hero card). Each option refines them below.
+   ===================================================================== */
+:root{
+  /* Brand red — the single source of truth for every red on the site. */
+  --brand-red:#DD2E44; --brand-red-deep:#C42239;
+  --brand-primary:var(--brand-red); --brand-primary-deep:var(--brand-red-deep); --brand-accent:#F9A825; --brand-dark:#2C2B2E; --brand-ink:#1B1A1B;
+  --ex-bg:#121114; --ex-bg-2:#1B1A1E; --ex-line:#2B2930; --ex-text:#ECE9EA; --ex-muted:#948E93; --ex-frame:#0C0B0D;
+  --font-ui:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --img-city:url(/reference/img-30ebb7be.jpg); /* Spokane aerial cropped from the live page — swap for a chimney/home photo */
+}
+*{box-sizing:border-box}
+
+body{margin:0;background:var(--surface);color:var(--text);font-family:var(--font-body);
+  line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:clip}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:clip}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+img{max-width:100%;display:block}
+button{font:inherit;cursor:pointer}
+h1,h2,h3,h4{margin:0;line-height:1.15;text-wrap:balance}
+p{margin:0}
+ul,ol{margin:0;padding:0;list-style:none}
+a{color:inherit}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--brand-accent);outline-offset:3px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.ico{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none;vertical-align:middle}
+.ico.fill{fill:currentColor;stroke:none}
+
+/* option pages */
+.option{font-family:var(--font-body);background:var(--surface);color:var(--text);line-height:1.6;min-height:100%}
+.option h1,.option h2,.option .display{font-family:var(--font-display);font-weight:var(--display-weight,400)}
+.wrap{width:min(var(--wrap,1200px),calc(100% - 64px));margin-inline:auto}
+.section{padding:var(--sec,120px) 0}
+.option .eyebrow,.drawer .eyebrow,.bsheet .eyebrow,.book .eyebrow{font-family:var(--font-body);font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--brand-primary);margin:0;max-width:none;justify-self:start}
+.option .on-dark .eyebrow{color:var(--brand-accent)}
+.muted{color:var(--text-2)}
+.lede{font-size:17px;color:var(--text-2);max-width:56ch}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:50px;padding:0 26px;border-radius:var(--radius);border:1.5px solid transparent;font-family:var(--font-body);font-weight:600;font-size:15px;text-decoration:none;letter-spacing:.005em;transition:background .2s,color .2s,border-color .2s,transform .2s;white-space:nowrap}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--brand-primary);color:#fff}
+.btn-primary:hover{background:var(--brand-primary-deep)}
+.btn-dark{background:var(--text);color:var(--surface)}
+.btn-dark:hover{background:var(--brand-primary)}
+.btn-outline{background:transparent;color:inherit;border-color:currentColor}
+.btn-outline:hover{background:rgba(0,0,0,.06)}
+.on-dark .btn-outline:hover{background:rgba(255,255,255,.12)}
+.btn-ghost{background:transparent;color:var(--text-2);border-color:var(--line)}
+.btn-ghost:hover{color:var(--text);border-color:var(--text)}
+.link{display:inline-flex;align-items:center;gap:8px;font-weight:600;text-decoration:none;color:inherit}
+.link svg{transition:transform .2s}
+.link:hover svg{transform:translateX(4px)}
+.phone{display:inline-flex;align-items:center;gap:8px;font-weight:600;text-decoration:none;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ctas{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.sec-head{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;margin-bottom:56px}
+.sec-head h2{font-size:clamp(32px,3.6vw,50px);line-height:1.08;margin-top:14px;letter-spacing:-.01em}
+.sec-head>p{color:var(--text-2);font-size:16.5px;max-width:46ch;justify-self:end}
+.sec-head.left{grid-template-columns:1fr;max-width:640px}
+.sec-head.left>p{justify-self:start}
+
+/* header — identical to locations.html / washington-locations.html */
+.hdr{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.hdr .wrap{display:flex;align-items:center;gap:26px;min-height:76px;position:relative}
+.logo{display:inline-flex;align-items:center;text-decoration:none;flex:none}
+.logo img{height:42px;width:auto}
+.hdr-menu{display:contents}
+.nav{display:flex;gap:24px;margin-left:6px;font-size:14px;font-weight:600}
+.nav a{text-decoration:none;padding:4px 0;border-bottom:1.5px solid transparent;transition:color .2s,border-color .2s;white-space:nowrap}
+.nav a:hover{color:var(--brand-primary);border-color:var(--brand-primary)}
+.nav a[aria-current="page"]{color:var(--brand-primary);border-color:var(--brand-primary)}
+.hdr .phone{margin-left:auto;font-size:14.5px}
+.hdr .phone svg{color:var(--brand-primary)}
+.hdr .btn{min-height:44px;padding:0 20px;font-size:14px}
+.menu-btn{display:none;width:44px;height:44px;border:1px solid var(--line);border-radius:var(--radius);
+  background:transparent;color:inherit;place-items:center;font-size:22px}
+.menu-btn .ico-x{display:none}
+.hdr.open .menu-btn .ico-x{display:block}
+.hdr.open .menu-btn .ico-menu{display:none}
+
+/* expandable rows / accordions: grid-row animation keeps content in the DOM */
+.acc-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s cubic-bezier(.2,.7,.2,1)}
+.acc-panel>div{overflow:hidden;min-height:0}
+.is-open>.acc-panel{grid-template-rows:1fr}
+.faq{border-top:1px solid var(--text)}
+.faq-item{border-bottom:1px solid var(--line)}
+.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:22px 0;background:none;border:0;text-align:left;color:inherit;font-family:var(--font-body);font-size:18px;font-weight:600}
+.faq-q:hover{color:var(--brand-primary)}
+.faq-q svg{font-size:20px;color:var(--text-2);transition:transform .3s;flex:none}
+.faq-item.is-open .faq-q svg{transform:rotate(45deg);color:var(--brand-primary)}
+.faq-a{padding:0 0 26px;max-width:66ch;color:var(--text-2)}
+.svc-body p{color:var(--text-2);margin-bottom:14px}
+.svc-body h4{font-family:var(--font-body);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--text);margin:22px 0 10px}
+.svc-list{display:grid;gap:8px}
+.svc-list li{display:flex;gap:10px;align-items:flex-start;color:var(--text-2);font-size:15px}
+.svc-list li svg{color:var(--brand-primary);margin-top:5px;font-size:13px;stroke-width:2.4}
+img[data-placeholder]{background:var(--surface-2);object-fit:cover}
+
+/* motion */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+.enter>*{animation:rise .8s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i,0)*90ms)}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.img-reveal{clip-path:inset(0 0 100% 0);transition:clip-path 1s cubic-bezier(.2,.7,.2,1)}
+.img-reveal.in{clip-path:inset(0 0 0 0)}
+@media (prefers-reduced-motion:reduce){
+  .reveal,.img-reveal{opacity:1;transform:none;clip-path:none;transition:none}
+  .enter>*{animation:none}
+  *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
+}
+
+/* =====================================================================
+   3. SERVICE DRAWER (shared; themed by the active option's tokens)
+   Desktop: slides in from the right. Narrow containers: bottom sheet.
+   ===================================================================== */
+.drawer{position:fixed;inset:0;overflow:clip;z-index:60;pointer-events:none;font-family:var(--font-body);color:var(--text)}
+.drawer.is-open{pointer-events:auto}
+.drawer-bg{position:absolute;inset:0;background:rgba(20,18,20,.55);opacity:0;transition:opacity .35s}
+.drawer.is-open .drawer-bg{opacity:1}
+.drawer-panel{position:absolute;top:0;right:0;bottom:0;width:min(600px,100%);background:var(--surface);box-shadow:-30px 0 80px rgba(0,0,0,.25);transform:translateX(104%);transition:transform .5s cubic-bezier(.2,.7,.2,1);display:flex;flex-direction:column}
+.drawer.is-open .drawer-panel{transform:none}
+.drawer-panel:focus{outline:none}
+/* closed overlays are also visibility:hidden — out of the tab order and never painted, whatever the transform resolves to */
+.drawer:not(.is-open) .drawer-panel,.bsheet:not(.is-open) .bsheet-panel{visibility:hidden;transition:transform .5s cubic-bezier(.2,.7,.2,1),visibility 0s .5s}
+.drawer.is-open .drawer-panel,.bsheet.is-open .bsheet-panel{visibility:visible;transition:transform .5s cubic-bezier(.2,.7,.2,1),visibility 0s} /* focus lands on the dialog for screen readers; controls inside keep their rings */
+.drawer-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 28px;border-bottom:1px solid var(--line);flex:none}
+.drawer-head .eyebrow{color:var(--text-2)}
+.drawer-close{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--text-2);display:grid;place-items:center;font-size:18px;transition:color .2s,border-color .2s,transform .3s}
+.drawer-close:hover{color:var(--text);border-color:var(--text);transform:rotate(90deg)}
+.drawer-body{flex:1;min-height:0;overflow-y:auto;padding:0 28px 32px}
+.drawer-body img{width:100%;aspect-ratio:16/10;object-fit:cover;margin:22px 0 26px;border-radius:calc(var(--radius) * .6)}
+.drawer-body .n{font-family:var(--font-display);font-weight:var(--display-weight,400);font-size:15px;color:var(--brand-primary);letter-spacing:.06em}
+.drawer-body h3{font-family:var(--font-display);font-weight:var(--display-weight,400);font-size:clamp(28px,4vw,38px);line-height:1.08;margin:6px 0 14px;letter-spacing:-.01em}
+.drawer-body .intro{font-size:18px;line-height:1.5;color:var(--text);margin-bottom:22px;max-width:52ch}
+.drawer-why{margin:26px 0 8px;padding:20px 22px;border-left:3px solid var(--brand-primary);background:var(--surface-2)}
+.drawer-why .eyebrow{margin-bottom:8px}
+.drawer-why p{font-size:15.5px;color:var(--text)}
+.drawer-foot{flex:none;display:flex;gap:12px;align-items:center;padding:16px 28px;border-top:1px solid var(--line);background:var(--surface)}
+.drawer-foot .phone{margin-left:auto}
+.drawer .handle{display:none;width:44px;height:4px;border-radius:2px;background:var(--line);margin:10px auto 0}
+
+/* narrow container → bottom sheet */
+@media (max-width: 820px){
+  .drawer-panel{top:auto;left:0;right:0;width:100%;height:92%;border-radius:18px 18px 0 0;transform:translateY(104%);box-shadow:0 -30px 80px rgba(0,0,0,.3)}
+  .drawer .handle{display:block}
+  .drawer-head{padding:10px 20px 14px}
+  .drawer-body{padding:0 20px 24px}
+  .drawer-foot{padding:12px 20px;flex-wrap:wrap}
+  .drawer-foot .phone{margin-left:0;width:100%;justify-content:center}
+}
+
+/* floating CTA — appears once the hero form has scrolled away */
+.fcta{position:fixed;right:22px;bottom:22px;z-index:70;display:grid;gap:12px;justify-items:center;
+  opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .3s,transform .3s;font-family:var(--font-body)}
+.fcta.is-on{opacity:1;transform:none;pointer-events:auto}
+.fab{position:relative;display:grid;place-items:center;width:52px;height:52px;border-radius:50%;
+  background:var(--brand-primary);color:#fff;border:0;padding:0;font-size:20px;text-decoration:none;cursor:pointer;
+  font-family:inherit;box-shadow:0 10px 26px rgba(221,46,68,.32);
+  transition:transform .2s,background .2s,box-shadow .2s}
+.fab:hover{background:var(--brand-primary-deep);transform:translateY(-2px);box-shadow:0 14px 32px rgba(221,46,68,.42)}
+.fab-tip{position:absolute;right:calc(100% + 12px);top:50%;transform:translateY(-50%) translateX(6px);
+  white-space:nowrap;background:var(--brand-ink);color:#fff;font-size:12.5px;font-weight:700;
+  padding:8px 12px;border-radius:var(--radius);opacity:0;pointer-events:none;
+  transition:opacity .2s,transform .2s}
+.fab:hover .fab-tip,.fab:focus-visible .fab-tip{opacity:1;transform:translateY(-50%) translateX(0)}
+@media (prefers-reduced-motion:reduce){.fab,.fab-tip{transition:none}}
+
+/* schedule sheet — the same booking component, opened from anywhere */
+.bsheet{position:fixed;inset:0;overflow:clip;z-index:90;pointer-events:none;font-family:var(--font-body)}
+.bsheet.is-open{pointer-events:auto}
+.bsheet-bg{position:absolute;inset:0;background:rgba(20,18,20,.6);opacity:0;transition:opacity .35s}
+.bsheet.is-open .bsheet-bg{opacity:1}
+.bsheet-panel{position:absolute;top:0;right:0;bottom:0;width:min(620px,100%);background:var(--surface-2);overflow-y:auto;padding:26px 28px 32px;transform:translateX(104%);transition:transform .5s cubic-bezier(.2,.7,.2,1);box-shadow:-30px 0 80px rgba(0,0,0,.25)}
+.bsheet.is-open .bsheet-panel{transform:none}
+.bsheet-panel:focus{outline:none}
+.bsheet-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.bsheet-top .eyebrow{color:var(--text-2)}
+/* =====================================================================
+   4. OPTION TOKENS — set on .device so the page, drawer, sheet and
+   booking form all inherit
+   ===================================================================== */
+:root{
+  --font-body:'Manrope',system-ui,sans-serif; --font-display:'Manrope',system-ui,sans-serif; --display-weight:800;
+  --surface:#FFFFFF; --surface-2:#F5F4F2; --surface-dark:#2C2B2E; --text:#1B1A1B; --text-2:#5F5A5C; --line:#E6E2E0; --radius:6px;
+}
+/* shared hero shell: full-width photo, dark overlay, text left / booking right */
+.hero{position:relative;color:#fff;isolation:isolate;background:var(--surface-dark)}
+.hero::before{content:"";position:absolute;inset:0;background:var(--img-city) center/cover no-repeat;opacity:.55;z-index:-2}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(24,23,26,.94) 0%,rgba(24,23,26,.8) 45%,rgba(24,23,26,.55) 100%);z-index:-1}
+.hero .wrap{display:grid;grid-template-columns:1fr 540px;gap:64px;align-items:center;padding:64px 0 72px}
+.hero .lede{color:rgba(255,255,255,.82)}
+.hero .addr{margin-top:36px;font-size:13.5px;color:rgba(255,255,255,.62);display:flex;gap:8px;align-items:center}
+
+/* =====================================================================
+   5. OPTION 1 — SMART SERVICE EXPLORER
+   ===================================================================== */
+.o1-hero h1{font-size:clamp(38px,4.6vw,62px);line-height:1.02;letter-spacing:-.025em;margin:18px 0 20px;max-width:13ch}
+.o1-hero .lede{font-size:17.5px;max-width:44ch}
+.o1-hero .ctas{margin-top:30px}
+.o1-trust{background:var(--surface);border-bottom:1px solid var(--line)}
+.o1-trust .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));align-items:center}
+.o1-trust .t{display:flex;gap:14px;align-items:center;padding:24px 22px 24px 0;border-right:1px solid var(--line)}
+.o1-trust .t+.t{padding-left:22px}
+.o1-trust .t:last-child{border-right:0}
+.o1-trust svg{font-size:24px;color:var(--brand-primary);stroke-width:1.5}
+.o1-trust b{display:block;font-size:14.5px;font-weight:700}
+.o1-trust small{display:block;font-size:12.5px;color:var(--text-2)}
+.o1-trust .link{color:var(--brand-primary);font-size:14.5px}
+.o1-intro .wrap{display:grid;grid-template-columns:5fr 6fr;gap:72px;align-items:start}
+/* the intro copy + Get a Quote ride along while the reasons list scrolls past */
+@media (min-width:821px){
+  .o1-intro .copy{position:sticky;top:104px;align-self:start}
+}
+.o1-intro h2{font-size:clamp(32px,3.6vw,48px);letter-spacing:-.025em;line-height:1.05;margin-top:14px}
+.o1-intro .copy p{color:var(--text-2);font-size:16.5px;margin-bottom:16px}
+.o1-intro .copy p:first-child{color:var(--text);font-size:19px;font-weight:600;line-height:1.45}
+.o1-reasons{margin-top:30px;border-top:1px solid var(--text);display:grid}
+.o1-reasons li{display:grid;grid-template-columns:44px 1fr;gap:16px;padding:16px 0;border-bottom:1px solid var(--line)}
+.o1-reasons .n{font-size:12px;font-weight:800;color:var(--brand-primary);letter-spacing:.1em;padding-top:4px}
+.o1-reasons b{display:block;font-size:16px;font-weight:700}
+.o1-reasons span{color:var(--text-2);font-size:14.5px}
+.o1-svc{background:var(--surface-2)}
+.o1-list{border-top:1px solid var(--text)}
+.o1-row{border-bottom:1px solid var(--line);transition:background .25s}
+.o1-row:hover,.o1-row.is-open{background:var(--surface)}
+.o1-row-btn{width:100%;display:grid;grid-template-columns:64px 48px 1fr 44px;align-items:center;gap:22px;padding:26px 16px;background:none;border:0;text-align:left;color:inherit;font-family:inherit}
+.o1-row .num{font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--text-2);font-variant-numeric:tabular-nums}
+.o1-row .ic{width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--brand-primary);font-size:22px;transition:background .25s,color .25s,border-color .25s}
+.o1-row.is-open .ic{background:var(--brand-primary);border-color:var(--brand-primary);color:#fff}
+.o1-row h3{font-family:var(--font-body);font-size:21px;font-weight:700;letter-spacing:-.01em;transition:color .2s}
+.o1-row-btn:hover h3{color:var(--brand-primary)}
+.o1-row .short{color:var(--text-2);font-size:15px;margin-top:3px}
+.o1-row .plus{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:18px;transition:transform .35s,background .2s,border-color .2s,color .2s}
+.o1-row.is-open .plus{transform:rotate(45deg);background:var(--text);border-color:var(--text);color:var(--surface)}
+.o1-row .body{padding:8px 16px 42px;display:grid;grid-template-columns:1.35fr 1fr;gap:48px}
+.o1-row .body .svc-body p:last-child{margin-bottom:0}
+.o1-row .body .side{border-left:1px solid var(--line);padding-left:32px}
+.o1-row .body .side h4{margin-top:0}
+.o1-row .body .ctas{margin-top:22px}
+.o1-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+.o1-step{position:relative}
+.o1-step .dot{width:44px;height:44px;border-radius:50%;background:var(--brand-primary);color:#fff;display:grid;place-items:center;font-weight:800;font-size:13px;position:relative;z-index:1}
+.o1-step::after{content:"";position:absolute;top:22px;left:56px;right:-32px;height:1px;background:var(--line)}
+.o1-step:last-child::after{display:none}
+.o1-step h3{font-family:var(--font-body);font-size:20px;font-weight:700;margin:20px 0 8px}
+.o1-step p{color:var(--text-2);font-size:15px}
+.o1-cost{background:var(--surface-2)}
+.o1-cost .panel{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--brand-primary);border-radius:var(--radius);padding:52px 56px;display:grid;grid-template-columns:1.4fr auto;gap:48px;align-items:center}
+.o1-cost h2{font-size:clamp(28px,3vw,40px);letter-spacing:-.02em;margin:12px 0 14px}
+.o1-cost p{color:var(--text-2);font-size:16.5px;max-width:52ch}
+.o1-cost .factors{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.o1-cost .factors span{font-size:12.5px;font-weight:600;background:var(--surface-2);border-radius:999px;padding:6px 12px;color:var(--text-2)}
+.o1-final{background:var(--brand-primary);color:#fff;position:relative;overflow:hidden}
+.o1-final::after{content:"";position:absolute;right:-120px;top:-140px;width:420px;height:420px;border-radius:50%;background:rgba(255,255,255,.07);pointer-events:none}
+.o1-final .wrap{position:relative;z-index:1}
+.o1-final .panel{background:transparent;color:#fff;border-radius:0;padding:0;display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:center;position:relative}
+.o1-final h2{font-size:clamp(32px,4vw,52px);letter-spacing:-.025em;line-height:1.02}
+.o1-final p{margin-top:14px;font-size:17px;color:rgba(255,255,255,.85);max-width:42ch}
+.o1-final .side{display:grid;gap:16px;justify-items:start;position:relative;z-index:1}
+.o1-final .btn-primary{background:#fff;color:var(--brand-primary-deep)}
+.o1-final .btn-primary:hover{background:#FCEBED}
+.o1-final .phone{font-size:26px;font-weight:800;color:#fff;letter-spacing:-.01em}
+
+/* =====================================================================
+   8. RESPONSIVE — container queries on the device frame
+   ===================================================================== */
+@media (max-width: 1100px){
+  .wrap{width:min(var(--wrap,1200px),calc(100% - 48px))}
+  .hero .wrap{grid-template-columns:1fr 460px;gap:40px}
+  .o1-trust .wrap{grid-template-columns:1fr 1fr}
+  .o1-trust .t:nth-child(2){border-right:0}
+  .o1-trust .t:nth-child(3){padding-left:0;border-top:1px solid var(--line)}
+  .o1-trust .t:nth-child(4){border-top:1px solid var(--line)}
+  .o1-steps,.o2-steps,.o3-steps{grid-template-columns:1fr 1fr}
+  .o1-step:nth-child(2)::after{display:none}
+}
+@media (max-width:900px){
+  /* nav + phone drop together as one panel under the header bar */
+  .hdr-menu{display:none;position:absolute;top:100%;left:0;right:0;background:var(--surface);
+    border-bottom:1px solid var(--line);box-shadow:0 22px 44px rgba(20,18,20,.14);padding:4px 0 16px}
+  .hdr.open .hdr-menu{display:block}
+  .menu-btn{display:grid;margin-left:auto;order:3}
+  .hdr .btn{order:2}
+  .hdr .wrap{gap:14px;min-height:68px}
+  .hdr .nav{flex-direction:column;gap:0;margin:0;padding:0 clamp(20px,5vw,32px);font-size:16px}
+  .hdr .nav a{padding:15px 0;border-bottom:1px solid var(--line)}
+  .hdr .nav a:last-child{border-bottom:0}
+  .hdr .phone{margin:16px clamp(20px,5vw,32px) 0;font-size:16px}
+}
+@media (max-width: 820px){
+  .section{--sec:80px}
+  .logo img{height:36px}
+  .sec-head{grid-template-columns:1fr;gap:16px;margin-bottom:40px}
+  .sec-head>p{justify-self:start}
+  /* hero stacks: text first, then the booking form */
+  .hero .wrap{grid-template-columns:1fr;gap:36px;padding:56px 0 64px}
+  .o1-hero h1{font-size:clamp(36px,9vw,52px)}
+  /* option 1 */
+  .o1-row-btn{grid-template-columns:44px 1fr 40px;gap:14px;padding:22px 8px}
+  .o1-row .ic{display:none}
+  .o1-row .body{grid-template-columns:1fr;padding:0 8px 30px 8px;gap:24px}
+  .o1-row .body .side{border-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:20px}
+  .o1-intro .wrap,.o2-intro .wrap,.o2-spokane .wrap,.o2-feat .wrap,.o3-intro .wrap,.o3-spokane .wrap,.o3-feat .wrap,.o3-faq .wrap,.o3-cost .wrap,.o2-final .wrap,.o3-final .wrap{grid-template-columns:1fr;gap:32px}
+  .o1-cost .panel,.o2-cost .panel{grid-template-columns:1fr;padding:36px 28px;gap:28px}
+  .o1-final .panel{grid-template-columns:1fr;padding:0;gap:30px}
+  /* option 2 */
+  /* option 3 */
+}
+@media (max-width: 520px){
+  .wrap{width:min(var(--wrap,1200px),calc(100% - 36px))}
+  .section{--sec:64px}
+  .hdr .btn{display:none}
+  .ctas{flex-direction:column;align-items:stretch}
+  .ctas .btn{width:100%}
+  .ctas .link,.ctas .phone{justify-content:center}
+  .o1-trust .wrap{grid-template-columns:1fr}
+  .o1-trust .t,
+  .o1-trust .t+.t,
+  .o1-trust .t:nth-child(3){border-right:0;border-top:1px solid var(--line);padding:16px 0}
+  .o1-trust .t:first-child{border-top:0}
+  .o1-trust .t svg{flex:none}
+  .o1-steps,.o2-steps,.o3-steps{grid-template-columns:1fr;gap:0}
+  .o1-step{display:grid;grid-template-columns:44px 1fr;gap:4px 16px;padding-bottom:28px}
+  .o1-step .dot{grid-row:span 2}
+  .o1-step h3{margin:8px 0 6px}
+  .o1-step::after{top:52px;left:21px;right:auto;bottom:0;width:1px;height:auto}
+  .o1-step:nth-child(2)::after{display:block}
+  .o1-final .phone{font-size:22px}
+}
+
+/* explorer chrome on small windows */
+
+
+
+
+/* ---------- live-parity content blocks ---------- */
+.hero .rating{display:inline-flex;align-items:center;gap:8px;margin-top:18px;font-size:13.5px;font-weight:700;
+  color:#fff;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);
+  border-radius:999px;padding:7px 15px}
+.hero .rating .stars{color:var(--brand-accent);letter-spacing:.06em}
+
+/* why-we're-trusted band */
+.o1-trust-copy{background:var(--surface-dark);color:rgba(255,255,255,.72)}
+.o1-trust-copy .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:40px 72px;
+  align-items:stretch;padding:84px 0}
+.o1-trust-copy .wrap>div:first-child{display:flex;flex-direction:column;justify-content:center}
+.o1-trust-copy .eyebrow{color:var(--brand-accent)}
+.o1-trust-copy h2{color:#fff;font-size:clamp(28px,3.2vw,42px);letter-spacing:-.025em;line-height:1.06;margin:14px 0 20px}
+.o1-trust-copy p{font-size:16.5px;line-height:1.75;color:rgba(255,255,255,.68)}
+.trust-quad{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;align-content:stretch;
+  border:1px solid rgba(255,255,255,.14);border-radius:var(--radius)}
+.quad{display:grid;gap:13px;align-content:center;justify-items:center;text-align:center;padding:36px 20px}
+.quad:nth-child(odd){border-right:1px solid rgba(255,255,255,.14)}
+.quad:nth-child(-n+2){border-bottom:1px solid rgba(255,255,255,.14)}
+.quad svg{font-size:34px;color:var(--brand-accent);stroke-width:1.4}
+.quad b{color:#fff;font-size:12.5px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;line-height:1.4}
+/* credentials card: award artwork and caption stay on ONE row and the card
+   hugs them — the same read as the .hero-certs strip on the locations page. */
+.awards{display:flex;align-items:center;gap:20px;flex-wrap:nowrap;margin-top:30px;
+  align-self:flex-start;width:fit-content;max-width:100%;
+  background:#fff;border-radius:var(--radius);padding:18px 22px}
+.awards img{height:70px;width:auto;display:block;flex:0 0 auto}
+.awards p{font-size:12.5px;color:var(--text-2);font-weight:600;line-height:1.5;
+  flex:0 1 auto;min-width:0;max-width:26ch;margin:0}
+/* narrow two-column range: shrink the badges so the caption still fits beside them */
+@media (min-width:901px) and (max-width:1200px){
+  .awards img{height:58px}
+  .awards p{max-width:22ch;font-size:12px}
+  .awards{gap:16px;padding:16px 18px}
+}
+@media (max-width:900px){
+  .o1-trust-copy .wrap{grid-template-columns:1fr;gap:32px;padding:64px 0}
+  .awards{gap:22px;padding:18px 22px}
+  .awards img{height:84px}
+  .awards p{max-width:28ch}
+}
+@media (max-width:520px){
+  .quad{padding:26px 14px}.quad b{font-size:11.5px;letter-spacing:.12em}
+  .awards{flex-direction:column;justify-content:center;text-align:center;gap:14px;padding:18px 16px;
+    align-self:stretch;width:auto}
+  .awards img{height:auto;width:100%;max-width:300px;margin:0 auto}
+  .awards p{flex:none;max-width:none}
+}
+
+/* service category chips */
+/* service tiles double as the directory filter */
+.svc-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  margin-top:38px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.svc-status{font-size:13.5px;font-weight:700;color:var(--brand-primary);letter-spacing:.04em}
+.svc-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:22px;padding:0;list-style:none}
+.svc-tile{position:relative;display:block;width:100%;padding:0;border:0;border-radius:var(--radius);
+  overflow:hidden;aspect-ratio:4/3;background:var(--surface-dark);cursor:pointer;isolation:isolate}
+.svc-tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.svc-tile::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(18,16,18,.92),rgba(18,16,18,.58) 42%,rgba(18,16,18,.06) 78%)}
+.svc-tile .t-label{position:absolute;left:0;right:0;bottom:0;z-index:1;display:grid;gap:3px;padding:16px 18px;text-align:left}
+.svc-tile .t-name{color:#fff;font-size:16.5px;font-weight:800;letter-spacing:-.01em;line-height:1.2}
+.svc-tile .t-n{color:rgba(255,255,255,.74);font-size:12.5px;font-weight:600}
+.svc-tile:hover img{transform:scale(1.05)}
+.svc-tile[aria-pressed="true"]{box-shadow:0 0 0 2px var(--brand-primary)}
+.svc-tile[aria-pressed="true"] .t-n{color:var(--brand-accent)}
+.tile-reset{display:inline-flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--line);
+  border-radius:999px;padding:10px 18px;font-size:13.5px;font-weight:700;color:var(--text);
+  transition:border-color .2s,background .2s,color .2s}
+.tile-reset:hover{border-color:var(--brand-primary);color:var(--brand-primary)}
+.tile-reset[aria-pressed="true"]{background:var(--brand-primary);border-color:var(--brand-primary);color:#fff}
+.svc-card[hidden]{display:none}
+.svc-more{display:flex;justify-content:center;margin-top:38px}
+.svc-more[hidden]{display:none}
+@media (prefers-reduced-motion:reduce){.svc-tile img{transition:none}}
+@media (max-width:900px){.svc-tiles{grid-template-columns:1fr 1fr;gap:14px}}
+@media (max-width:520px){.svc-tile .t-name{font-size:15px}.svc-tile .t-label{padding:13px 14px}}
+@media (max-width:420px){.svc-tiles{grid-template-columns:1fr}}
+
+/* the full 92-service solutions grid */
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:22px}
+.svc-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:26px 26px 28px;transition:border-color .2s,box-shadow .2s,transform .2s}
+.svc-card:hover{border-color:var(--brand-primary);box-shadow:0 16px 40px rgba(20,18,20,.08);transform:translateY(-2px)}
+.svc-card h3{font-size:17px;font-weight:800;letter-spacing:-.01em;line-height:1.3;margin:0 0 12px;
+  padding-bottom:12px;border-bottom:1px solid var(--line)}
+.svc-card p{font-size:14.5px;line-height:1.72;color:var(--text-2);margin:0}
+.svc-count{font-size:13.5px;font-weight:700;color:var(--brand-primary);letter-spacing:.04em}
+
+/* serving nearby areas */
+.areas{background:var(--surface-2)}
+.areas .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:30px 64px;align-items:center}
+.areas h2{font-size:clamp(32px,3.6vw,48px);letter-spacing:-.02em;line-height:1.06;margin:14px 0 18px}
+.area-list{display:flex;flex-wrap:wrap;gap:12px;margin:0;padding:0;list-style:none}
+.area-list li{display:inline-flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);padding:13px 20px;font-size:15px;font-weight:600}
+.area-list svg{font-size:16px;color:var(--brand-primary)}
+
+/* contact block */
+.o1-contact{background:var(--surface-2);border-top:1px solid var(--line)}
+.o1-contact .wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:36px 64px;align-items:start}
+.contact-lines{margin-top:24px;display:grid;gap:14px;font-size:16px}
+.contact-lines a{color:inherit;font-weight:700;text-decoration:none}
+.contact-lines a:hover{color:var(--brand-primary)}
+.contact-lines .row{display:flex;gap:12px;align-items:flex-start}
+.contact-lines svg{font-size:18px;color:var(--brand-primary);flex:none;margin-top:2px}
+.why-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:32px 30px}
+.why-card h3{font-size:20px;font-weight:800;letter-spacing:-.01em;margin:0 0 18px}
+.why-card ul{margin:0;padding:0;list-style:none;display:grid;gap:13px}
+.why-card li{display:flex;gap:11px;align-items:flex-start;font-size:15px;line-height:1.6}
+.why-card svg{font-size:17px;color:var(--brand-primary);flex:none;margin-top:2px}
+
+@media (max-width:900px){
+  .areas .wrap,.o1-contact .wrap{grid-template-columns:1fr;gap:26px}
+}
+@media (max-width:520px){
+  .svc-grid{grid-template-columns:1fr;gap:16px}
+  .svc-card{padding:22px 20px 24px}
+}
+
+/* =====================================================================
+   FOOTER — the hearth. One ember seam, one statement, one quiet info
+   band, then the service roll: every town Chimcare serves, set as a
+   flowing index instead of a wall of columns.
+   ===================================================================== */
+.ftr{position:relative;background:#171415;color:rgba(255,255,255,.70);font-family:var(--font-body)}
+.ftr::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--brand-accent) 22%,var(--brand-primary) 60%,transparent);opacity:.9}
+.ftr a{color:inherit;text-decoration:none;transition:color .18s}
+.ftr .hairline{border-top:1px solid rgba(255,255,255,.08)}
+
+/* statement + last call to action */
+.ftr-cta .wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:28px 56px;padding:66px 0 58px}
+.ftr-cta .eyebrow{color:var(--brand-primary)}
+.ftr-cta h3{color:#fff;font-size:clamp(28px,3.4vw,44px);font-weight:800;letter-spacing:-.03em;line-height:1.06;
+  margin:12px 0 10px;max-width:16ch}
+.ftr-cta .sub{font-size:15px;max-width:46ch}
+.ftr-cta .acts{justify-self:end;text-align:right}
+.fgo{display:inline-flex;align-items:center;gap:13px;color:#fff;font-size:13.5px;font-weight:800;
+  letter-spacing:.16em;text-transform:uppercase;padding-bottom:11px;position:relative;white-space:nowrap}
+.fgo::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;
+  background:linear-gradient(90deg,var(--brand-accent),var(--brand-primary))}
+.fgo .ico{color:var(--brand-accent);font-size:17px;transition:transform .25s}
+.fgo:hover .ico{transform:translateX(5px)}
+.ftel{margin-top:13px;font-size:13.5px;color:rgba(255,255,255,.48)}
+.ftel a{color:rgba(255,255,255,.78);font-weight:700}
+.ftel a:hover{color:var(--brand-accent)}
+
+/* one line of who and where we are */
+.ftr-info{padding:26px 0}
+.ftr-info .wrap{display:flex;align-items:center;gap:16px 34px;flex-wrap:wrap;font-size:13.5px}
+.ftr-info .logo-chip{background:#fff;border-radius:5px;padding:5px 10px;flex:none}
+.ftr-info .logo-chip img{display:block;height:26px;width:auto}
+.ftr-info .meta{display:flex;gap:6px 12px;flex-wrap:wrap;align-items:baseline}
+.ftr-info .meta a:hover{color:var(--brand-accent)}
+.ftr-info .meta .co{color:rgba(255,255,255,.42)}
+.ftr-info .dot,.ftr-nav .dot{color:rgba(255,255,255,.22)}
+.ftr-info .soc{margin-left:auto;display:flex;gap:15px;align-items:center}
+.ftr-info .soc a{font-size:15px;color:rgba(255,255,255,.45)}
+.ftr-info .soc a:hover{color:var(--brand-accent)}
+.ftr-nav{padding:0 0 26px}
+.ftr-nav .wrap{display:flex;gap:6px 12px;flex-wrap:wrap;font-size:13.5px;color:rgba(255,255,255,.55)}
+.ftr-nav a:hover{color:#fff}
+
+/* the service roll */
+.ftr-roll{padding:44px 0 52px}
+.ftr-roll h4{font-size:16px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#fff;margin:0 0 30px}
+.ftr-roll .row{display:grid;grid-template-columns:148px minmax(0,1fr);gap:6px 30px;align-items:baseline;
+  padding:13px 0;border-top:1px solid rgba(255,255,255,.06)}
+.ftr-roll .stl{color:#fff;font-size:12.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+.ftr-roll ul{margin:0;padding:0;list-style:none;font-size:14px;line-height:2.05}
+.ftr-roll li{display:inline}
+.ftr-roll li:not(:last-child)::after{content:"\00a0\00b7\0020";color:rgba(255,255,255,.22)}
+.ftr-roll li a{color:rgba(255,255,255,.62);white-space:nowrap}
+.ftr-roll li a:hover{color:var(--brand-accent)}
+
+/* legal line */
+.ftr-bar{font-size:12.5px;color:rgba(255,255,255,.40)}
+.ftr-bar .wrap{display:flex;justify-content:space-between;align-items:center;gap:8px 22px;flex-wrap:wrap;padding:18px 0}
+
+@media (max-width:1040px){
+  .ftr-cta .wrap{grid-template-columns:1fr;padding:54px 0 46px}
+  .ftr-cta .acts{justify-self:start;text-align:left}
+}
+@media (max-width:820px){
+  .ftr-info .soc{margin-left:0}
+  .ftr-roll .row{grid-template-columns:1fr;gap:2px;padding:15px 0}
+  .ftr-roll ul{line-height:2.15}
+}
+@media (max-width:520px){
+  .ftr-cta .wrap{padding:46px 0 40px}
+  .ftr-bar .wrap{flex-direction:column;align-items:flex-start;gap:6px}
+}
+
+
+/* =====================================================================
+   9. FINAL PAGE — breadcrumb, booking iframe, and the bits the device
+   frame used to provide.
+   ===================================================================== */
+.book-slot{width:100%;max-width:540px;justify-self:end;min-width:0}
+.skip{position:absolute;left:-9999px;top:0;z-index:200;background:var(--brand-primary);color:#fff;
+  padding:12px 18px;border-radius:0 0 var(--radius) 0;font-weight:700;text-decoration:none}
+.skip:focus{left:0}
+.crumbs{display:flex;gap:10px;align-items:center;font-size:12.5px;color:rgba(255,255,255,.55);
+  margin-bottom:22px;flex-wrap:wrap}
+.crumbs a{text-decoration:none}
+.crumbs a:hover{color:#fff}
+body.no-scroll{position:fixed;left:0;right:0;width:100%;overflow:hidden}
+
+
+/* floating actions: a stack of round brand buttons, like the live site */
+@media (max-width:820px){
+  .fcta{right:14px;bottom:calc(14px + env(safe-area-inset-bottom));gap:10px}
+  .fab{width:48px;height:48px;font-size:19px}
+  .fab-tip{display:none}
+}
+@media (max-width:820px){
+  .book-slot{max-width:none;justify-self:stretch}
+  .bsheet-panel{top:auto;left:0;right:0;width:100%;height:94%;border-radius:18px 18px 0 0;
+    transform:translateY(104%);padding:18px 16px 28px;box-shadow:0 -30px 80px rgba(0,0,0,.3)}
+}
+
+
+/* =====================================================================
+   HERO — light and photographic (replaces the dark gradient treatment).
+   Copy and a real job photograph on the left, the live booking form on
+   the right, all on a warm off-white ground.
+   ===================================================================== */
+.hero{background:var(--surface-2);color:var(--text);border-bottom:1px solid var(--line)}
+.hero::before,.hero::after{content:none!important}
+.hero .wrap{grid-template-columns:minmax(0,1fr) minmax(0,480px);gap:clamp(34px,4.5vw,60px);
+  padding:clamp(30px,4vw,48px) 0 clamp(48px,5vw,72px);align-items:start}
+.hero .lede{color:var(--text-2)}
+.hero .addr{color:var(--text-2)}
+.hero .addr svg{color:var(--brand-red)}
+.hero .rating{color:var(--text);background:#fff;border:1px solid var(--line)}
+.hero .btn-outline{border-color:var(--line);color:var(--text)}
+.hero .btn-outline:hover{border-color:var(--text);background:rgba(0,0,0,.04)}
+.crumbs{color:var(--text-2)}
+.crumbs a:hover{color:var(--brand-red)}
+.o1-hero h1{color:var(--text)}
+.o1-hero .eyebrow{color:var(--brand-red)}
+
+.hero-figure{margin:34px 0 0;position:relative;max-width:520px}
+.hero-figure>img{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;border-radius:12px;
+  box-shadow:0 22px 50px rgba(27,26,27,.16)}
+.hero-figure figcaption{position:absolute;right:14px;top:14px;background:rgba(255,255,255,.95);
+  color:var(--brand-ink);font-size:11.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  padding:7px 12px;border-radius:999px;box-shadow:0 6px 16px rgba(27,26,27,.14)}
+
+/* real award artwork, sat under the trust strip */
+.o1-trust .t-awards{gap:16px}
+.o1-trust .t-awards img{height:62px;width:auto}
+
+@media (max-width:980px){
+  .hero .wrap{grid-template-columns:1fr}
+  .hero-figure{max-width:none;order:2}
+}
+
+/* =====================================================================
+   HERO v3 — the job photograph carries the whole section. The <figure>
+   is promoted to a full-bleed background plate (kept as a real <img> so
+   it stays the LCP element and keeps its alt text); the copy sits on a
+   left-weighted scrim, the booking card floats over the lighter side.
+   ===================================================================== */
+.hero{background:var(--surface-dark);color:#fff;border-bottom:0}
+.hero .wrap{align-items:center;padding:clamp(44px,5vw,72px) 0 clamp(52px,5.5vw,84px)}
+
+.hero-figure{position:absolute;inset:0;margin:0;max-width:none;z-index:-1;overflow:hidden;
+  animation:heroPlate 1.2s cubic-bezier(.2,.7,.2,1) both}
+.hero-figure>img{width:100%;height:100%;aspect-ratio:auto;object-fit:cover;object-position:50% 42%;
+  border-radius:0;box-shadow:none;
+  /* pulls a cool, high-key daylight photo toward the warm hearth palette */
+  filter:saturate(.62) sepia(.42) brightness(.82) contrast(1.06)}
+/* warm scrim: deep roasted brown on the copy side, amber glow on the open side */
+.hero-figure::after{content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(120% 90% at 78% 62%,rgba(249,168,37,.28) 0%,rgba(249,168,37,0) 60%),
+    linear-gradient(100deg,rgba(28,17,8,.84) 0%,rgba(32,19,9,.78) 34%,
+      rgba(38,22,10,.58) 60%,rgba(46,26,11,.42) 100%)}
+/* "Since 1989" is repeated, larger, in the trust strip directly below, so the
+   photo caption stays for screen readers only rather than sitting on the art. */
+.hero-figure figcaption{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+@keyframes heroPlate{from{opacity:0;transform:scale(1.05)}to{opacity:1;transform:none}}
+
+/* copy reads light over the photograph — .hero.o1-hero outranks the later
+   `.hero .eyebrow{color:var(--brand-red-deep)}` rule, unreadable on the scrim */
+.o1-hero h1{color:#fff}
+.hero.o1-hero .eyebrow{color:var(--brand-red)}
+.hero .lede{color:rgba(255,255,255,.84)}
+.hero .addr{color:rgba(255,255,255,.66)}
+.hero .addr svg{color:var(--brand-red)}
+.crumbs{color:rgba(255,255,255,.58)}
+.crumbs a{color:rgba(255,255,255,.82)}
+.crumbs a:hover{color:#fff}
+.hero .btn-outline{border-color:rgba(255,255,255,.42);color:#fff}
+.hero .btn-outline:hover{border-color:#fff;background:rgba(255,255,255,.14)}
+
+@media (max-width:980px){
+  /* stacked: the plate still covers the section, the scrim just goes vertical */
+  .hero-figure{order:0}
+  .hero-figure>img{object-position:50% 45%}
+  .hero-figure::after{background:
+    radial-gradient(140% 60% at 50% 78%,rgba(249,168,37,.22) 0%,rgba(249,168,37,0) 65%),
+    linear-gradient(180deg,rgba(28,17,8,.80) 0%,rgba(32,19,9,.74) 45%,rgba(24,14,6,.84) 100%)}
+}
+@media (prefers-reduced-motion:reduce){
+  .hero-figure{animation:none}
+}
+
+/* =====================================================================
+   STICKY MOBILE CTA BAR — Call Now | Book Online (mobile only).
+   ===================================================================== */
+.sfoot{position:fixed;left:0;right:0;bottom:0;z-index:81;display:none;gap:10px;
+  background:linear-gradient(to top,rgba(255,255,255,.98) 62%,rgba(255,255,255,0));
+  padding:12px 14px calc(12px + env(safe-area-inset-bottom));
+  transform:translateY(100%);transition:transform .3s ease}
+.sfoot-btn{flex:1 1 50%;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:54px;border:0;border-radius:999px;font-weight:700;font-size:15.5px;letter-spacing:-.005em;
+  color:#fff;text-decoration:none;cursor:pointer;box-shadow:0 10px 26px rgba(20,18,20,.26);font-family:inherit}
+.sfoot-btn svg{width:18px;height:18px;flex:none}
+.sfoot-call{background:var(--brand-red)}
+.sfoot-call:hover{background:var(--brand-red-deep)}
+.sfoot-book{background:var(--brand-ink)}
+.sfoot-book:hover{background:#000}
+.sfoot-btn:focus-visible{outline:3px solid var(--brand-accent);outline-offset:2px}
+@media (max-width:900px){
+  .sfoot{display:flex;transform:translateY(0)}
+  body{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+  body.no-scroll .sfoot{transform:translateY(100%);pointer-events:none}
+  .fcta{display:none}
+}
+@media (prefers-reduced-motion:reduce){.sfoot{transition:none}}
+
+/* ---- desktop: the same bar, shrunk to a floating pill so it never covers
+   the page. Bottom-centre keeps it clear of the .fcta rail on the right. ---- */
+@media (min-width:901px){
+  .sfoot{display:flex;left:50%;right:auto;bottom:22px;width:auto;gap:8px;
+    transform:translateX(-50%);
+    background:rgba(255,255,255,.94);backdrop-filter:blur(10px);
+    border:1px solid var(--line);border-radius:999px;padding:8px;
+    box-shadow:0 16px 44px rgba(20,18,20,.20);
+    transition:opacity .25s ease,visibility .25s ease}
+  .sfoot-btn{flex:0 0 auto;min-height:44px;padding:0 22px;font-size:14.5px;box-shadow:none}
+  .sfoot-btn svg{width:16px;height:16px}
+  /* out of the way while the booking sheet is open */
+  body.no-scroll .sfoot{opacity:0;visibility:hidden;pointer-events:none}
+  /* keep the last footer row clear of the pill */
+  .ftr .ftr-legal .wrap{padding-bottom:92px}
+}
+
+
+/* =====================================================================
+   BOOKING FORM — a static replica of the live Chimcare (Workiz) widget.
+   Only the Service step is interactive; the rest are indicator dots.
+   ===================================================================== */
+.book{--bk-blue:#3E9BEE;--bk-ink:#2E3A44;--bk-muted:#8A99A6;--bk-line:#DDE4EA;--bk-panel:#F1F5F8;
+  background:#fff;border-radius:6px;overflow:hidden;width:100%;font-family:var(--font-body);
+  box-shadow:0 30px 80px rgba(0,0,0,.35);line-height:1.5;color:var(--bk-ink)}
+.bsheet .book{box-shadow:0 10px 40px rgba(0,0,0,.08)}
+.book-head{padding:22px 26px 18px;background:#fff}
+.book-head h3{font-family:var(--font-body);font-size:19px;font-weight:800;letter-spacing:-.01em;color:#22303B}
+.book-head p{margin-top:5px;font-size:13px;color:var(--bk-muted)}
+.book-body{background:var(--bk-panel);padding:26px 26px 30px}
+.book-foot{background:#fff;height:44px}
+
+.steps{display:grid;grid-template-columns:repeat(4,1fr);position:relative;margin:0 0 26px;padding:0}
+.steps::before{content:"";position:absolute;z-index:0;top:11px;left:12.5%;width:75%;height:2px;background:var(--bk-line)}
+.step{position:relative;z-index:1;display:grid;justify-items:center;gap:9px}
+.step .dot{width:24px;height:24px;border-radius:50%;background:#CFD8E0;
+  box-shadow:0 0 0 4px var(--bk-panel);transition:background .25s,box-shadow .25s}
+.step.is-active .dot{background:var(--bk-blue);border:5px solid #fff;
+  box-shadow:0 0 0 3px var(--bk-blue),0 0 0 7px var(--bk-panel)}
+.step .lbl{font-size:12.5px;font-weight:600;color:transparent}
+.step.is-active .lbl{color:var(--bk-blue)}
+
+.book-q{font-size:15.5px;color:#55636E;margin:0 0 16px}
+.svc-opts{display:grid;gap:12px}
+.svc-opt{position:relative;width:100%;min-height:60px;padding:16px 18px;border:0;border-radius:7px;
+  background:#fff;color:var(--bk-ink);font-family:inherit;font-size:15.5px;font-weight:500;
+  text-align:center;box-shadow:0 1px 3px rgba(31,45,58,.10),0 6px 14px rgba(31,45,58,.05);
+  transition:color .2s,box-shadow .2s}
+.svc-opt::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:7px 0 0 7px;
+  background:var(--bk-blue);opacity:0;transition:opacity .2s}
+.svc-opt:hover,.svc-opt[aria-checked="true"]{color:var(--bk-blue);
+  box-shadow:0 1px 3px rgba(62,155,238,.18),0 8px 20px rgba(62,155,238,.14)}
+.svc-opt:hover::before,.svc-opt[aria-checked="true"]::before{opacity:1}
+.svc-opt:focus-visible{outline:3px solid var(--brand-accent);outline-offset:2px}
+
+@media (max-width:520px){
+  .book-head{padding:18px 18px 14px}
+  .book-head h3{font-size:17px}
+  .book-body{padding:22px 18px 26px}
+  .step .lbl{font-size:11.5px}
+  .svc-opt{font-size:14.5px;padding:15px 14px;min-height:56px}
+}
+
+
+/* --- contrast: red text on a tinted ground uses the deeper brand shade --- */
+.coverage .eyebrow,.coverage .link-red,.hero .eyebrow,.tinted .eyebrow,.tinted .link-red{color:var(--brand-red-deep)}
+/* --- contrast: red on the near-black footer needs a lighter tint --- */
+.ftr .eyebrow,.ftr-cta .eyebrow{color:#EF6E80}
+.ftr-bar{color:rgba(255,255,255,.62)}
+
+/* =====================================================================
+   FOOTER — ported from chimcare-home-v1. Four columns (brand, services,
+   states, contact) over a legal row. The .ftr-cta / .ftr-info / .ftr-nav
+   rules above are left in place but no longer used by the markup.
+   ===================================================================== */
+.ftr{background:#200609}
+.ftr-main{padding:clamp(52px,6vw,72px) 0 0}
+.ftr-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:40px;padding-bottom:44px}
+.ftr-brand .logo-chip{display:inline-flex;background:#fff;border-radius:9px 9px 9px 0;padding:8px 12px}
+.ftr-brand .logo-chip img{display:block;height:36px;width:auto}
+.ftr-brand p{margin:16px 0 0;font-size:14px;line-height:1.7;color:rgba(255,255,255,.55);max-width:30ch}
+.ftr-col h4{margin:0 0 14px;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+.ftr-links{display:flex;flex-direction:column;gap:9px;align-items:flex-start}
+.ftr-links.two{display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;align-items:start}
+.ftr-links a{font-size:14px;line-height:1.5;color:rgba(255,255,255,.66);text-align:left;transition:color .2s}
+.ftr-links a:hover{color:#fff}
+.ftr-more{margin:10px 0 0;font-size:13px;color:rgba(255,255,255,.45)}
+.ftr-contact{display:flex;flex-direction:column;gap:9px;font-size:14.5px;color:rgba(255,255,255,.66)}
+.ftr-contact .tel{color:rgba(255,255,255,.86);font-weight:700;white-space:nowrap}
+.ftr-contact a:hover{color:#fff}
+.ftr-contact .soc{display:flex;gap:14px;margin-top:8px}
+.ftr-contact .soc a{font-size:13.5px;font-weight:600;color:rgba(255,255,255,.66)}
+.ftr-legal{border-top:1px solid rgba(255,255,255,.12);font-size:13px;color:rgba(255,255,255,.45)}
+.ftr-legal .wrap{display:flex;justify-content:space-between;gap:12px 24px;flex-wrap:wrap;padding:20px 0 26px}
+.ftr-legal .policies{display:flex;gap:16px;flex-wrap:wrap}
+.ftr-legal a{color:rgba(255,255,255,.45);cursor:default}
+.ftr-legal a:hover{color:#fff}
+@media (max-width:700px){
+  .ftr-cols{gap:32px}
+  .ftr-legal .wrap{flex-direction:column;gap:14px}
+}
+
+/* Chimcare's own four-up graphic replaces the hand-built quad in the
+   Why Chimcare band. The source art is only 361px wide, so it is held to a
+   modest upscale rather than stretched across the whole column. */
+.trust-art{margin:0;display:flex;align-items:center;justify-content:center}
+.trust-art img{width:100%;max-width:460px;height:auto;display:block;border-radius:var(--radius)}
+@media (max-width:900px){.trust-art img{max-width:400px}}
+
+/* --- the contact block is hidden for now; the sticky Call / Book bar and the
+   header both already carry the phone number --- */
+.o1-contact{display:none!important}
+
+/* --- trust bar: hold four across on tablet. The rule further up drops to
+   1fr 1fr below 1100px, which put iPad portrait and landscape into a 2x2.
+   Four abreast down to 760px, with the padding and type tightened so the
+   labels still fit the narrower cells. --- */
+@media (max-width:1100px) and (min-width:761px){
+  .o1-trust .wrap{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .o1-trust .t{padding:20px 12px 20px 0}
+  .o1-trust .t+.t{padding-left:12px}
+  .o1-trust .t{gap:10px}
+  .o1-trust svg{font-size:21px}
+  .o1-trust b{font-size:13.5px;line-height:1.25}
+  .o1-trust small{font-size:11.5px;line-height:1.35}
+  .o1-trust .t-awards img{height:46px}
+}
+
+/* --- phone: centre the hero the way the Locations and Washington heroes
+   centre once they drop to a single column --- */
+@media (max-width:680px){
+  .hero .wrap{text-align:center}
+  .hero .crumbs{justify-content:center}
+  .hero h1,.hero .lede{margin-inline:auto}
+  .hero .ctas{justify-content:center}
+  .hero .addr{justify-content:center}
+  .hero .rating{margin-inline:auto}
+  .hero .book-slot{margin-inline:auto}
+  /* the eyebrow is a grid item pinned to the start, so centring its text
+     is not enough — it has to be centred in its track too */
+  .hero .eyebrow{justify-self:center;text-align:center}
+  /* the booking card keeps its own left-aligned layout; only the hero copy
+     around it is centred */
+  .hero .book-slot,.hero .book{text-align:left}
+}
+
+/* --- phone: the trust row stays two-up, matching the other two pages,
+   rather than collapsing to a single column --- */
+
+
+/* =====================================================================
+   TRUST ROW DIVIDERS — one rule set for every width.
+
+   The grid carried `align-items:center`, so each cell shrank to its own
+   content instead of filling the row. A short cell (the awards image) then
+   sat vertically centred, its borders landing at a different y than the
+   taller cell beside it — so the horizontal rule covered only half the row
+   and the vertical rule broke at the intersection. Stretching every cell is
+   what actually closes the lines; the border rules below just say where they
+   go. Selectors are qualified with .wrap because an older single-column
+   block groups `.o1-trust .t + .t`, which outranks a plain `.o1-trust .t`.
+   ===================================================================== */
+.o1-trust .wrap{align-items:stretch}
+.o1-trust .wrap .t,
+.o1-trust .wrap .t+.t,
+.o1-trust .wrap .t:nth-child(3),
+.o1-trust .wrap .t:nth-child(4){border:0}
+
+/* four across: a rule between each pair, none underneath */
+@media (min-width:761px){
+  .o1-trust .wrap .t:not(:last-child){border-right:1px solid var(--line)}
+}
+
+/* two across: one rule down the middle, one between the rows */
+@media (max-width:760px){
+  .o1-trust .wrap .t:nth-child(2n+1){border-right:1px solid var(--line)}
+  .o1-trust .wrap .t:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .o1-trust .wrap .t,
+  .o1-trust .wrap .t+.t,
+  .o1-trust .wrap .t:nth-child(3){padding:18px 16px;gap:12px;align-items:flex-start}
+  .o1-trust .wrap .t>svg{margin-top:3px;flex:none}
+}
+
+/* phone: run the grid to the section edges so the horizontal rule reaches
+   both ends instead of stopping at .wrap's 32px inset */
+@media (max-width:520px){
+  /* an older rule at this breakpoint drops to one column; keep the 2x2 */
+  .o1-trust .wrap{width:100%;max-width:none;grid-template-columns:1fr 1fr}
+  .o1-trust .wrap .t:nth-child(2n+1){padding-left:24px}
+  .o1-trust .wrap .t:nth-child(2n){padding-right:24px}
+  .o1-trust b{font-size:13.5px}
+  .o1-trust small{font-size:11.5px}
+  .o1-trust .t-awards img{height:42px}
+}
+
+/* =====================================================================
+   CITY-PAGE TEMPLATE (Spokane) — the approved mobile-first structure.
+   Appended last so it wins over the earlier passes without editing them.
+   Reuse this whole block on the other city pages.
+   ===================================================================== */
+
+/* ---------- 1. STANDARD HEADER ------------------------------------- */
+.hdr .wrap{gap:16px}
+.hdr .logo img{height:38px}
+/* BBB slot — a marked placeholder, never a drawn BBB mark */
+.hdr-bbb{flex:none;width:auto;height:36px;display:block}
+/* red tap-to-call — the #1 conversion, mobile only */
+.hdr-call{display:none;align-items:center;gap:7px;flex:none;min-height:40px;padding:0 15px;
+  border-radius:999px;background:var(--brand-red);color:#fff;text-decoration:none;
+  font-weight:800;font-size:14.5px}
+.hdr-call:hover{background:var(--brand-red-deep)}
+.hdr-call svg{width:17px;height:17px;stroke-width:2.2}
+.hdr .phone-bar{display:none}
+.hdr-book{white-space:nowrap}
+
+@media (min-width:901px){
+  /* BBB · phone · booking travel together as one right-hand cluster, so the
+     auto margin sits on the BBB rather than stranding it beside the nav */
+  .hdr-bbb{margin-left:auto;height:40px}
+  .hdr .phone-bar{display:inline-flex;margin-left:0;font-size:16.5px;font-weight:800;letter-spacing:-.01em}
+  .hdr .phone-panel{display:none}
+}
+@media (max-width:900px){
+  .menu-btn{order:-1;margin-left:0}
+  .hdr .logo{margin-right:auto}
+  .hdr-call{display:inline-flex;order:2}
+  .hdr-bbb{order:1}
+  .hdr .btn.hdr-book{order:3}
+  .hdr .wrap{gap:10px}
+}
+@media (max-width:520px){
+  /* the booking CTA lives in the hero and the sticky bar at this width */
+  .hdr .wrap{gap:8px}
+  .hdr .logo img{height:32px}
+  .hdr-bbb{height:30px}
+}
+@media (max-width:360px){
+  /* the call button goes icon-only, which frees enough room to keep the BBB
+     accreditation visible even at 320px */
+  .hdr-call span{display:none}
+  .hdr-call{padding:0 13px}
+  .hdr-bbb{height:28px}
+}
+
+/* ---------- 2. HERO HIERARCHY -------------------------------------- */
+/* trust line — CSIA Certified · Since 1989 · Local */
+/* the locality eyebrow reads as a quiet label: brand red measures only
+   3.1:1 on the photograph, so on-dark it goes white (the red stays on the
+   CTAs, where it belongs) */
+.hero.o1-hero .eyebrow{color:rgba(255,255,255,.74);margin:0 0 10px}
+.trust-line{list-style:none;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;
+  margin:0 0 18px;padding:0}
+.trust-line li{display:inline-flex;align-items:center;gap:6px;
+  font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:rgba(255,255,255,.92)}
+.trust-line li+li::before{content:"·";margin-right:8px;color:rgba(255,255,255,.45);font-weight:700}
+.trust-line svg{width:15px;height:15px;flex:none;stroke-width:2;color:var(--brand-accent)}
+
+/* review + award badges, then the address underneath */
+.hero-proof{display:flex;align-items:center;gap:16px 20px;flex-wrap:wrap;margin-top:26px}
+.hero-proof .rating{margin:0}
+.hero .addr{margin-top:16px;color:rgba(255,255,255,.80);align-items:flex-start}  /* .66 measured 4.16:1 on the plate */
+/* the pin aligns to the first line rather than floating mid-block when the
+   address wraps on a narrow phone */
+.hero .addr svg{margin-top:2px;color:var(--brand-accent)}
+
+@media (max-width:900px){
+  .hero.o1-hero .eyebrow{display:none}   /* desktop-only; content kept for SEO */
+  .trust-line{margin-top:2px}
+}
+/* phone: the hero centres at 680px, so these rows centre with it */
+@media (max-width:680px){
+  .trust-line,.hero-proof{justify-content:center}
+}
+@media (max-width:520px){
+  .trust-line{gap:6px 10px;font-size:11px}
+  .trust-line li{font-size:11px;letter-spacing:.07em}
+  .trust-line li+li::before{margin-right:4px}
+  .hero-proof{gap:12px 14px}
+}
+
+/* ---------- 3. HERO PHOTOGRAPH, NOT A BLACK GRADIENT ---------------- */
+/* The plate stays a photograph: a pool of shade sits under the copy only,
+   so the roofline and sky read instead of a full-width black ramp. */
+.hero-figure>img{filter:saturate(.86) sepia(.10) brightness(.96) contrast(1.02)}
+.hero-figure::after{background:
+  linear-gradient(180deg,rgba(22,15,9,.44) 0%,rgba(22,15,9,.10) 20%,rgba(22,15,9,0) 30%),
+  radial-gradient(76% 86% at 24% 50%,rgba(20,13,7,.80) 0%,rgba(20,13,7,.58) 44%,
+    rgba(20,13,7,.18) 74%,rgba(20,13,7,0) 90%),
+  linear-gradient(100deg,rgba(24,15,8,.42) 0%,rgba(28,17,9,.26) 46%,rgba(34,20,10,.12) 100%)}
+@media (max-width:900px){
+  .hero-figure::after{background:
+    linear-gradient(180deg,rgba(22,15,9,.80) 0%,rgba(24,16,9,.72) 42%,
+      rgba(22,14,8,.56) 74%,rgba(20,13,7,.42) 100%)}
+}
+
+/* ---------- 4. OLD WHITE TRUST STRIP — hidden, not deleted (§11) ---- */
+.o1-trust{display:none}
+
+/* ---------- 6. PHOTO PLACEHOLDERS (§13 · §15 · §22) ----------------- */
+.photo-slot{display:grid;place-content:center;justify-items:center;gap:8px;text-align:center;
+  aspect-ratio:4/3;padding:24px;border:2px dashed var(--line-strong,#CFC9C6);border-radius:12px;
+  background:repeating-linear-gradient(135deg,var(--surface-2) 0 12px,rgba(0,0,0,.02) 12px 24px);
+  color:var(--text-2)}
+.photo-slot svg{width:30px;height:30px;stroke-width:1.5;color:var(--text-2);opacity:.7}
+.photo-slot b{font-size:14.5px;font-weight:800;color:var(--text);letter-spacing:-.01em}
+.photo-slot span{font-size:12.5px;max-width:34ch;line-height:1.5}
+.photo-slot-wide{aspect-ratio:16/6;max-height:340px}
+/* the right column gained the crew/van slot, so stop vertically centring the
+   pair — otherwise the left copy floats in the middle of a tall column */
+.areas .wrap{align-items:start}
+@media (max-width:520px){
+  .photo-slot{aspect-ratio:3/2;padding:18px}
+  .photo-slot-wide{aspect-ratio:16/9}
+}
+
+/* ---------- 7. STICKY MOBILE CTA (§10) ------------------------------ */
+/* Hidden while the hero is on screen so it never covers the hero CTAs;
+   slides up once the hero has scrolled away. Mobile only. */
+@media (max-width:900px){
+  .sfoot{display:flex;transform:translateY(100%)}
+  .sfoot.is-on{transform:translateY(0)}
+  body.no-scroll .sfoot{transform:translateY(100%);pointer-events:none}
+}
+@media (min-width:901px){
+  .sfoot{display:none}            /* the header carries call + book on desktop */
+  .ftr .ftr-legal .wrap{padding-bottom:0}
+}
+
+
+/* =====================================================================
+   TABLET HERO + INDIVIDUAL AWARD BADGES
+   ===================================================================== */
+/* The two-column hero needs ~1200px to breathe: at 1024 the copy column
+   squeezed the headline and the 460px form column cramped the form. Below
+   that the booking form stacks under the copy, the way it does on a phone. */
+@media (max-width:1200px){
+  .hero .wrap{grid-template-columns:minmax(0,1fr);gap:clamp(28px,4vw,40px)}
+  .book-slot{width:100%;max-width:720px;justify-self:start}
+}
+@media (max-width:820px){
+  .book-slot{max-width:none;justify-self:stretch}
+}
+
+/* The award artwork was one 1248x450 composite (484KB) scaled down to ~52px,
+   so each mark was unreadable. It is now three separate images, each in its
+   own chip, so they scale independently and wrap instead of shrinking. */
+.hero-awards{list-style:none;display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0;padding:0}
+.hero-awards li{display:flex;background:rgba(255,255,255,.94);border-radius:10px;padding:6px 11px}
+.hero-awards img{height:42px;width:auto;display:block}
+@media (max-width:520px){
+  .hero-awards{gap:6px}
+  .hero-awards li{padding:5px 9px;border-radius:8px}
+  .hero-awards img{height:34px}
+}
+
+
+
+
+/* =====================================================================
+   DALTON v5 DESIGN PASS — trust line, italic "Fast", Google mark, and the
+   icon-only tap-to-call button. Content is untouched; this is styling only.
+   ===================================================================== */
+/* trust line sits under the breadcrumb, above the locality eyebrow, with
+   hairline rules between items instead of middots */
+.hero-trust{list-style:none;margin:0 0 20px;padding:0;display:flex;align-items:center;gap:0;
+  flex-wrap:wrap;font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(255,255,255,.92)}
+.hero-trust li{display:inline-flex;align-items:center;gap:7px;padding:0 14px;line-height:1.3;white-space:nowrap}
+.hero-trust li:first-child{padding-left:0}
+.hero-trust li+li{border-left:1px solid rgba(255,255,255,.35)}
+.hero-trust svg{width:15px;height:15px;flex:none;color:var(--brand-accent);stroke-width:2}
+.hero.o1-hero .eyebrow{margin:0 0 14px}
+@media (max-width:760px){
+  .hero-trust{justify-content:center;font-size:11.5px;letter-spacing:.08em;margin-bottom:18px}
+  .hero-trust li{padding:0 10px}
+  .hero-trust li:first-child{padding-left:0}
+}
+@media (max-width:400px){
+  /* three items no longer fit one line: wrap and drop the divider rules */
+  .hero-trust li{padding:0 8px}
+  .hero-trust li+li{border-left:0}
+}
+
+/* "Fast" reads italic inside the booking buttons */
+.btn .fast{font-family:inherit;font-style:italic;font-weight:800;margin:0 .02em 0 0;display:inline-block}
+
+/* the real Google mark next to the score */
+.hero-proof .rating .glogo{width:18px;height:18px;flex:none}
+
+/* tap-to-call: Dalton's compact red square, icon only */
+@media (max-width:900px){
+  .hdr-call{display:grid;place-items:center;width:44px;height:44px;padding:0;border-radius:var(--radius);
+    background:var(--brand-red);color:#fff;flex:none}
+  .hdr-call svg{width:20px;height:20px;stroke-width:2.2}
+}
+@media (max-width:360px){.hdr-call{width:40px;height:40px}}
+
+
+/* --- technician + van photo: top of the intro copy column, on the grid --- */
+.team-photo{margin:0 0 26px}
+.team-photo img{width:100%;height:auto;display:block}
+.o1-intro{padding-top:72px}
+@media (min-width:701px){
+  /* tablet keeps the two-column pairing: the base sheet collapses .o1-intro
+     to one column at 820px, so it is restored across the 701-820 band */
+  .o1-intro .wrap{display:grid;grid-template-columns:5fr 6fr;
+    gap:clamp(30px,4vw,72px);align-items:start}
+  .o1-intro .copy{position:static;display:block}
+  .team-photo{order:0;margin:0 0 26px}
+  .team-photo img{width:100%}
+}
+@media (max-width:700px){
+  .o1-intro{padding-top:18px}
+  .o1-intro .wrap{display:flex;flex-direction:column}
+  .o1-intro .copy{display:contents}
+  /* the van photo has white margins baked in; pull the copy up into them */
+  .team-photo{order:-1;margin:0 -6px -28px}
+  .team-photo img{width:calc(100% + 12px);max-width:none}
+  .o1-intro .reveal:first-child{position:relative;z-index:1}
+}
+@media (max-width:700px) and (min-width:481px){.team-photo{margin-bottom:-40px}}
+
+
+/* --- photo slots, positioned the way the v5 concept places them:
+   services -> right of the section head (4:3); service area -> top of the
+   right column (16:9). Real photographs, so no dashed frame. --- */
+.ph-img{margin:0;width:100%;overflow:hidden;border-radius:var(--radius)}
+.ph-img img{display:block;width:100%;height:100%;object-fit:cover}
+.o1-svc .sec-head{align-items:center}
+.o1-svc .sec-head .ph-img{justify-self:end;max-width:460px;aspect-ratio:4/3}
+.o1-svc .sec-head .ph-img img{object-position:50% 38%}
+/* The service-area heading holds position while the photo, the neighbourhood
+   list and the CTA scroll past it. Two conditions have to hold together: the
+   section must actually BE two columns (the base sheet collapses it to one at
+   900px, so it is restored from 701px up, matching the intro), and the wrap
+   needs `align-items:start`. Sticky inside a single-column stack would pin the
+   heading while its own content slid underneath it. */
+@media (min-width:701px){
+  .areas .wrap{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);
+    gap:30px clamp(32px,4.5vw,64px)}
+  .areas .wrap>div:first-child{position:sticky;top:104px;align-self:start}
+}
+.areas .ph-img{margin-bottom:26px;aspect-ratio:16/9}
+.areas .ph-img img{object-position:50% 46%}
+@media (max-width:900px){
+  .o1-svc .sec-head .ph-img{justify-self:stretch;max-width:none}
+}
+
+
+/* --- small phones: the header stays a single row. "Fast Online Booking" is
+   NOT squeezed in — the sticky Call / Book bar carries booking on mobile,
+   which is what the approved Dalton concept does. The rule at the 520px
+   breakpoint above already hides .hdr .btn; nothing here may re-show it. --- */
+
+
+/* =====================================================================
+   HERO TRUST ROW — alignment follows the hero, not its own breakpoint.
+
+   .hero-trust switched to justify-content:center at <=760px, but the hero
+   itself only centres at <=680px. Between those two widths the chips sat
+   centred while the breadcrumb, headline and lede stayed left — a 191px jump
+   at 760px, which is what shows up moving from tablet to phone. Tie the row
+   to the same 680px switch the rest of the hero uses.
+   ===================================================================== */
+@media (max-width:760px){
+  .hero-trust{justify-content:flex-start}
+}
+@media (max-width:680px){
+  .hero-trust{justify-content:center}
+}

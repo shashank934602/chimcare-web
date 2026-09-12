@@ -1,0 +1,9 @@
+{
+  "generatedAt": "2026-09-11T10:11:39Z",
+  "source": "wp_postmeta local-business-*-rating/review-count",
+  "ratingValue": 4.7,
+  "reviewCount": 377,
+  "distinctValues": 1,
+  "postsCarryingIt": 125,
+  "scope": "company-wide"
+}

@@ -235,7 +235,9 @@ export function assembleLocationPage(
       ? {
           eyebrow: introMaster?.eyebrow ?? 'Chimcare',
           heading: s.whyImportant?.heading ?? introMaster?.heading ?? '',
-          paragraphs: [...(s.lead ? [s.lead] : []), ...(s.whyImportant?.paragraphs ?? [])],
+          // Each source paragraph stays its own <p>, as the mock has it — `s.lead` is the joined
+          // form and is what the hero lede wants, not this column.
+          paragraphs: [...s.leadParagraphs, ...(s.whyImportant?.paragraphs ?? [])],
           cta: introMaster?.cta ?? 'Get a Quote',
           teamPhoto: DESIGN.cityTeam,
         }

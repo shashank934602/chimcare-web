@@ -1,0 +1,69 @@
+{
+  "generatedAt": "2026-09-10T09:16:55Z",
+  "source": "send-to-client/spokane.html",
+  "faqs": [
+    {
+      "key": "cleaning-signs",
+      "question": "How do I know if my chimney needs cleaning?",
+      "answer": "The industry standard is an annual inspection, with a sweep whenever creosote reaches about 1/8 inch. Signs you're overdue: a strong smoky smell in the house, smoke drifting back into the room, black flakes or tar-like deposits in the firebox, or a fire that's hard to keep going.",
+      "needsPrices": false,
+      "droppedSentences": [
+        {
+          "text": "If you burn regularly through a Spokane winter, plan on at least one sweep a season.",
+          "reason": "climate claim — a burning winter is not a fact for the Arizona and Georgia cities in this run, and substituting the city name would not make it one"
+        }
+      ]
+    },
+    {
+      "key": "cost",
+      "question": "What does chimney cleaning cost in {{city.name}}?",
+      "answer": "A chimney sweep with inspection is {{price.sweep_inspection}} and a chimney inspection on its own is {{price.inspection}} — both can be booked directly in the scheduler above. Repair pricing depends on the condition, access and what the inspection turns up; we quote clearly before any work starts.",
+      "needsPrices": true,
+      "droppedSentences": []
+    },
+    {
+      "key": "creosote",
+      "question": "What is creosote?",
+      "answer": "Creosote is the tar-like residue left when wood smoke cools and condenses inside the flue. It builds in three stages — flaky soot, crunchy tar and hard glaze — and all three are flammable. Burning dry, seasoned wood with a hot fire produces far less creosote than slow, smoldering fires.",
+      "needsPrices": false,
+      "droppedSentences": []
+    },
+    {
+      "key": "cleaning-logs",
+      "question": "Can I use chimney cleaning logs instead of a professional?",
+      "answer": "Cleaning logs can loosen some creosote, but they don't remove it — and they can't inspect the flue, find cracks or clear blockages. Treat them as a supplement between professional sweeps, not a replacement.",
+      "needsPrices": false,
+      "droppedSentences": []
+    },
+    {
+      "key": "service-area",
+      "question": "What areas do you serve around {{city.name}}, {{state.code}}?",
+      "answer": "We serve all of {{city.name}}, {{state.code}} and nearby communities. If you are in or around {{city.name}}, our team can schedule service quickly at your home or business.",
+      "needsPrices": false,
+      "droppedSentences": []
+    },
+    {
+      "key": "annual-cleaning",
+      "question": "Do I really need an annual chimney cleaning?",
+      "answer": "",
+      "needsPrices": false,
+      "droppedSentences": [
+        {
+          "text": "In Spokane, WA, an annual chimney inspection and cleaning helps prevent creosote buildup, improves draft, reduces smoke/odor issues, and keeps your system operating safely before heating season.",
+          "reason": "climate claim — it asserts an annual cycle timed to 'before heating season', which presupposes a heating season the Arizona and Georgia cities in this run do not have"
+        },
+        {
+          "text": "Yes.",
+          "reason": "remnant — all that survived the climate drop above, and it does not answer the question, so this entry renders on no page"
+        }
+      ]
+    },
+    {
+      "key": "gas-fireplaces",
+      "question": "Do you service gas fireplaces in {{city.name}}, {{state.code}}?",
+      "answer": "Absolutely. We provide gas fireplace inspections, tune-ups, repairs (ignition, pilot, valves), glass cleaning, and insert services throughout {{city.name}}, {{state.code}}.",
+      "needsPrices": false,
+      "droppedSentences": []
+    }
+  ]
+}

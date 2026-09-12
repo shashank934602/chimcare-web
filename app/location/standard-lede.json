@@ -1,0 +1,6 @@
+{
+  "generatedAt": "2026-09-10T09:16:55Z",
+  "source": "send-to-client/spokane.html",
+  "note": "The reference's hero lede, taken as the first <p class=\"lede\"> after its single <h1> — the reference carries a second one in the service-area band. The place is replaced by slots the renderer fills from the page's own city.",
+  "lede": "Experts in chimney sweep & chimney repairs in {{city.name}}, {{state.code}} — professional sweeping, inspection, repair and masonry, dust-free, honestly quoted and done by our own crew."
+}

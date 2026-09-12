@@ -1,0 +1,1440 @@
+<a class="skip">
+  · Skip to content
+· !-- icon sprite: Lucide-style line icons, inlined so the file works of…
+<main>
+  <section class="option o1">
+    · !-- ==================================================================…
+    <header class="hdr">
+      <div class="wrap">
+        <button class="menu-btn">
+        <a class="logo">
+          <span class="sr-only">
+            · Chimcare home
+          <img/>
+        · !-- nav drops as one panel under the bar on mobile; inline on desktop …
+        <div class="hdr-menu">
+          <nav class="nav">
+            <a>
+              · Home
+            <a>
+              · Services
+            <a>
+              · Locations
+            <a>
+              · About Us
+            <a>
+              · Contact
+          <a class="phone phone-panel">
+            · 509-267-2691
+        <img .hdr-bbb/>
+        <a class="phone phone-bar">
+          · 509-267-2691
+        <a class="hdr-call">
+        <a class="btn btn-primary hdr-book">
+          <em class="fast">
+            · Fast
+          · Online Booking
+    · !-- HERO: location message left · real booking form right -->
+    <div class="hero o1-hero">
+      <div class="wrap">
+        <div class="enter">
+          <nav class="crumbs">
+            <a>
+              · Home
+            <span>
+              · /
+            <a>
+              · Locations
+            <span>
+              · /
+            <a>
+              · Washington
+            <span>
+              · /
+            <span>
+              · Spokane
+          · !-- desktop-only locality eyebrow; hidden on mobile so the trust line …
+          <ul class="hero-trust">
+            <li>
+              · CSIA Certified
+            <li>
+              · Since 1989
+            <li>
+              · Local
+          <p class="eyebrow">
+            · Spokane, Washington
+          <h1>
+            · Chimney Sweep &amp; Fireplace Services in Spokane, WA
+          <p class="lede">
+            · Experts in chimney sweep &amp; chimney repairs in Spokane, WA — profes…
+          <div class="ctas">
+            <a class="btn btn-primary">
+              <em class="fast">
+                · Fast
+              · Online Booking
+            <a class="btn btn-outline">
+              · Call 509-267-2691
+          <div class="hero-proof">
+            <p class="rating">
+              <span class="stars">
+                · ★★★★★
+              · Rated
+              <b>
+                · 4.7
+              · on Google
+            <ul class="hero-awards">
+              <li>
+                <img/>
+              <li>
+                <img/>
+              <li>
+                <img/>
+          <p class="addr">
+            · 1212 N Washington St #303, Spokane, WA 99201, USA
+          · !-- TODO: Replace with an authentic Chimcare Spokane technician/team p…
+          <figure class="hero-figure">
+            <img/>
+            <figcaption>
+              · Since 1989
+        <div class="book-slot">
+    · !-- TRUST STRIP -->
+    <div class="o1-trust">
+      <div class="wrap">
+        <div class="t">
+          <div>
+            <b>
+              · Since 1989
+            <small>
+              · Family-owned, 30+ years in business
+        <div class="t">
+          <div>
+            <b>
+              · Certified
+            <small>
+              · Licensed &amp; insured technicians
+        <div class="t">
+          <div>
+            <b>
+              · Local Spokane Team
+            <small>
+              · Based on N Washington St
+    · !-- INTRODUCTION -->
+    <div class="section o1-intro">
+      <div class="wrap">
+        <div class="reveal">
+          <p class="eyebrow">
+            · Chimcare in Spokane
+          <h2>
+            · Top-Rated Chimney, Fireplace &amp; Vent Solutions for Homes and Busine…
+          <ol class="o1-reasons">
+            <li>
+              <span class="n">
+                · 01
+              <div>
+                <b>
+                  · Fire safety
+                <span>
+                  · Creosote builds with every fire. Removed on schedule, it's a non-event…
+            <li>
+              <span class="n">
+                · 02
+              <div>
+                <b>
+                  · The air you breathe
+                <span>
+                  · A clear, sound flue keeps smoke and carbon monoxide going up and out.
+            <li>
+              <span class="n">
+                · 03
+              <div>
+                <b>
+                  · The structure itself
+                <span>
+                  · Maintenance is far cheaper than a rebuild — and keeps the chimney stan…
+        <div class="copy reveal">
+          <figure class="team-photo">
+            <img/>
+          <p>
+            · When it comes to chimney sweep and fireplace services in Spokane, WA, …
+          <p>
+            · From wood stove repair to gas fireplace installation and dryer vent cl…
+          <div class="ctas">
+            <a class="btn btn-primary">
+              · Get a Quote
+    · !-- WHY SPOKANE HOMEOWNERS TRUST CHIMCARE -->
+    <div class="o1-trust-copy on-dark">
+      <div class="wrap">
+        <div class="reveal">
+          <p class="eyebrow">
+            · Why Chimcare
+          <h2>
+            · Why Spokane, WA Homeowners Trust Chimcare
+          <p>
+            · For decades, Chimcare has been the trusted choice for chimney and fire…
+        <figure class="trust-art reveal">
+          <img/>
+  · !-- SERVICE DIRECTORY: expandable rows -->
+  <div class="section o1-svc">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <p class="eyebrow">
+            · Services
+          <h2>
+            · Chimney Sweep &amp; Fireplace Services in Spokane, WA
+          <p>
+            · Eight services, each folded into a single line. Open the one you need …
+        <figure class="ph-img">
+          <img/>
+      <div class="o1-list reveal">
+        <article class="o1-row is-open">
+          <button class="o1-row-btn">
+            <span class="num">
+              · 01
+            <span class="ic">
+            <span>
+              <h3 class="svc-name">
+                · Chimney Sweeping
+              <p class="short svc-short">
+                · Creosote and soot removed with our dust-free process, so your fireplac…
+            <span class="plus">
+          <div class="acc-panel">
+            <div>
+              <div class="body">
+                <div class="svc-body svc-main">
+                  <p>
+                    · A professional chimney sweep removes the creosote, soot and debris tha…
+                  <p>
+                    · Every sweep includes a visual check of the firebox, damper, smoke cham…
+                <div class="side svc-body svc-side">
+                  <h4>
+                    · What's included
+                  <ul class="svc-list">
+                    <li>
+                      · Firebox and smoke chamber cleaning
+                    <li>
+                      · Flue brushing from cap to damper
+                    <li>
+                      · Damper operation check
+                    <li>
+                      · Visual condition report
+                  <div class="ctas">
+                    <a class="btn btn-primary">
+                      · Schedule a sweep
+        <article class="o1-row">
+          <button class="o1-row-btn">
+            <span class="num">
+              · 02
+            <span class="ic">
+            <span>
+              <h3 class="svc-name">
+                · Chimney Inspection
+              <p class="short svc-short">
+                · A certified look at your chimney's condition — from an annual safety c…
+            <span class="plus">
+          <div class="acc-panel">
+            <div>
+              <div class="body">
+                <div class="svc-body svc-main">
+                  <p>
+                    · Our inspections follow the industry's three-level standard. A Level 1 …
+                  <p>
+                    · A Level 3 inspection goes beyond the surface to examine concealed area…
+                <div class="side svc-body svc-side">
+                  <h4>
+                    · What's included
+                  <ul class="svc-list">
+                    <li>
+                      · Level 1, 2 and 3 inspections
+                    <li>
+                      · Video camera scan of the flue
+                    <li>
+                      · Written report with photos
+                    <li>
+                      · Real-estate transaction inspections
+                  <div class="ctas">
+                    <a class="btn btn-primary">
+                      · Book an inspection
+        <article class="o1-row">
+          <button class="o1-row-btn">
+            <span class="num">
+              · 03
+            <span class="ic">
+            <span>
+              <h3 class="svc-name">
+                · Chimney Repair
+              <p class="short svc-short">
+                · From damaged flues to failing crowns and dampers, we fix the parts tha…
+            <span class="plus">
+          <div class="acc-panel">
+            <div>
+              <div class="body">
+                <div class="svc-body svc-main">
+                  <p>
+                    · Chimney repair in Spokane has to stand up to heavy snow loads, months …
+                  <p>
+                    · Catching a cracked crown or a rusted damper early is what keeps a mino…
+                <div class="side svc-body svc-side">
+                  <h4>
+                    · What's included
+                  <ul class="svc-list">
+                    <li>
+                      · Crown repair and replacement
+                    <li>
+                      · Cap and chase cover installation
+                    <li>
+                      · Damper repair and top-sealing dampers
+                    <li>
+                      · Flue, smoke chamber and firebox repair
+                  <div class="ctas">
+                    <a class="btn btn-primary">
+                      · Request a repair quote
+        <article class="o1-row">
+          <button class="o1-row-btn">
+            <span class="num">
+              · 04
+            <span class="ic">
+            <span>
+              <h3 class="svc-name">
+                · Masonry Repair
+              <p class="short svc-short">
+                · Spalling brick, crumbling mortar and structural cracks restored by mas…
+            <span class="plus">
+          <div class="acc-panel">
+            <div>
+              <div class="body">
+                <div class="svc-body svc-main">
+                  <p>
+                    · Masonry chimneys are exposed to more weather than any other part of yo…
+                  <p>
+                    · We replace cracked or missing bricks, rebuild deteriorated sections, r…
+                <div class="side svc-body svc-side">
+                  <h4>
+                    · What's included
+                  <ul class="svc-list">
+                    <li>
+                      · Brick replacement and spalling repair
+                    <li>
+                      · Crack, stucco and concrete repair
+                    <li>
+                      · Structural and footing repair
+                    <li>
+                      · Partial and full rebuilds
+                  <div class="ctas">
+                    <a class="btn btn-primary">
+                      · Request a masonry quote
+        <article class="o1-row">
+          <button class="o1-row-btn">
+            <span class="num">
+              · 05
+            <span class="ic">
+            <span>
+              <h3 class="svc-name">
+                · Chimney Leak Repair
+              <p class="short svc-short">
+                · We find where water is getting in — crown, flashing, cap or masonry — …
+            <span class="plus">
+          <div class="acc-panel">
+            <div>
+              <div class="body">
+                <div class="svc-body svc-main">
+                  <p>
+                    · Water stains on the ceiling near the fireplace, a musty smell after ra…
+                  <p>
+                    · Then we fix the actual source — resealing or replacing flashing, repai…
+                <div class="side svc-body svc-side">
+                  <h4>
+                    · What's included
+                  <ul class="svc-list">
+                    <li>
+                      · Leak diagnosis
+                    <li>
+                      · Flashing repair, sealing and installation
+                    <li>
+                      · Crown sealing and repair
+                    <li>
+                      · Waterproofing and moisture control
+                  <div class="ctas">
+                    <a class="btn btn-primary">
+                      · Stop the leak
+        <article class="o1-row">
+          <button class="o1-row-btn">
+            <span class="num">
+              · 06
+            <span class="ic">
+            <span>
+              <h3 class="svc-name">
+                · Creosote Removal
+              <p class="short svc-short">
+                · Glazed, tar-like creosote is a fire waiting to happen. We remove it sa…
+            <span class="plus">
+          <div class="acc-panel">
+            <div>
+              <div class="body">
+                <div class="svc-body svc-main">
+                  <p>
+                    · Creosote is the byproduct of burning wood: unburned gases condense on …
+                  <p>
+                    · We use rotary cleaning systems and, where needed, treatments that brea…
+                <div class="side svc-body svc-side">
+                  <h4>
+                    · What's included
+                  <ul class="svc-list">
+                    <li>
+                      · Stage 1–3 creosote removal
+                    <li>
+                      · Smoke chamber and liner cleaning
+                    <li>
+                      · Rotary cleaning for glazed deposits
+                    <li>
+                      · Burning-habit advice
+                  <div class="ctas">
+                    <a class="btn btn-primary">
+                      · Schedule creosote removal
+        <article class="o1-row">
+          <button class="o1-row-btn">
+            <span class="num">
+              · 07
+            <span class="ic">
+            <span>
+              <h3 class="svc-name">
+                · Flue Cleaning
+              <p class="short svc-short">
+                · Clearing the flue liner, smoke chamber and vents so smoke and gases ex…
+            <span class="plus">
+          <div class="acc-panel">
+            <div>
+              <div class="body">
+                <div class="svc-body svc-main">
+                  <p>
+                    · The flue is the passage that carries smoke and combustion gases out of…
+                  <p>
+                    · We clear the full length of the liner from firebox to cap, clean the s…
+                <div class="side svc-body svc-side">
+                  <h4>
+                    · What's included
+                  <ul class="svc-list">
+                    <li>
+                      · Full-length liner cleaning
+                    <li>
+                      · Smoke chamber cleaning
+                    <li>
+                      · Blockage and nest removal
+                    <li>
+                      · Draft verification
+                  <div class="ctas">
+                    <a class="btn btn-primary">
+                      · Schedule flue cleaning
+        <article class="o1-row">
+          <button class="o1-row-btn">
+            <span class="num">
+              · 08
+            <span class="ic">
+            <span>
+              <h3 class="svc-name">
+                · Tuckpointing
+              <p class="short svc-short">
+                · Deteriorated mortar joints ground out and repacked — the single best w…
+            <span class="plus">
+          <div class="acc-panel">
+            <div>
+              <div class="body">
+                <div class="svc-body svc-main">
+                  <p>
+                    · Mortar is softer than brick by design, so it wears first. When joints …
+                  <p>
+                    · Done on time, it prevents brick replacement and rebuilds. Our Spokane …
+                <div class="side svc-body svc-side">
+                  <h4>
+                    · What's included
+                  <ul class="svc-list">
+                    <li>
+                      · Mortar removal and repacking
+                    <li>
+                      · Color and profile matching
+                    <li>
+                      · Crown and cap check
+                    <li>
+                      · Waterproofing after cure
+                  <div class="ctas">
+                    <a class="btn btn-primary">
+                      · Request a tuckpointing quote
+  · !-- FULL SERVICE SOLUTIONS — every Spokane service Chimcare offers -->
+  <div class="section o1-solutions">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <p class="eyebrow">
+            · Full-service
+          <h2>
+            · Our Full-Service Chimney, Fireplace &amp; Vent Solutions in Spokane, W…
+        <p>
+          · Every chimney, fireplace, dryer vent and masonry service our Spokane c…
+          <span class="svc-count">
+            · 92 services
+          · , each handled in-house and quoted before work starts. Pick a category…
+      <div class="svc-bar reveal">
+        <p class="svc-status">
+          · Showing 8 of 92
+        <button class="tile-reset">
+          · All 92 services
+      <ul class="svc-tiles reveal">
+        <li>
+          <button class="svc-tile">
+            <img/>
+            <span class="t-label">
+              <span class="t-name">
+                · Chimney Sweep
+              <span class="t-n">
+                · 15 services
+        <li>
+          <button class="svc-tile">
+            <img/>
+            <span class="t-label">
+              <span class="t-name">
+                · Chimney Inspection
+              <span class="t-n">
+                · 5 services
+        <li>
+          <button class="svc-tile">
+            <img/>
+            <span class="t-label">
+              <span class="t-name">
+                · Chimney Repair
+              <span class="t-n">
+                · 54 services
+        <li>
+          <button class="svc-tile">
+            <img/>
+            <span class="t-label">
+              <span class="t-name">
+                · Gas Fireplace Service
+              <span class="t-n">
+                · 7 services
+        <li>
+          <button class="svc-tile">
+            <img/>
+            <span class="t-label">
+              <span class="t-name">
+                · Gas Fireplace Inserts
+              <span class="t-n">
+                · 1 service
+        <li>
+          <button class="svc-tile">
+            <img/>
+            <span class="t-label">
+              <span class="t-name">
+                · Wood Burning Inserts
+              <span class="t-n">
+                · 1 service
+        <li>
+          <button class="svc-tile">
+            <img/>
+            <span class="t-label">
+              <span class="t-name">
+                · Chimney Caps
+              <span class="t-n">
+                · 8 services
+        <li>
+          <button class="svc-tile">
+            <img/>
+            <span class="t-label">
+              <span class="t-name">
+                · Outdoor Fireplaces
+              <span class="t-n">
+                · 1 service
+      <div class="svc-grid reveal">
+        <article class="svc-card">
+          <h3>
+            · Chimney Draft Repair in Spokane, WA
+          <p>
+            · Resolve smoky fireplaces and draft issues with expert chimney draft re…
+        <article class="svc-card">
+          <h3>
+            · Chimney Crown Sealing in Spokane, WA
+          <p>
+            · Protect your chimney from moisture intrusion with professional chimney…
+        <article class="svc-card">
+          <h3>
+            · Chimney Waterproofing in Spokane, WA
+          <p>
+            · Guard your masonry against rain, snow, and Spokane’s moisture with chi…
+        <article class="svc-card">
+          <h3>
+            · Chimney Sweep in Spokane, WA
+          <p>
+            · Keep your chimney clean and safe with professional chimney sweep servi…
+        <article class="svc-card">
+          <h3>
+            · Chimney Liner Replacement in Spokane, WA
+          <p>
+            · Upgrade your chimney with precision chimney liner replacement in Spoka…
+        <article class="svc-card">
+          <h3>
+            · Chimney Blockage Removal in Spokane, WA
+          <p>
+            · Clear out obstructions with our chimney blockage removal in Spokane, W…
+        <article class="svc-card">
+          <h3>
+            · Dryer Vent Cleaning in Spokane, WA
+          <p>
+            · Ensure optimal dryer performance and safety with professional dryer ve…
+        <article class="svc-card">
+          <h3>
+            · Fireplace Restoration in Spokane, WA
+          <p>
+            · Bring charm and function back to your living space with expert firepla…
+        <article class="svc-card">
+          <h3>
+            · Chimney Crown Replacement in Spokane, WA
+          <p>
+            · Restore your chimney’s crown with precision replacement services in Sp…
+        <article class="svc-card">
+          <h3>
+            · Fireplace Insert Installation in Spokane, WA
+          <p>
+            · Upgrade your living space with professional fireplace insert installat…
+        <article class="svc-card">
+          <h3>
+            · Chimney Inspection in Spokane, WA
+          <p>
+            · Get peace of mind with a thorough chimney inspection in Spokane, WA. O…
+        <article class="svc-card">
+          <h3>
+            · Chimney Siding Repair in Spokane, WA
+          <p>
+            · Protect your chimney against the elements with expert chimney siding r…
+        <article class="svc-card">
+          <h3>
+            · Chimney Firebox Replacement in Spokane, WA
+          <p>
+            · Restore safety and efficiency with chimney firebox replacement in Spok…
+        <article class="svc-card">
+          <h3>
+            · Chimney Masonry Restoration in Spokane, WA
+          <p>
+            · Enhance the beauty and durability of your chimney with expert masonry …
+        <article class="svc-card">
+          <h3>
+            · Chimney Footing Repair in Spokane, WA
+          <p>
+            · Preserve the structural integrity of your chimney with professional fo…
+        <article class="svc-card">
+          <h3>
+            · Chimney Cleaning in Spokane, WA
+          <p>
+            · Keep your home safe and your fireplace efficient with thorough chimney…
+        <article class="svc-card">
+          <h3>
+            · Chimney Stucco Repair in Spokane, WA
+          <p>
+            · Maintain protection and curb appeal with expert chimney stucco repair …
+        <article class="svc-card">
+          <h3>
+            · Chimney Ash Pit Cleaning in Spokane, WA
+          <p>
+            · Improve fireplace efficiency and safety with detailed chimney ash pit …
+        <article class="svc-card">
+          <h3>
+            · Chimney Spalling Repair in Spokane, WA
+          <p>
+            · Restore and protect your chimney with spalling repair in Spokane, WA. …
+        <article class="svc-card">
+          <h3>
+            · Fireplace Repair in Spokane, WA
+          <p>
+            · Address cracks, leaks, and functional issues with expert fireplace rep…
+        <article class="svc-card">
+          <h3>
+            · Top Sealing Damper in Spokane, WA
+          <p>
+            · Increase energy efficiency and protect your chimney with a top sealing…
+        <article class="svc-card">
+          <h3>
+            · Chimney Smoke Chamber Repair in Spokane, WA
+          <p>
+            · Ensure optimal airflow and fire safety with chimney smoke chamber repa…
+        <article class="svc-card">
+          <h3>
+            · Chimney Concrete Repair in Spokane, WA
+          <p>
+            · Protect your structure with expert chimney concrete repair in Spokane,…
+        <article class="svc-card">
+          <h3>
+            · Chimney Crack Repair in Spokane, WA
+          <p>
+            · Prevent further damage with professional chimney crack repair in Spoka…
+        <article class="svc-card">
+          <h3>
+            · Fireplace Cleaning in Spokane, WA
+          <p>
+            · Enjoy a clean and efficient hearth with fireplace cleaning in Spokane,…
+        <article class="svc-card">
+          <h3>
+            · Coal Stove Service in Spokane, WA
+          <p>
+            · Keep your home warm and efficient with expert coal stove service in Sp…
+        <article class="svc-card">
+          <h3>
+            · Chimney Smoke Chamber Cleaning in Spokane, WA
+          <p>
+            · Improve fireplace safety and efficiency with chimney smoke chamber cle…
+        <article class="svc-card">
+          <h3>
+            · Chimney Chase Repair in Spokane, WA
+          <p>
+            · Protect your chimney against leaks and wear with quality chase repair …
+        <article class="svc-card">
+          <h3>
+            · Chimney Waterproof Coating in Spokane, WA
+          <p>
+            · Guard your chimney against moisture damage with professional waterproo…
+        <article class="svc-card">
+          <h3>
+            · Chimney Cap Installation in Spokane, WA
+          <p>
+            · Shield your chimney from rain and debris with professional cap install…
+        <article class="svc-card">
+          <h3>
+            · Level 3 Chimney Inspection in Spokane, WA
+          <p>
+            · For comprehensive assurance, our level 3 chimney inspections in Spokan…
+        <article class="svc-card">
+          <h3>
+            · Chimney Throat Repair in Spokane, WA
+          <p>
+            · Our expert chimney throat repair services in Spokane, WA help restore …
+        <article class="svc-card">
+          <h3>
+            · Chimney Sealing Service in Spokane, WA
+          <p>
+            · Protect your chimney from Spokane’s seasonal moisture intrusion with o…
+        <article class="svc-card">
+          <h3>
+            · Chimney Exterior Repair in Spokane, WA
+          <p>
+            · From cracks to weathered brickwork, our chimney exterior repair in Spo…
+        <article class="svc-card">
+          <h3>
+            · Chimney Crown Repair in Spokane, WA
+          <p>
+            · Chimney crowns protect against water entry and damage. Our chimney cro…
+        <article class="svc-card">
+          <h3>
+            · Wood Burning Insert Removal in Spokane, WA
+          <p>
+            · If you’re upgrading or repurposing your fireplace, our wood burning in…
+        <article class="svc-card">
+          <h3>
+            · Chimney Throat Replacement in Spokane, WA
+          <p>
+            · Upgrade to a more efficient setup with our chimney throat replacement …
+        <article class="svc-card">
+          <h3>
+            · Chimney Moisture Control in Spokane, WA
+          <p>
+            · Moisture can severely affect your chimney’s safety and durability. Our…
+        <article class="svc-card">
+          <h3>
+            · Chimney Interior Repair in Spokane, WA
+          <p>
+            · Our chimney interior repair services in Spokane, WA resolve interior p…
+        <article class="svc-card">
+          <h3>
+            · Chimney Flashing Repair in Spokane, WA
+          <p>
+            · Prevent leaks and water intrusion with reliable chimney flashing repai…
+        <article class="svc-card">
+          <h3>
+            · Chimney Liner Repair in Spokane, WA
+          <p>
+            · If your chimney liner shows signs of wear, our chimney liner repair in…
+        <article class="svc-card">
+          <h3>
+            · Chimney Damper Repair in Spokane, WA
+          <p>
+            · A worn or improperly sealing chimney damper can waste energy and reduc…
+        <article class="svc-card">
+          <h3>
+            · Chimney Vent Repair in Spokane, WA
+          <p>
+            · Ensure proper venting with our chimney vent repair in Spokane, WA. Fix…
+        <article class="svc-card">
+          <h3>
+            · Chimney Flue Repair in Spokane, WA
+          <p>
+            · Small issues in your chimney flue can turn into significant hazards. O…
+        <article class="svc-card">
+          <h3>
+            · Masonry Chimney Repair in Spokane, WA
+          <p>
+            · Restore your chimney’s structural integrity with our masonry chimney r…
+        <article class="svc-card">
+          <h3>
+            · Chimney Camera Inspection in Spokane, WA
+          <p>
+            · Gain an in-depth view of your chimney with our camera inspection servi…
+        <article class="svc-card">
+          <h3>
+            · Chimney Vent Installation in Spokane, WA
+          <p>
+            · Upgrade your venting system with professional chimney vent installatio…
+        <article class="svc-card">
+          <h3>
+            · Chimney Flue Replacement in Spokane, WA
+          <p>
+            · Replace aging or damaged flue systems with our expert chimney flue rep…
+        <article class="svc-card">
+          <h3>
+            · Fireplace Installation in Spokane, WA
+          <p>
+            · Transform your living space with professional fireplace installation i…
+        <article class="svc-card">
+          <h3>
+            · Chimney Damper Replacement in Spokane, WA
+          <p>
+            · A new damper can improve fireplace efficiency and user control. With o…
+        <article class="svc-card">
+          <h3>
+            · Fireplace Damper Repair in Spokane, WA
+          <p>
+            · Faulty dampers reduce safety and airflow in your fireplace. Our firepl…
+        <article class="svc-card">
+          <h3>
+            · Chimney Vent Cleaning in Spokane, WA
+          <p>
+            · Clogged vents compromise airflow and safety. Our thorough chimney vent…
+        <article class="svc-card">
+          <h3>
+            · Chimney Tile Repair in Spokane, WA
+          <p>
+            · Damaged chimney tiles can lead to inefficiencies or potential fire haz…
+        <article class="svc-card">
+          <h3>
+            · Chimney Liner Maintenance in Spokane, WA
+          <p>
+            · Enhancing safety and efficiency, chimney liner maintenance in Spokane,…
+        <article class="svc-card">
+          <h3>
+            · Chimney Fire Damage Repair in Spokane, WA
+          <p>
+            · Following chimney fires, residents in Spokane, WA rely on thorough rep…
+        <article class="svc-card">
+          <h3>
+            · Chimney Repair in Spokane, WA
+          <p>
+            · Chimney repair in Spokane, WA ensures your masonry withstands seasonal…
+        <article class="svc-card">
+          <h3>
+            · Chimney Insulation Installation in Spokane, WA
+          <p>
+            · Proper chimney insulation installation in Spokane, WA enhances heat re…
+        <article class="svc-card">
+          <h3>
+            · Chimney Flashing Installation in Spokane, WA
+          <p>
+            · Durable chimney flashing installation in Spokane, WA protects against …
+        <article class="svc-card">
+          <h3>
+            · Chimney Tuckpointing in Spokane, WA
+          <p>
+            · Extend the lifespan of your chimney with professional tuckpointing in …
+        <article class="svc-card">
+          <h3>
+            · Chimney Structural Repair in Spokane, WA
+          <p>
+            · Structural chimney repair in Spokane, WA addresses cracks, leaning, an…
+        <article class="svc-card">
+          <h3>
+            · Gas Fireplace Repair in Spokane, WA
+          <p>
+            · Gas fireplace repair in Spokane, WA keeps your home warm and cozy duri…
+        <article class="svc-card">
+          <h3>
+            · Chimney Heat Shield Installation in Spokane, WA
+          <p>
+            · Chimney heat shield installation in Spokane, WA minimizes risks from h…
+        <article class="svc-card">
+          <h3>
+            · Chimney Flashing Sealing in Spokane, WA
+          <p>
+            · Prevent leaks and water damage with professional chimney flashing seal…
+        <article class="svc-card">
+          <h3>
+            · Chimney Chase Cover in Spokane, WA
+          <p>
+            · Protect your chimney from weather and debris with a durable chase cove…
+        <article class="svc-card">
+          <h3>
+            · Chimney Brick Replacement in Spokane, WA
+          <p>
+            · Cracked or missing bricks? Our chimney brick replacement services in S…
+        <article class="svc-card">
+          <h3>
+            · Air Duct Cleaning in Spokane, WA
+          <p>
+            · Improve indoor air quality and HVAC efficiency with air duct cleaning …
+        <article class="svc-card">
+          <h3>
+            · Chimney Roof Repair in Spokane, WA
+          <p>
+            · Protect your chimney and roofline with expert chimney roof repair in S…
+        <article class="svc-card">
+          <h3>
+            · Chimney Firebox Repair in Spokane, WA
+          <p>
+            · Worn or damaged fireboxes can compromise your safety. Professional fir…
+        <article class="svc-card">
+          <h3>
+            · Chimney Mortar Repair in Spokane, WA
+          <p>
+            · Extend the life of your chimney with dedicated mortar repair in Spokan…
+        <article class="svc-card">
+          <h3>
+            · Chimney Spark Arrestor Installation in Spokane, WA
+          <p>
+            · Protect your home in Spokane, WA from stray sparks and debris with our…
+        <article class="svc-card">
+          <h3>
+            · Fireplace Inspection in Spokane, WA
+          <p>
+            · Ensure the safety and efficiency of your fireplace in Spokane, WA with…
+        <article class="svc-card">
+          <h3>
+            · Chimney Vent Replacement in Spokane, WA
+          <p>
+            · Optimize the performance of your chimney system with professional chim…
+        <article class="svc-card">
+          <h3>
+            · Fireplace Damper Installation in Spokane, WA
+          <p>
+            · Upgrade your fireplace in Spokane, WA with a new damper to improve ene…
+        <article class="svc-card">
+          <h3>
+            · Chimney Tile Replacement in Spokane, WA
+          <p>
+            · Restore the integrity of your chimney with our chimney tile replacemen…
+        <article class="svc-card">
+          <h3>
+            · Chimney Leak Repair in Spokane, WA
+          <p>
+            · Stop water intrusion and prevent costly damage with professional chimn…
+        <article class="svc-card">
+          <h3>
+            · Chimney Spark Arrestor Repair in Spokane, WA
+          <p>
+            · Keep your chimney and home safe with professional chimney spark arrest…
+        <article class="svc-card">
+          <h3>
+            · Chimney Flue Sealing in Spokane, WA
+          <p>
+            · Ensure your chimney is airtight and efficient with professional flue s…
+        <article class="svc-card">
+          <h3>
+            · Chimney Smoke Problem Repair in Spokane, WA
+          <p>
+            · Eliminate smoky issues disrupting your home in Spokane, WA with our ex…
+        <article class="svc-card">
+          <h3>
+            · Chimney Liner Cleaning in Spokane, WA
+          <p>
+            · Maintain your chimney’s performance with professional chimney liner cl…
+        <article class="svc-card">
+          <h3>
+            · Chimney Relining in Spokane, WA
+          <p>
+            · Extend the life of your chimney and improve its efficiency with our co…
+        <article class="svc-card">
+          <h3>
+            · Chimney Spark Arrestor Cleaning in Spokane, WA
+          <p>
+            · Keep your spark arrestor functioning properly with expert cleaning ser…
+        <article class="svc-card">
+          <h3>
+            · Chimney Flue Waterproofing in Spokane, WA
+          <p>
+            · Protect your chimney from moisture damage with professional flue water…
+        <article class="svc-card">
+          <h3>
+            · Chimney Odor Removal in Spokane, WA
+          <p>
+            · Eliminate unwanted odors from your chimney with our professional odor …
+        <article class="svc-card">
+          <h3>
+            · Chimney Liner Inspection in Spokane, WA
+          <p>
+            · Prioritize safety with a comprehensive chimney liner inspection in Spo…
+        <article class="svc-card">
+          <h3>
+            · Chimney Liner Installation in Spokane, WA
+          <p>
+            · Enhance your chimney’s safety and compliance with expert liner install…
+        <article class="svc-card">
+          <h3>
+            · Chimney Cap Repair in Spokane, WA
+          <p>
+            · Prevent water and debris from compromising your chimney with our relia…
+        <article class="svc-card">
+          <h3>
+            · Chimney Preventive Maintenance in Spokane, WA
+          <p>
+            · Extend the life of your chimney with regularly scheduled preventive ma…
+        <article class="svc-card">
+          <h3>
+            · Chimney Animal Removal in Spokane, WA
+          <p>
+            · Protect your home from unwanted intrusions with humane chimney animal …
+        <article class="svc-card">
+          <h3>
+            · Chimney Rebuild in Spokane, WA
+          <p>
+            · Restore your chimney’s beauty and strength with comprehensive rebuild …
+        <article class="svc-card">
+          <h3>
+            · Chimney Cap Replacement in Spokane, WA
+          <p>
+            · Upgrade your chimney’s protection with chimney cap replacement in Spok…
+        <article class="svc-card">
+          <h3>
+            · Chimney Nest Removal in Spokane, WA
+          <p>
+            · Ensure safe and efficient operation of your chimney with nest removal …
+        <article class="svc-card">
+          <h3>
+            · Fireplace Smoke Repair in Spokane, WA
+          <p>
+            · Stop smoky issues in your Spokane, WA fireplace with expert repair ser…
+      <div class="svc-more">
+        <button class="btn btn-outline">
+          · Show more services
+  · !-- YOUR SPOKANE FIREPLACE EXPERTS + SERVING NEARBY AREAS -->
+  <div class="section areas">
+    <div class="wrap">
+      <div class="reveal">
+        <p class="eyebrow">
+          · Service area
+        <h2>
+          · Your Spokane Fireplace Experts
+        <p class="lede">
+          · Whether you're in the heart of Spokane or in nearby neighborhoods, Chi…
+      <div class="reveal">
+        <figure class="ph-img">
+          <img/>
+        <h3>
+          · Serving Nearby Areas
+        <p>
+          · We proudly serve Spokane, WA and the surrounding communities.
+        <ul class="area-list">
+          <li>
+            · Downtown Spokane
+          <li>
+            · East Spokane
+          <li>
+            · West Spokane
+          <li>
+            · Browne's Addition
+          <li>
+            · South Hill
+          <li>
+            · Surrounding areas
+        <div class="ctas">
+          <a class="btn btn-primary">
+            · Get a Quote
+  · !-- PROCESS -->
+  <div class="section">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <p class="eyebrow">
+            · How it works
+          <h2>
+            · From first look to lasting protection.
+        <p>
+          · One crew from inspection to repair — no hand-offs, no second contracto…
+      <ol class="o1-steps reveal">
+        <li class="o1-step">
+          <span class="dot">
+            · 01
+          <h3>
+            · Inspect
+          <p>
+            · A certified technician examines the firebox, damper, smoke chamber and…
+        <li class="o1-step">
+          <span class="dot">
+            · 02
+          <h3>
+            · Diagnose
+          <p>
+            · We pinpoint the cause of any leak, crack or draft problem and show you…
+        <li class="o1-step">
+          <span class="dot">
+            · 03
+          <h3>
+            · Clean or repair
+          <p>
+            · Dust-free sweeping, or masonry, crown, flashing and liner repairs — qu…
+        <li class="o1-step">
+          <span class="dot">
+            · 04
+          <h3>
+            · Protect
+          <p>
+            · Caps, waterproofing and a maintenance schedule keep the repair — and y…
+  · !-- COST -->
+  <div class="section o1-cost">
+    <div class="wrap">
+      <div class="panel reveal">
+        <div>
+          <p class="eyebrow">
+            · Pricing
+          <h2>
+            · How much does chimney service cost in Spokane?
+          <p>
+            · A sweep with inspection, an inspection on its own and a gas fireplace …
+          <div class="factors">
+            <span>
+              · Condition &amp; creosote stage
+            <span>
+              · Roof access
+            <span>
+              · Type of service
+            <span>
+              · Repairs needed
+        <div class="ctas">
+          <a class="btn btn-primary">
+            · Request a repair quote
+          <a class="btn btn-ghost">
+            · 509-267-2691
+  · !-- FAQ -->
+  <div class="section">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <p class="eyebrow">
+            · FAQ
+          <h2>
+            · Frequently Asked Questions
+      <div class="faq reveal">
+        <div class="faq-item is-open">
+          <button class="faq-q">
+            · How do I know if my chimney needs cleaning?
+          <div class="acc-panel">
+            <div>
+              <p class="faq-a">
+                · The industry standard is an annual inspection, with a sweep whenever c…
+        <div class="faq-item">
+          <button class="faq-q">
+            · What does chimney cleaning cost in Spokane?
+          <div class="acc-panel">
+            <div>
+              <p class="faq-a">
+                · A chimney sweep with inspection is $299 and a chimney inspection on it…
+        <div class="faq-item">
+          <button class="faq-q">
+            · What is creosote?
+          <div class="acc-panel">
+            <div>
+              <p class="faq-a">
+                · Creosote is the tar-like residue left when wood smoke cools and conden…
+        <div class="faq-item">
+          <button class="faq-q">
+            · Can I use chimney cleaning logs instead of a professional?
+          <div class="acc-panel">
+            <div>
+              <p class="faq-a">
+                · Cleaning logs can loosen some creosote, but they don't remove it — and…
+        <div class="faq-item">
+          <button class="faq-q">
+            · What areas do you serve around Spokane, WA?
+          <div class="acc-panel">
+            <div>
+              <p class="faq-a">
+                · We serve all of Spokane, WA and nearby communities. If you are in or a…
+        <div class="faq-item">
+          <button class="faq-q">
+            · Do I really need an annual chimney cleaning?
+          <div class="acc-panel">
+            <div>
+              <p class="faq-a">
+                · Yes. In Spokane, WA, an annual chimney inspection and cleaning helps p…
+        <div class="faq-item">
+          <button class="faq-q">
+            · Do you service gas fireplaces in Spokane, WA?
+          <div class="acc-panel">
+            <div>
+              <p class="faq-a">
+                · Absolutely. We provide gas fireplace inspections, tune-ups, repairs (i…
+  · !-- CONTACT -->
+  <div class="section o1-contact">
+    <div class="wrap">
+      <div class="reveal">
+        <p class="eyebrow">
+          · Contact
+        <h2>
+          · Contact Us
+        <p>
+          · Contact us for dust-free cleaning, an inspection or a repair quote. Ou…
+        <div class="contact-lines">
+          <span class="row">
+            <span>
+              · 1212 North Washington Street
+              <br/>
+              · Spokane, WA 99201
+          <span class="row">
+            <a>
+              · 509-267-2691
+          <span class="row">
+            <a>
+              · Schedule online
+          <span class="row">
+            <a>
+              · Get Directions
+      <div class="why-card reveal">
+        <h3>
+          · Why Chimcare?
+        <ul>
+          <li>
+            <span>
+              <b>
+                · Fast, reliable &amp; professional
+              · — certified technicians, dust-free equipment and honest quotes.
+          <li>
+            <span>
+              <b>
+                · 24/7 chimney services
+              · — including urgent leaks, blockages and draft failures.
+          <li>
+            <span>
+              <b>
+                · Licensed &amp; insured
+              · — OR CCB #195475 &middot; WA License #CHIMC**882C.
+          <li>
+            <span>
+              <b>
+                · Rated 4.7 on Google
+              · by homeowners across Spokane.
+  · !-- FINAL CTA -->
+  <div class="section o1-final">
+    <div class="wrap">
+      <div class="panel on-dark reveal">
+        <div>
+          <p class="eyebrow">
+            · Chimcare · Spokane, WA
+          <h2>
+            · Keep your Spokane chimney safe.
+          <p>
+            · Schedule a professional inspection or service with Chimcare. Dust-free…
+        <div class="side">
+          <a class="btn btn-primary">
+            · Schedule Service
+          <a class="phone">
+            · 509-267-2691
+          <span>
+            · 1212 N Washington St #303, Spokane, WA 99201
+  <footer class="ftr">
+    <div class="ftr-main">
+      <div class="wrap">
+        <div class="ftr-cols">
+          <div class="ftr-brand">
+            <span class="logo-chip">
+              <img/>
+            <p>
+              · America&rsquo;s Fireplace &amp; Chimney Experts. Founded 1989 &mdash; …
+          <div class="ftr-col">
+            <h4>
+              · Services
+            <div class="ftr-links">
+              <a>
+                · Chimney Sweep &amp; Cleaning
+              <a>
+                · Chimney &amp; Fireplace Inspection
+              <a>
+                · Gas Fireplace Service &amp; Repair
+              <a>
+                · Chimney Repair &amp; Masonry
+              <a>
+                · Crown, Flashing &amp; Tuckpointing
+              <a>
+                · Fireplace Installation
+              <a>
+                · Gas &amp; Wood-Burning Inserts
+              <a>
+                · Gas Log Sets
+              <a>
+                · Chimney Caps &amp; Dampers
+              <a>
+                · Animal-Safe Chimney Clearing
+          <div class="ftr-col">
+            <h4>
+              · States served
+            <div class="ftr-links two">
+              <a>
+                · Washington
+              <a>
+                · Oregon
+              <a>
+                · Ohio
+              <a>
+                · California
+              <a>
+                · Massachusetts
+              <a>
+                · New Hampshire
+              <a>
+                · Rhode Island
+              <a>
+                · Minnesota
+              <a>
+                · Wisconsin
+              <a>
+                · Illinois
+              <a>
+                · New Jersey
+              <a>
+                · Colorado
+              <a>
+                · Connecticut
+              <a>
+                · Indiana
+              <a>
+                · New York
+              <a>
+                · Pennsylvania
+              <a>
+                · Tennessee
+              <a>
+                · Utah
+              <a>
+                · Michigan
+              <a>
+                · Maine
+            <p class="ftr-more">
+              · &hellip;and growing
+          <div class="ftr-col">
+            <h4>
+              · Contact
+            <div class="ftr-contact">
+              <a class="tel">
+                · 1-800-362-4840
+              <a>
+                · harold@chimcare.com
+              <span>
+                · Corporate office &middot; 12236 SW Garden Place, Tigard, OR 97223
+              <span class="soc">
+                <a>
+                  · Facebook
+                <a>
+                  · YouTube
+                <a>
+                  · LinkedIn
+    <div class="ftr-legal">
+      <div class="wrap">
+        <span>
+          · &copy; 2026 Chimcare &middot; Since 1989 &middot; OR CCB #195475 &midd…
+        <span class="policies">
+          <a>
+            · Privacy Policy
+          <a>
+            · Terms of Service
+          <a>
+            · Cookie Policy
+          <a>
+            · Accessibility
+          <a>
+            · Do Not Sell or Share My Info
+          <a>
+            · Sitemap
+· !-- BOOKING — styled to match the live Chimcare (Workiz) widget. Step …
+<div>
+  <section class="book">
+    <div class="book-head">
+      <h3>
+        · Schedule Your Chimney Service Today !
+      <p>
+        · we will confirm the appointment by Email / Call
+      <p class="book-ctx">
+    <div class="book-body">
+      <ol class="steps">
+        <li class="step is-active">
+          <span class="dot">
+          <span class="lbl">
+            · Service
+        <li class="step">
+          <span class="dot">
+          <span class="lbl">
+            · Schedule
+        <li class="step">
+          <span class="dot">
+          <span class="lbl">
+            · Details
+        <li class="step">
+          <span class="dot">
+          <span class="lbl">
+            · Confirmation
+      <p class="book-q">
+        · What service do you need?
+      <div class="svc-opts">
+        <button class="svc-opt">
+          · $299 Chimney Sweep + Inspection
+        <button class="svc-opt">
+          · $69 - Chimney Inspection
+        <button class="svc-opt">
+          · $49 Gas Fireplace Diagnostic
+        <button class="svc-opt">
+          · Repair Quote
+    <div class="book-foot">
+· !-- FLOATING ACTIONS -->
+· !-- STICKY MOBILE FOOTER — Call Now / Book Online -->
+<div class="sfoot">
+  <a class="sfoot-btn sfoot-call">
+    · Call Now
+  <button class="sfoot-btn sfoot-book">
+    · Book Online
+<div class="fcta">
+  <a class="fab">
+    <span class="fab-tip">
+      · Call 509-267-2691
+  <a class="fab">
+    <span class="fab-tip">
+      · Email us
+  <button class="fab">
+    <span class="fab-tip">
+      · Schedule service
+  <a class="fab">
+    <span class="fab-tip">
+      · Get a quote
+· !-- SCHEDULE SHEET — the same booking widget, opened from anywhere on …
+<div class="bsheet">
+  <div class="bsheet-bg">
+  <div class="bsheet-panel">
+    <div class="bsheet-top">
+      <p class="eyebrow">
+        · Chimcare &middot; Spokane, WA
+      <button class="drawer-close">
+    <div>
+<div class="drawer">
+  <div class="drawer-bg">
+  <div class="drawer-panel">
+    <div class="handle">
+    <div class="drawer-head">
+      <p class="eyebrow">
+        · Service · Chimcare Spokane
+      <button class="drawer-close">
+    <div class="drawer-body">
+      <img/>
+      <span class="n">
+        · 01
+      <h3>
+        · Service
+      <p class="intro">
+      <div class="svc-body">
+      <div class="drawer-why">
+        <p class="eyebrow">
+          · Why it matters
+        <p>
+      <div class="svc-body">
+    <div class="drawer-foot">
+      <button class="btn btn-primary">
+        · Schedule Service
+      <a class="phone">
+        · 509-267-2691

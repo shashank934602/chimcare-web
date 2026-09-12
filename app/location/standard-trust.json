@@ -1,0 +1,27 @@
+{
+  "generatedAt": "2026-09-10T09:16:55Z",
+  "source": "send-to-client/spokane.html",
+  "note": "The reference ships this grid as a single flat image, not markup, so these four labels were parsed from that image's own alt text ('Local & trusted, dust-free cleaning, safety first, transparent pricing') rather than hand-typed.",
+  "tiles": [
+    {
+      "key": "local-trusted",
+      "label": "Local & Trusted",
+      "icon": "i-handshake"
+    },
+    {
+      "key": "dust-free-cleaning",
+      "label": "Dust Free Cleaning",
+      "icon": "i-sparkles"
+    },
+    {
+      "key": "safety-first",
+      "label": "Safety First",
+      "icon": "i-shield"
+    },
+    {
+      "key": "transparent-pricing",
+      "label": "Transparent Pricing",
+      "icon": "i-calc"
+    }
+  ]
+}

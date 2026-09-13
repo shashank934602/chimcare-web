@@ -32,7 +32,9 @@ export function FloatingCta({
     const anchor =
       document.querySelector('[data-book-slot]') ??
       document.querySelector('.book-slot') ??
-      document.getElementById('booking');
+      document.getElementById('booking') ??
+      // The hubs carry no booking form; the hero is the next thing a shortcut would duplicate.
+      document.getElementById('o1-hero');
 
     const dialogOpen = () =>
       !!document.querySelector('.bsheet.is-open, .drawer.is-open') || document.body.classList.contains('no-scroll');

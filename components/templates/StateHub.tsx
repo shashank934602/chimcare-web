@@ -26,7 +26,7 @@ export function StateHub(p: StateHubProps & { query?: string; stateSlug: string 
       <main id="main" className="tpl-state" style={style}>
       <JsonLd data={p.jsonLd} />
       {/* HERO */}
-      <section className="hero">
+      <section className="hero" id="o1-hero">
         <div className="wrap enter">
           <Breadcrumbs crumbs={p.crumbs} style={{ '--i': 0 } as CSSProperties} />
           <div className="hero-grid" style={{ '--i': 1 } as CSSProperties}>

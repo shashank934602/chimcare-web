@@ -24,3 +24,12 @@ export function countMatches(haystacks: string[], query: string): number {
   if (!needle) return haystacks.length;
   return haystacks.filter((h) => fold(h).includes(needle)).length;
 }
+
+/**
+ * Location search is switched off until it is ready for visitors. While false, every search box on
+ * the hubs stays empty, filters nothing, ignores `?q=`, and tells the visitor so when they use it.
+ * Flip to true to restore filtering; nothing else needs to change.
+ */
+export const SEARCH_ENABLED = false;
+
+export const SEARCH_DISABLED_NOTE = 'This feature is not enabled yet.';

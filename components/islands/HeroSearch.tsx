@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useSyncExternalStore } from 'react';
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { Icon } from '@/components/chrome/Icon';
-import { fold } from '@/lib/content/search';
+import { fold, SEARCH_DISABLED_NOTE, SEARCH_ENABLED } from '@/lib/content/search';
 import { ensureQuery, getQuery, setQuery, subscribe, syncUrl } from './locationSearch';
 
 /**
@@ -28,8 +28,12 @@ export function HeroSearch({
   totalCount: number;
   stateName: string;
 }) {
-  ensureQuery(initialQuery);
-  const query = useSyncExternalStore(subscribe, getQuery, () => initialQuery);
+  const seed = SEARCH_ENABLED ? initialQuery : '';
+  ensureQuery(seed);
+  const query = useSyncExternalStore(subscribe, getQuery, () => seed);
+  // Search is off: the first click, tap or Enter explains why nothing happens.
+  const [notice, setNotice] = useState(false);
+  const explain = SEARCH_ENABLED ? undefined : () => setNotice(true);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const folded = useMemo(() => searchIndex.map(fold), [searchIndex]);
@@ -59,6 +63,7 @@ export function HeroSearch({
         role="search"
         onSubmit={(e) => {
           e.preventDefault();
+          if (!SEARCH_ENABLED) return setNotice(true);
           document.getElementById('directory')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }}
       >
@@ -69,6 +74,9 @@ export function HeroSearch({
           type="search"
           value={query}
           onChange={(e) => onChange(e.target.value)}
+          readOnly={!SEARCH_ENABLED}
+          onFocus={explain}
+          onClick={explain}
           placeholder={`Search ${stateName} locations by town`}
           autoComplete="off"
           spellCheck={false}
@@ -80,7 +88,9 @@ export function HeroSearch({
       </form>
       <p className="finder-note" id="finder-note" role="status" aria-live="polite">
         <Icon name="pin" />
-        {needle ? (
+        {notice ? (
+          <span>{SEARCH_DISABLED_NOTE}</span>
+        ) : needle ? (
           <span>
             Showing <b>{matchCount} of {totalCount}</b> {stateName} locations matching “{query.trim()}”.{' '}
             <button type="button" className="linkish" onClick={clear}>Show all</button>

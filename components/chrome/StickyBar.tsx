@@ -16,7 +16,7 @@ import { Icon } from './Icon';
  * choice, and its comment gives the reason: IntersectionObserver combined with `position: fixed` has
  * known quirks on older iOS Safari, and a scroll read is deterministic.
  *
- * Pages with no hero (the hubs, for instance) have nothing to hide behind, so the bar appears after
+ * Pages with no hero have nothing to hide behind, so the bar appears after
  * roughly one viewport of scrolling. That keeps it off the first screen, which is the point of the
  * rule, without making it unreachable on a page the reference never covered.
  */

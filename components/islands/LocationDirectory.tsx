@@ -3,7 +3,7 @@
 import { useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import type { LocationCard } from '@/lib/content/assemble-hubs';
 import { Icon } from '@/components/chrome/Icon';
-import { fold } from '@/lib/content/search';
+import { fold, SEARCH_DISABLED_NOTE, SEARCH_ENABLED } from '@/lib/content/search';
 import { ensureQuery, getQuery, setQuery, subscribe } from './locationSearch';
 
 const FIRST = 6; // how many cards a visitor sees before asking for more
@@ -18,9 +18,13 @@ const STEP = 12; // how many each "Load more" adds
  * 150 cities and Massachusetts would have roughly 220, which is far too many to show at once.
  */
 export function LocationDirectory({ cards, initialQuery = '' }: { cards: LocationCard[]; initialQuery?: string }) {
-  ensureQuery(initialQuery);
+  const seed = SEARCH_ENABLED ? initialQuery : '';
+  ensureQuery(seed);
   // Shared with the hero field: typing in either box filters this grid immediately.
-  const query = useSyncExternalStore(subscribe, getQuery, () => initialQuery);
+  const query = useSyncExternalStore(subscribe, getQuery, () => seed);
+  // Search is off: the first click, tap or Enter explains why nothing happens.
+  const [notice, setNotice] = useState(false);
+  const explain = SEARCH_ENABLED ? undefined : () => setNotice(true);
   const [shown, setShown] = useState(FIRST);
 
   // Fold each card's search text once, not on every keystroke.
@@ -51,13 +55,20 @@ export function LocationDirectory({ cards, initialQuery = '' }: { cards: Locatio
               setQuery(e.target.value);
               setShown(FIRST);
             }}
+            readOnly={!SEARCH_ENABLED}
+            onFocus={explain}
+            onClick={explain}
             placeholder="Find your town"
             aria-label="Find your town"
           />
         </label>
         <p className="dir-count" id="dir-count" role="status">
-          Showing <b>{Math.min(shown, matching.length)}</b> of <b>{matching.length}</b>
-          {needle ? ' matching' : ''} location{matching.length === 1 ? '' : 's'}
+          {notice ? SEARCH_DISABLED_NOTE : (
+            <>
+              Showing <b>{Math.min(shown, matching.length)}</b> of <b>{matching.length}</b>
+              {needle ? ' matching' : ''} location{matching.length === 1 ? '' : 's'}
+            </>
+          )}
         </p>
       </div>
 

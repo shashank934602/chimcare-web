@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { StateHub } from '@/components/templates/StateHub';
 import { assembleStateHub } from '@/lib/content/assemble-hubs';
+import { SEARCH_ENABLED } from '@/lib/content/search';
 import { getPrices } from '@/lib/data/pricing';
 import { getCitiesForState, getStateBySlug } from '@/lib/data/states';
 
@@ -31,5 +32,6 @@ export default async function StatePage({ params, searchParams }: { params: Para
   const p = await load(state);
   if (!p) notFound();
   // `?q=` filters on the server too, so a shared link renders already filtered without JavaScript.
-  return <StateHub {...p} query={q ?? ''} stateSlug={state} />;
+  // While search is switched off the query is ignored, so the page never renders pre-filtered.
+  return <StateHub {...p} query={SEARCH_ENABLED ? q ?? '' : ''} stateSlug={state} />;
 }

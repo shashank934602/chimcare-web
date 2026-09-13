@@ -2,7 +2,7 @@
 
 import { useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { Icon } from '@/components/chrome/Icon';
-import { fold } from '@/lib/content/search';
+import { SEARCH_DISABLED_NOTE, SEARCH_ENABLED, fold } from '@/lib/content/search';
 import type { StateCard } from '@/lib/content/assemble-hubs';
 import { ensureQuery, getQuery, setQuery, subscribe } from './locationSearch';
 
@@ -185,6 +185,9 @@ export function NationalFinder({
   ensureQuery('');
   const query = useSyncExternalStore(subscribe, getQuery, () => '');
   const needle = fold(query.trim());
+  // Search is off: the first click, tap or Enter explains why nothing happens.
+  const [notice, setNotice] = useState(false);
+  const explain = SEARCH_ENABLED ? undefined : () => setNotice(true);
 
   const index = useMemo(
     () => groups.map((g) => ({ name: g.name, state: fold(g.name), coverageOnly: g.coverageOnly, cities: g.cities.map((c) => fold(c.name)) })),
@@ -217,6 +220,9 @@ export function NationalFinder({
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          readOnly={!SEARCH_ENABLED}
+          onFocus={explain}
+          onClick={explain}
           placeholder="Search by ZIP, city or state"
           autoComplete="off"
           spellCheck={false}
@@ -235,7 +241,9 @@ export function NationalFinder({
       </div>
       <p className="finder-note" id="finder-note" role="status" aria-live="polite">
         <Icon name="pin" />
-        {!needle ? (
+        {notice ? (
+          <span>{SEARCH_DISABLED_NOTE}</span>
+        ) : !needle ? (
           <span>Showing <b>all {totalCities} locations</b> across {stateCount} {stateCount === 1 ? 'state' : 'states'}.</span>
         ) : shown === 0 && covShown === 0 ? (
           <span>No location matches <b>{query.trim()}</b>.</span>

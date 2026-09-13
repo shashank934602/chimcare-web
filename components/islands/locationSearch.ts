@@ -1,5 +1,7 @@
 'use client';
 
+import { SEARCH_ENABLED } from '@/lib/content/search';
+
 /**
  * The state hub has two search boxes — one in the hero, one above the directory grid — and they
  * must always agree. They sit far apart in the template, so instead of threading React state
@@ -14,7 +16,7 @@ const listeners = new Set<() => void>();
 
 /** Seed the store from the URL on first render, so a shared link filters immediately. */
 export function ensureQuery(initial: string): void {
-  if (query === null) query = initial;
+  if (query === null) query = SEARCH_ENABLED ? initial : '';
 }
 
 export function getQuery(): string {
@@ -22,7 +24,7 @@ export function getQuery(): string {
 }
 
 export function setQuery(next: string): void {
-  if (query === next) return;
+  if (!SEARCH_ENABLED || query === next) return;
   query = next;
   for (const l of listeners) l();
 }
@@ -39,6 +41,7 @@ export function subscribe(listener: () => void): () => void {
  * navigation per keystroke would be a server round-trip and would fight the input for focus.
  */
 export function syncUrl(basePath: string, next: string): void {
+  if (!SEARCH_ENABLED) return;
   const url = next.trim() ? `${basePath}?q=${encodeURIComponent(next.trim())}` : basePath;
   window.history.replaceState(null, '', url);
 }

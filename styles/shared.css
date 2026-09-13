@@ -20,6 +20,11 @@
 .fcta { opacity: 0; visibility: hidden; pointer-events: none; }
 .fcta.is-on { opacity: 1; visibility: visible; pointer-events: auto; }
 
+/* Phones get the sticky Call/Book bar, so the rail never shows there. base.css switches the rail off
+   under 900px and then redeclares it with display:grid, which wins by source order; this puts the
+   phone rule back on every template, the hubs included. */
+@media (max-width: 900px) { .fcta { display: none; } }
+
 /* ---- Phone view: the badge and the number live in the menu panel -------------------------------
    The mock keeps the BBB badge and the call button in the bar at every width. On a phone that
    leaves four controls competing for about 320px. Below 520px they move into the drop panel
@@ -57,3 +62,12 @@
    still fits: measured x226 on the reference at 320px. An earlier revision here dropped it below
    360px, which was a judgement call the spec does not ask for. */
 
+
+/* ---- State hub intro: the heading rail stays in view on desktop ----------------------------------
+   The eyebrow, heading and buttons ride alongside the longer copy column while it scrolls. The
+   generated state.css sets the rail to position:static, so this outranks it with one more class.
+   Below 1041px the two columns stack, where sticky would pin the heading over the copy. top:96px
+   clears the header, the same offset the map panel uses. */
+@media (min-width: 1041px) {
+  .tpl-state .section.intro .rail { position: sticky; top: 96px; }
+}

@@ -20,7 +20,7 @@ export function NationalHub(p: NationalHubProps) {
     <>
       <main id="main" className="tpl-hub">
       <JsonLd data={p.jsonLd} />
-      <section className="hero">
+      <section className="hero" id="o1-hero">
         <div className="wrap enter">
           <Breadcrumbs crumbs={[{ label: 'Home', href: '/' }, { label: 'Locations' }]} style={{ '--i': 0 } as CSSProperties} />
           <div className="hero-grid" style={{ '--i': 1 } as CSSProperties}>

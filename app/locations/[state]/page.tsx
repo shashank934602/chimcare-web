@@ -1,3 +1,4 @@
+import 'leaflet/dist/leaflet.css';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { StateHub } from '@/components/templates/StateHub';

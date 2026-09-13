@@ -62,7 +62,7 @@ export function LocationDirectory({ cards, initialQuery = '' }: { cards: Locatio
             aria-label="Find your town"
           />
         </label>
-        <p className="dir-count" id="dir-count" role="status">
+        <p className={notice ? 'dir-count is-notice' : 'dir-count'} id="dir-count" role="status">
           {notice ? SEARCH_DISABLED_NOTE : (
             <>
               Showing <b>{Math.min(shown, matching.length)}</b> of <b>{matching.length}</b>

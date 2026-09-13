@@ -4,7 +4,7 @@ import type { StateHubProps } from '@/lib/content/assemble-hubs';
 import { Icon } from '@/components/chrome/Icon';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { Accordion } from '@/components/islands/Accordion';
-import { Breadcrumbs, SectionHead, TrustStrip } from '@/components/sections/shared';
+import { Breadcrumbs, HeroAwards, SectionHead, TrustStrip } from '@/components/sections/shared';
 import { BookingSheet } from '@/components/islands/BookingSheet';
 import { HeroSearch } from '@/components/islands/HeroSearch';
 import { LocationDirectory } from '@/components/islands/LocationDirectory';
@@ -53,7 +53,7 @@ export function StateHub(p: StateHubProps & { query?: string; stateSlug: string 
           </div>
           <div className="hero-certs">
             <span className="lbl">MEMBERSHIPS &amp; AWARDS</span>
-            <img src="/img/awards.png" width={1248} height={450} loading="lazy" decoding="async" alt="National Chimney Sweep Guild member, Angie's List Super Service Award 2020 and Angi Super Service Award 2021" />
+            <HeroAwards />
           </div>
         </div>
       </section>
@@ -67,8 +67,11 @@ export function StateHub(p: StateHubProps & { query?: string; stateSlug: string 
           <div className="grid">
             <div>
               <LocationDirectory cards={p.directory.cards} initialQuery={query} />
-              <MapPanel cards={p.directory.cards} />
             </div>
+            {/* The map is the grid's second column on desktop, beside the cards, and leads on smaller
+                screens (state.css orders it first). It used to share the first column's wrapper, which
+                put it under every card and left the right-hand column empty. */}
+            <MapPanel cards={p.directory.cards} />
           </div>
         </div>
       </section>

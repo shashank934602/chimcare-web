@@ -21,6 +21,8 @@ export type LocationCard = {
   href?: string; // undefined when the city page is not published
   photo?: { src: string; alt: string };
   search: string;
+  lat?: number; // map pin; absent when the location has no coordinates
+  lng?: number;
 };
 
 export type StateHubProps = {
@@ -67,6 +69,10 @@ export function assembleStateHub(input: { state: State; listings: CityListing[];
       // Deliberately excludes the state name: it is identical on every card, so including it made
       // any letter appearing in "Minnesota" match all 150 towns.
       search: [city.name, ...(isBranch ? [branch!.street, branch!.zip] : [])].join(' '),
+      // The map pin. A branch city without its own coordinates uses its branch's address, which is in
+      // that town. A coverage city without coordinates gets no pin rather than one on the wrong town.
+      lat: city.lat ?? (isBranch ? branch!.lat : undefined),
+      lng: city.lng ?? (isBranch ? branch!.lng : undefined),
     };
   });
 

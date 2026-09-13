@@ -3,7 +3,7 @@ import type { CSSProperties } from 'react';
 import type { NationalHubProps } from '@/lib/content/assemble-hubs';
 import { Icon } from '@/components/chrome/Icon';
 import { JsonLd } from '@/components/seo/JsonLd';
-import { Breadcrumbs, SectionHead, TrustStrip } from '@/components/sections/shared';
+import { Breadcrumbs, HeroAwards, SectionHead, TrustStrip } from '@/components/sections/shared';
 import { BookingSheet } from '@/components/islands/BookingSheet';
 import { NationalFinder, StateDirectory } from '@/components/islands/StateDirectory';
 import { FloatingCta } from '@/components/chrome/FloatingCta';
@@ -44,7 +44,7 @@ export function NationalHub(p: NationalHubProps) {
           </div>
           <div className="hero-certs">
             <span className="lbl">MEMBERSHIPS &amp; AWARDS</span>
-            <img src="/img/awards.png" width={1248} height={450} loading="lazy" decoding="async" alt="National Chimney Sweep Guild member, Angie's List Super Service Award 2020 and Angi Super Service Award 2021" />
+            <HeroAwards />
           </div>
         </div>
       </section>

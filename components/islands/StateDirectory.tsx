@@ -41,6 +41,15 @@ export function StateDirectory({
 }) {
   const query = useSyncExternalStore(subscribe, getQuery, () => '');
   const [shown, setShown] = useState(BATCH);
+  // Every state row starts closed; its + opens it. React owns this, so a re-render never reopens a row.
+  const [openGroups, setOpenGroups] = useState<ReadonlySet<string>>(() => new Set());
+  const toggleGroup = (name: string) =>
+    setOpenGroups((prev) => {
+      const next = new Set(prev);
+      if (next.has(name)) next.delete(name);
+      else next.add(name);
+      return next;
+    });
 
   const foldedGroups = useMemo(
     () => groups.map((g) => ({ group: g, state: fold(g.name), cities: g.cities.map((c) => ({ city: c, text: fold(c.name) })) })),
@@ -123,8 +132,8 @@ export function StateDirectory({
 
       {/* ---- city directory ---- */}
       <div className="dirlist reveal" data-accordion="multi" id="dirlist">
-        {result.groups.map((g, i) => {
-          const open = needle ? g.open : i === 0;
+        {result.groups.map((g) => {
+          const open = needle ? g.open : openGroups.has(g.group.name);
           const hitCount = g.group.coverageOnly ? 0 : g.hits.length;
           return (
             <div
@@ -138,7 +147,7 @@ export function StateDirectory({
                 className="chips-head"
                 type="button"
                 aria-expanded={open}
-                onClick={(e) => e.currentTarget.parentElement?.classList.toggle('is-open')}
+                onClick={() => toggleGroup(g.group.name)}
               >
                 <span>{g.group.name}</span>
                 <span className="c">{g.group.coverageOnly ? 'Coverage area' : `${hitCount} ${hitCount === 1 ? 'city' : 'cities'}`}</span>

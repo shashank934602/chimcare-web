@@ -11,6 +11,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { HOME_BODY_CLASS, HOME_CSS_HREF, HOME_HTML, HOME_META, HOME_SCHEMA } from './_home/content';
 import { withHomeHero } from './_home/hero';
+import { withHeaderBbb } from './_home/header-bbb';
 import { withInternalAboutLink, withInternalContactLink } from './_home/nav-links';
 import { FloatingCta } from '@/components/chrome/FloatingCta';
 import { BookingSheet } from '@/components/islands/BookingSheet';
@@ -83,7 +84,7 @@ function homeSchemaWithTitle(): Record<string, unknown> | null {
 export default async function Home() {
   const booking = bookingOptions(await getPrices(null));
   const bookingContext: BookingContext = { pageSlug: '/', pageKind: 'hub', label: 'Chimcare' };
-  const homeHtml = withInternalAboutLink(withInternalContactLink(withHomeHero(HOME_HTML)));
+  const homeHtml = withHeaderBbb(withInternalAboutLink(withInternalContactLink(withHomeHero(HOME_HTML))));
   const homeSchema = homeSchemaWithTitle();
   return (
     <>

@@ -773,3 +773,46 @@ body:has(.cc-rq) .wp-home .header-template {
     transition: none;
   }
 }
+/* 9 — BBB badge in the saved header (app/_home/header-bbb.ts), beside the desktop "Call Us Now" pill and
+   the phone-only call button: the same badge and heights as the site header elsewhere (.hdr-bbb in
+   styles/base.css — 40px on desktop, 30px on phones). */
+.wp-home .elementor-element-6e7e207 .elementor-button-wrapper,
+.wp-home .elementor-element-c398819 .elementor-button-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+}
+.wp-home .elementor-button-wrapper .cc-hdr-bbb {
+  flex: none;
+  display: block;
+  width: auto;
+  height: 40px;
+}
+/* The pill keeps its one-line label; without this the badge squeezed "Call Us Now" onto three lines. */
+.wp-home .elementor-element-6e7e207 .elementor-button {
+  flex: none;
+  white-space: nowrap;
+}
+/* On tablets the phone button's column is only as wide as the button (32–40px), so the saved layout
+   already sat it against the logo; with the badge it overlapped. There the column sizes to its content
+   and moves to the right, beside the menu toggle. Phones keep the saved layout: their column (98px)
+   already fits badge and button. */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .wp-home .elementor-337148 .elementor-element.elementor-element-8e7141e {
+    width: auto !important;
+    flex: none;
+    margin-left: auto;
+  }
+  /* The menu toggle's column is a fixed 70% here; sized to its toggle it stays on the same line. */
+  .wp-home .elementor-337148 .elementor-element.elementor-element-52951bb {
+    width: auto !important;
+    flex: none;
+  }
+}
+@media (max-width: 1024px) {
+  .wp-home .elementor-element-c398819 .elementor-button-wrapper { gap: 12px; }
+}
+@media (max-width: 767px) {
+  .wp-home .elementor-button-wrapper .cc-hdr-bbb { height: 30px; }
+}

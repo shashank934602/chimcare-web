@@ -16,6 +16,9 @@ body:has(> .tpl-contact) > .hdr { display: none; }
 .tpl-contact .contact-hero {
   position: relative;
   isolation: isolate;
+  /* The site header's layer (.hdr in styles/base.css): the Locations panel and the stuck nav card
+     belong above the page sections below, which otherwise painted over the panel. */
+  z-index: 60;
   padding: 50px 0 clamp(48px, 7vw, 88px);
   color: #fff;
 }

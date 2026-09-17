@@ -250,6 +250,20 @@ body:has(> .wp-home) {
   .wp-home .elementor-337148 .elementor-element-a5cb89c .elementor-menu-toggle.elementor-active + nav.elementor-nav-menu--dropdown {
     box-shadow: 0 18px 40px rgba(20, 12, 8, 0.18);
   }
+  /* Rows edge to edge: the saved theme padded each row 20px at the sides, so the red current-page
+     highlight on the link stopped short of both panel edges. The padding moves onto the link (text stays
+     where it was) and the panel clips the highlight to its rounded corners. */
+  .wp-home .elementor-337148 .elementor-element-a5cb89c nav.elementor-nav-menu--dropdown.elementor-nav-menu__container {
+    overflow: hidden;
+  }
+  .wp-home .elementor-337148 .elementor-element-a5cb89c nav.elementor-nav-menu--dropdown li {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .wp-home .elementor-337148 .elementor-element-a5cb89c nav.elementor-nav-menu--dropdown a.elementor-item {
+    padding-left: 25px !important;
+    padding-right: 25px !important;
+  }
 }
 
 /* 7 — hero "Request service" popup (RequestServiceModal). The saved page shows the button only on phones;

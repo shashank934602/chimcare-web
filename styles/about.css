@@ -40,6 +40,9 @@ body:has(> .tpl-about) > .hdr {
 }
 
 .tpl-about .about-hero { padding-top: 50px; }
+/* The site header's layer (.hdr in styles/base.css), so the stuck nav card and its Locations panel stay
+   above the sections below. */
+.tpl-about .about-hero { z-index: 60; }
 .tpl-about .about-hero .hnav { margin-bottom: clamp(56px, 10vw, 140px); }
 @media (max-width: 1024px) {
   .tpl-about .about-hero { padding-top: 20px; }

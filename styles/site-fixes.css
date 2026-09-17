@@ -1,0 +1,163 @@
+/* Hand-written overrides for the generated stylesheets (tokens/base/hub/state/city.css are regenerated
+   by scripts/port-css.mjs and must not be edited). */
+
+/* ---- Sticky Call Now / Book Online ------------------------------------------------------------
+   On desktop the bar is a floating pill, bottom-centre, beside the round quick-action buttons — the
+   live site's own treatment. base.css and app/location/template.css both end with
+   `@media (min-width:901px){.sfoot{display:none}}`, which hid it on every desktop page. The selectors
+   below outrank that rule without editing either file. Phones keep the slide-in bar as it was.
+   StickyBar.tsx already hides the bar itself (`.is-on` is removed) as soon as the footer's top edge
+   reaches the viewport — well before its last row (`.ftr-legal`) is even visible — so there is
+   nothing left for the bar to cover there; a static bottom-padding reservation on `.ftr-legal .wrap`
+   used to duplicate that (now redundant) and just left a large empty band under the footer's legal
+   row on every desktop load. */
+@media (min-width: 901px) {
+  html body .sfoot {
+    display: flex;
+  }
+  html body.no-scroll .sfoot {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+/* ---- City directory (national and state hubs) ---------------------------------------------------
+   "Load more states" sat directly on the directory's top rule; give it room. The row header spread name,
+   count and + with space-between, so each count floated to wherever its state name ended; a grid puts
+   every count on the same left edge. */
+.tpl-hub div.dir-more,
+.tpl-state div.dir-more {
+  margin-bottom: 36px;
+}
+/* With every state card shown the "Load more" row is hidden, so the last card sat on the rule too. */
+.tpl-hub .dirlist {
+  margin-top: 48px;
+}
+.tpl-hub .dirlist .chips-head,
+.tpl-state .dirlist .chips-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  justify-content: stretch;
+}
+.tpl-hub .dirlist .chips-head .c,
+.tpl-state .dirlist .chips-head .c {
+  text-align: left;
+}
+
+/* ---- Photo credits (licence attribution) -------------------------------------------------------- */
+.state-card .ph {
+  position: relative;
+}
+.ph-credit,
+.hero-credit {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  z-index: 2;
+  max-width: calc(100% - 20px);
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.45);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 10.5px;
+  line-height: 1.4;
+  pointer-events: none;
+}
+.tpl-state .hero {
+  position: relative;
+}
+.hero-credit {
+  right: 16px;
+  bottom: 12px;
+}
+
+/* ---- CTA buttons (gradient shimmer + pulse) ------------------------------------------------------
+   base.css sets .btn-primary and .sfoot-call (the mobile/desktop sticky bar's "Call Now" pill,
+   present on every page) as flat fills; the primary CTA ("Schedule Service", "Book Online",
+   "Fast Online Booking", "Call Now" …) gets a slow-moving gradient and a soft pulsing glow so it
+   reads as the one action to take on the page. Both pause on hover/focus — the fill already darkens
+   there — and both are off entirely for prefers-reduced-motion. Dark/outline/ghost variants
+   (.btn-dark, .sfoot-book, …) are deliberately left alone — only one button per screen should pulse. */
+.btn-primary,
+.sfoot-call {
+  position: relative;
+  background: linear-gradient(115deg, var(--brand-red) 0%, var(--brand-red-deep) 45%, var(--brand-red) 100%);
+  background-size: 240% 240%;
+  animation: cta-shimmer 5s ease infinite, cta-pulse 2.4s ease-in-out infinite;
+}
+.btn-primary:hover,
+.btn-primary:focus-visible,
+.sfoot-call:hover,
+.sfoot-call:focus-visible {
+  animation-play-state: paused;
+  background: var(--brand-primary-deep);
+}
+@keyframes cta-shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes cta-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(221, 46, 68, 0.4); }
+  50% { box-shadow: 0 0 0 7px rgba(221, 46, 68, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn-primary,
+  .sfoot-call { animation: none; }
+}
+
+/* ---- State hub hero stats (drop the "Locations statewide" count) --------------------------------
+   StateHub.tsx now renders two stats instead of three; state.css still lays the row out as three
+   equal columns, which left an empty gap on the right of the (centered) pair. The extra `.hero`
+   in the selector isn't needed for matching (hero-meta only ever appears there) — it raises
+   specificity above state.css's own `.tpl-state .hero-meta`, since the generated stylesheet's chunk
+   loads after this one and would otherwise win the tie. */
+.tpl-state .hero .hero-meta {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 440px;
+}
+
+/* ---- Icon weight (sitewide) -----------------------------------------------------------------
+   base.css's own default (do not edit) is stroke-width:1.7; every <Icon> everywhere reads it, so
+   this one override reaches all of them at once — header, footer, cards, floating buttons. */
+.ico {
+  stroke-width: 1.4;
+}
+
+/* ---- Floating quick-action buttons: gradient + pulsating ring -------------------------------
+   The fabs (FloatingCta.tsx, `#fcta .fab`) get the same shimmering brand gradient as .btn-primary
+   above (`cta-shimmer`, reused rather than a second gradient animation) plus a ring that expands
+   and fades around each button — reads as "live" without the attention-grabbing bounce a shaking
+   icon would add. Each button's ring is staggered a little so the four don't pulse in lockstep. */
+.fcta .fab {
+  position: relative;
+  background: linear-gradient(115deg, var(--brand-red) 0%, var(--brand-red-deep) 45%, var(--brand-red) 100%);
+  background-size: 240% 240%;
+  animation: cta-shimmer 5s ease infinite;
+}
+.fcta .fab:hover,
+.fcta .fab:focus-visible {
+  animation-play-state: paused;
+  background: var(--brand-primary-deep);
+}
+.fcta .fab::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--brand-primary);
+  pointer-events: none;
+  animation: fab-ping 2.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.fcta .fab:nth-child(2)::before { animation-delay: 0.5s; }
+.fcta .fab:nth-child(3)::before { animation-delay: 1s; }
+.fcta .fab:nth-child(4)::before { animation-delay: 1.5s; }
+@keyframes fab-ping {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fcta .fab { animation: none; }
+  .fcta .fab::before { display: none; }
+}

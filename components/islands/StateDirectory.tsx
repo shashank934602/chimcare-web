@@ -97,24 +97,17 @@ export function StateDirectory({
         {cards.map((s) => (
           <article className="state-card reveal" key={s.code} hidden={!visibleCodes.has(s.code)}>
             {s.photo ? (
-              <div className="ph"><img className="ph-photo" loading="lazy" decoding="async" src={s.photo} alt={`Chimney service in ${s.name}`} /></div>
+              <div className="ph">
+                <img className="ph-photo" loading="lazy" decoding="async" src={s.photo} alt={s.photoAlt ?? `Chimney service in ${s.name}`} title={s.photoAlt ?? `Chimney service in ${s.name}`} />
+                {s.photoCredit && <small className="ph-credit">{s.photoCredit}</small>}
+              </div>
             ) : (
               <div className="ph ph-plain"><span className="ph-plain-name">{s.name}</span><span className="ph-plain-note">Local photo to come</span></div>
             )}
             <span className="abbr">{s.code}</span>
             <div className="body">
               <h3>{s.href ? <a href={s.href}>{s.name}</a> : s.name}</h3>
-              <p className="desc">{s.blurb}</p>
-              <div className="cities">
-                {s.verified ? (
-                  <>
-                    {s.cities.slice(0, 4).map((c) => <span key={c}>{c}</span>)}
-                    {s.cities.length > 4 && <span className="more">+{s.cities.length - 4} more</span>}
-                  </>
-                ) : (
-                  <span className="more">Cities to be confirmed</span>
-                )}
-              </div>
+              {s.blurb && <p className="desc">{s.blurb}</p>}
             </div>
           </article>
         ))}

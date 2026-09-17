@@ -1,10 +1,12 @@
 import '@/styles/state.css';
+import '@/styles/hub-hero.css';
 import type { CSSProperties } from 'react';
 import type { StateHubProps } from '@/lib/content/assemble-hubs';
 import { Icon } from '@/components/chrome/Icon';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { Accordion } from '@/components/islands/Accordion';
 import { Breadcrumbs, HeroAwards, SectionHead, TrustStrip } from '@/components/sections/shared';
+import { BookingForm } from '@/components/islands/BookingForm';
 import { BookingSheet } from '@/components/islands/BookingSheet';
 import { HeroSearch } from '@/components/islands/HeroSearch';
 import { LocationDirectory } from '@/components/islands/LocationDirectory';
@@ -29,10 +31,10 @@ export function StateHub(p: StateHubProps & { query?: string; stateSlug: string 
       <section className="hero" id="o1-hero">
         <div className="wrap enter">
           <Breadcrumbs crumbs={p.crumbs} style={{ '--i': 0 } as CSSProperties} />
-          <div className="hero-grid" style={{ '--i': 1 } as CSSProperties}>
+          <div className="hero-grid has-book" style={{ '--i': 1 } as CSSProperties}>
             <div className="hero-copy">
               <h1><span className="hl">Chimcare</span> Locations in {p.hero.name}</h1>
-              <p className="lede">{p.hero.lede}</p>
+              {p.hero.lede && <p className="lede">{p.hero.lede}</p>}
               <HeroSearch
                 action={`/locations/${p.stateSlug}/`}
                 initialQuery={query}
@@ -45,17 +47,21 @@ export function StateHub(p: StateHubProps & { query?: string; stateSlug: string 
                 <a className="btn btn-outline" href="#booking" data-book>Schedule Service</a>
               </div>
               <div className="hero-meta">
-                <div><b>{p.hero.count}</b><span>Locations statewide</span></div>
                 <div><b>1989</b><span>Serving since</span></div>
                 <div><b>CSIA</b><span>Certified technicians</span></div>
               </div>
+              <div className="hero-certs">
+                <span className="lbl">MEMBERSHIPS &amp; AWARDS</span>
+                <HeroAwards />
+              </div>
+            </div>
+            {/* The same booking widget as the location pages; the Schedule Service buttons scroll to it. */}
+            <div className="book-slot">
+              <BookingForm embedded options={p.booking} context={p.bookingContext} />
             </div>
           </div>
-          <div className="hero-certs">
-            <span className="lbl">MEMBERSHIPS &amp; AWARDS</span>
-            <HeroAwards />
-          </div>
         </div>
+        {p.imgCredit && <small className="hero-credit">{p.imgCredit}</small>}
       </section>
 
       <TrustStrip items={p.trust} className="trust" awards={false} />
@@ -71,12 +77,14 @@ export function StateHub(p: StateHubProps & { query?: string; stateSlug: string 
             {/* The map is the grid's second column on desktop, beside the cards, and leads on smaller
                 screens (state.css orders it first). It used to share the first column's wrapper, which
                 put it under every card and left the right-hand column empty. */}
-            <MapPanel cards={p.directory.cards} />
+            <MapPanel cards={p.mapCards ?? p.directory.cards} />
           </div>
         </div>
       </section>
 
       {/* EDITORIAL INTRO */}
+      {/* A state without written copy yet renders facts only: no empty intro, editorial or detail band. */}
+      {(p.intro.paragraphs.length > 0 || p.intro.stats.length > 0) && (
       <section className="section tinted intro">
         <div className="wrap">
           <div className="rail reveal">
@@ -95,15 +103,18 @@ export function StateHub(p: StateHubProps & { query?: string; stateSlug: string 
           </div>
         </div>
       </section>
+      )}
 
       {/* EDITORIAL BLOCKS */}
+      {/* Hidden until the state has editorial copy. */}
+      {p.editorial.length > 0 && (
       <section className="section">
         <div className="wrap">
           {p.editorial.map((e) => (
             <article className={e.flip ? 'ed flip reveal' : 'ed reveal'} key={e.heading}>
               <figure>
                 <div className="ph" data-ph={e.imageAlt}>
-                  <img className="ph-photo" src={'/' + e.imageKey} alt={e.imageAlt} loading="lazy" decoding="async" />
+                  <img className="ph-photo" src={'/' + e.imageKey} alt={e.imageAlt} title={e.imageAlt} loading="lazy" decoding="async" />
                 </div>
               </figure>
               <div>
@@ -119,8 +130,11 @@ export function StateHub(p: StateHubProps & { query?: string; stateSlug: string 
           ))}
         </div>
       </section>
+      )}
 
       {/* EXPANDABLE DETAIL */}
+      {/* Hidden until the state has detail copy. */}
+      {p.detail.items.length > 0 && (
       <section className="section tinted" id="services">
         <div className="wrap">
           <SectionHead eyebrow={p.detail.eyebrow} heading={p.detail.heading} lede={p.detail.lede} left />
@@ -145,6 +159,7 @@ export function StateHub(p: StateHubProps & { query?: string; stateSlug: string 
           </Accordion>
         </div>
       </section>
+      )}
 
       {/* CREW */}
       <section className="section crew">
@@ -153,7 +168,7 @@ export function StateHub(p: StateHubProps & { query?: string; stateSlug: string 
           <div className="crew-grid">
             {p.crew.map((c) => (
               <div className="crew-card reveal" key={c.title}>
-                <img className="ph-photo" loading="lazy" decoding="async" width={600} height={400} src={c.src} alt={c.alt} />
+                <img className="ph-photo" loading="lazy" decoding="async" width={600} height={400} src={c.src} alt={c.alt} title={c.alt} />
                 <div className="body"><b>{c.title}</b><small>{c.small}</small></div>
               </div>
             ))}

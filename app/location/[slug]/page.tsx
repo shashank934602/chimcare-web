@@ -30,6 +30,7 @@ import { readJsonCached } from '@/lib/json-cache';
 // The migrated pages themselves do NOT come from a JSON file any more: they are one row each in the
 // pipeline's SQLite store, read by slug. See `lib/route-store.ts` for why.
 import { readRoute, readRedirect, listRouteSlugs } from '@/lib/route-store';
+import { placeFromSlug } from '@/lib/content/place-from-slug.mjs';
 
 /**
  * The dispatcher. One route for every legacy `/location/{slug}/` URL, and ONE template behind it.
@@ -765,7 +766,7 @@ async function directoryHead(ctx: Record<string, string>): Promise<{ eyebrow: st
  * but name the fields: the blocks in `04-routes.json` ARE the block stream this template renders.
  */
 async function viewFromManifest(route: Route): Promise<PageView> {
-  const place = parsePlace(route.slug);
+  const place = parsePlace(route.slug, route.title);
   return {
     source: 'manifest',
     slug: route.slug,
@@ -908,18 +909,24 @@ const STATE_NAMES: Record<string, string> = {
   WV: 'West Virginia', WI: 'Wisconsin', WY: 'Wyoming',
 };
 
-/** The slug's shape is `{service}-in-{city}-{st}`. Anything that does not parse yields null. */
-function parsePlace(slug: string): { city: string; code: string; state: string } | null {
-  const match = /-in-(.+)-([a-zA-Z]{2})$/.exec(slug);
-  if (!match) return null;
-  const city = match[1]
-    .split('-')
-    .filter(Boolean)
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-  if (!city) return null;
-  const code = match[2].toUpperCase();
-  return { city, code, state: STATE_NAMES[code] ?? code };
+/**
+ * The page's city and state, from every URL shape WordPress published (lib/content/place-from-slug.mjs):
+ * `chimney-sweep-seattle-wa`, `bedford-chimney-sweep` and `-2` duplicates included, so their breadcrumb
+ * links to the state hub like every other page. The title is used only where the slug cannot name the city.
+ */
+function parsePlace(slug: string, title?: string | null): { city: string; code: string; state: string } | null {
+  const place = placeFromSlug(slug, title);
+  if (!place) return null;
+  if (place.shape === 'A') {
+    // Unchanged for the common shape: the city exactly as the slug spells it.
+    const city = place.citySlug
+      .split('-')
+      .filter(Boolean)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+    return { city, code: place.code, state: STATE_NAMES[place.code] ?? place.code };
+  }
+  return { city: place.city, code: place.code, state: STATE_NAMES[place.code] ?? place.code };
 }
 
 /**
@@ -1026,6 +1033,7 @@ function Figure({ image, className = 'ph-img' }: { image: ImageRef; className?: 
       <img
         src={image.src}
         alt={image.alt}
+        title={image.alt || undefined}
         {...(sized ? { width: image.width as number, height: image.height as number } : {})}
         loading="lazy"
         decoding="async"
@@ -1184,6 +1192,7 @@ function Plate({ asset, className }: { asset: RefAsset; className: string }) {
       <img
         src={asset.file}
         alt={asset.alt ?? ''}
+        title={asset.alt || undefined}
         {...(sized ? { width: asset.width as number, height: asset.height as number } : {})}
         loading="lazy"
         decoding="async"
@@ -1442,6 +1451,7 @@ function ReferencePage({ view }: { view: PageView }) {
                             <img
                               src={a.file}
                               alt={a.alt ?? ''}
+                              title={a.alt || undefined}
                               {...(a.width != null && a.height != null ? { width: a.width, height: a.height } : {})}
                               loading="lazy"
                               decoding="async"
@@ -1463,6 +1473,7 @@ function ReferencePage({ view }: { view: PageView }) {
                     <img
                       src={view.heroImage.src}
                       alt={view.heroImage.alt ?? ''}
+                      title={view.heroImage.alt || undefined}
                       {...(view.heroImage.width != null && view.heroImage.height != null
                         ? { width: view.heroImage.width, height: view.heroImage.height }
                         : {})}

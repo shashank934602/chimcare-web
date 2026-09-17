@@ -1,0 +1,227 @@
+/* Site footer (components/chrome/Footer.tsx) — a dark navy band, distinct from the site's usual
+   red/near-black chrome, on purpose: this is the one section built to match a supplied reference
+   design exactly. New classes (`foot-*`) rather than the generated `.ftr-*` rules in styles/base.css
+   (do not edit that file — scripts/port-css.mjs owns it), the same "new styles go in a new file"
+   pattern as styles/booking.css. The outer element keeps the plain `ftr` class so StickyBar's own
+   `footer.ftr` lookup (components/chrome/StickyBar.tsx) still finds it. */
+
+.ftr {
+  --foot-bg: #0c1a2b;
+  --foot-bg-2: #091422;
+  --foot-line: rgba(255, 255, 255, 0.1);
+  --foot-text: rgba(226, 232, 240, 0.72);
+  --foot-text-dim: rgba(226, 232, 240, 0.45);
+  position: relative;
+  overflow: hidden;
+  background: var(--foot-bg);
+  color: var(--foot-text);
+}
+/* :where() keeps this reset at zero specificity, so every more-specific link class below (state
+   names, "+ See More", the phone number, …) wins regardless of source order. A plain `.ftr a` rule
+   was outranking those single-class selectors on specificity alone and graying them out. */
+:where(.ftr) a { color: inherit; text-decoration: none; }
+
+.foot-main { padding: clamp(48px, 6vw, 72px) 0 36px; }
+
+/* Row 1: brand, quick links, services, contact + follow. Row 2 (service areas) reuses the same
+   four-column widths so both rows' column edges line up. */
+.foot-row-1 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 40px 32px;
+}
+@media (min-width: 1150px) {
+  .foot-row-1 { grid-template-columns: 1.3fr 0.85fr 1.1fr 1.1fr; }
+}
+
+/* Row 2: a hairline below row 1 sets it apart as its own band. */
+.foot-row-2 { margin-top: 44px; padding-top: 40px; border-top: 1px solid var(--foot-line); }
+
+/* ---- Brand column ------------------------------------------------------------------------- */
+.foot-brand .logo-chip { display: inline-flex; background: #fff; border-radius: 10px; padding: 12px 18px; }
+.foot-brand .logo-chip img { display: block; height: 38px; width: auto; }
+.foot-brand p { margin: 18px 0 0; max-width: 34ch; font-size: 14px; line-height: 1.7; color: var(--foot-text); }
+.foot-trust { margin: 26px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 16px; }
+.foot-trust li { display: flex; align-items: center; gap: 12px; font-size: 13.5px; font-weight: 700; color: #fff; }
+.foot-trust-ico {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid var(--brand-red);
+  color: var(--brand-red);
+}
+.foot-trust-ico .ico { width: 17px; height: 17px; }
+
+/* ---- Link columns -------------------------------------------------------------------------- */
+.foot-col h4,
+.foot-row-2 > h4 {
+  position: relative;
+  margin: 0 0 20px;
+  padding-bottom: 12px;
+  font-size: 17px;
+  font-weight: 800;
+  color: #fff;
+}
+.foot-col h4::after,
+.foot-row-2 > h4::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 30px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--brand-red);
+}
+.foot-links { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.foot-links a { font-size: 14.5px; color: var(--foot-text); transition: color 0.2s; }
+.foot-links a:hover { color: #fff; }
+.foot-links-chev a { display: inline-flex; align-items: center; gap: 8px; }
+.foot-chev { width: 13px; height: 13px; color: var(--brand-red); }
+.foot-links a.foot-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+  font-weight: 700;
+  color: var(--brand-red);
+}
+.foot-more .ico { width: 12px; height: 12px; }
+.foot-links a.foot-more:hover { color: #fff; }
+
+/* ---- Service areas ------------------------------------------------------------------------- */
+/* One card per state, sized to its own content — cities wrap as pill chips instead of a stacked
+   one-per-line list. A plain grid still lines every card up in fixed rows, though, so a 1-city
+   state (Arizona) sharing a row with a 16-city one (Illinois) leaves a tall gap of empty card
+   background below it — same problem the old fixed-column city list had, one level up. CSS
+   multi-column is the fix: it flows cards down each column independently and auto-balances column
+   heights by each card's real size, so a short card just sits under whatever's above it instead of
+   being boxed into a tall row. `break-inside: avoid` keeps a card from being split across a column
+   break. */
+.foot-areas-grid { column-count: 4; column-gap: 20px; }
+.foot-area {
+  break-inside: avoid;
+  margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--foot-line);
+  border-radius: 14px;
+  padding: 18px 20px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+  transition: border-color 0.2s, background 0.2s;
+}
+.foot-area:hover { background: rgba(255, 255, 255, 0.06); border-color: rgba(255, 255, 255, 0.18); }
+.foot-area-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.foot-area-name { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; font-size: 15px; font-weight: 800; color: #fff; }
+.foot-area-name:hover { color: var(--brand-red); }
+.foot-area-ico {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1.5px solid var(--brand-red);
+  color: var(--brand-red);
+}
+.foot-area-ico .ico { width: 13px; height: 13px; }
+.foot-area-count { flex: none; padding: 3px 10px; border-radius: 999px; background: rgba(255, 255, 255, 0.07); font-size: 11px; font-weight: 700; color: var(--foot-text-dim); white-space: nowrap; }
+/* A plain two-column bulleted list — small red square, plain text — not pill chips: the same
+   language the national hub's own state cards use (styles/state-cards.css), so "service areas"
+   reads as one design wherever the site lists a state's cities. */
+.foot-area-cities { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; }
+.foot-area-cities li { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.foot-area-cities li::before { content: ''; flex: none; width: 5px; height: 5px; border-radius: 1px; background: var(--brand-red); }
+.foot-area-cities a {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--foot-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color 0.18s;
+}
+.foot-area-cities a:hover { color: #fff; }
+@media (max-width: 360px) {
+  .foot-area-cities { grid-template-columns: 1fr; }
+}
+@media (max-width: 1149px) {
+  .foot-areas-grid { column-count: 2; }
+}
+@media (max-width: 640px) {
+  .foot-areas-grid { column-count: 1; }
+}
+
+/* ---- Contact + social ---------------------------------------------------------------------- */
+.foot-contact { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 16px; }
+.foot-contact li { display: flex; align-items: flex-start; gap: 12px; font-size: 14.5px; line-height: 1.55; color: var(--foot-text); }
+.foot-contact-ico {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  margin-top: 1px;
+  border-radius: 50%;
+  background: var(--brand-red);
+  color: #fff;
+}
+.foot-contact-ico .ico { width: 14px; height: 14px; }
+.foot-contact .tel { font-weight: 800; color: #fff; }
+.foot-contact a:hover { color: #fff; }
+
+.foot-col .foot-follow-h { margin-top: 38px; }
+.foot-social { margin: 0; padding: 0; list-style: none; display: flex; gap: 12px; }
+.foot-social a {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid var(--foot-line);
+  color: #fff;
+}
+.foot-social a:hover { background: var(--brand-red); border-color: var(--brand-red); }
+.foot-social .ico { width: 16px; height: 16px; }
+
+/* ---- Decorative flourishes ------------------------------------------------------------------ */
+/* Purely cosmetic, matching the reference's own corner flourishes — no content, hidden from
+   assistive tech, and clipped by .ftr's own `overflow: hidden` so they can never cause page scroll. */
+.foot-decor-stripe {
+  position: absolute;
+  left: -40px;
+  bottom: 18px;
+  width: 340px;
+  height: 5px;
+  background: linear-gradient(90deg, var(--brand-red), rgba(255, 255, 255, 0.6) 70%, transparent);
+  transform: rotate(-4deg);
+  pointer-events: none;
+}
+.foot-decor-roof {
+  position: absolute;
+  right: -40px;
+  bottom: -40px;
+  width: 260px;
+  height: 260px;
+  color: rgba(255, 255, 255, 0.06);
+  stroke-width: 1;
+  pointer-events: none;
+}
+
+/* ---- Bottom bar ---------------------------------------------------------------------------- */
+.foot-legal { position: relative; background: var(--foot-bg-2); border-top: 1px solid var(--foot-line); }
+.foot-legal .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+  padding: 20px 0;
+  font-size: 13px;
+  color: var(--foot-text-dim);
+}
+@media (max-width: 700px) {
+  .foot-legal .wrap { flex-direction: column; align-items: flex-start; }
+}

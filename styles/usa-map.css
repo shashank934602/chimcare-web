@@ -1,0 +1,77 @@
+/* The "Chimcare Locations" card on the About page (components/templates/AboutPage.tsx) — the
+   homepage's own interactive USA map, read out of app/_home/content.ts at render time
+   (app/_home/locations-map.ts) rather than duplicated, restyled here instead of loading the
+   homepage's own 1.6MB stylesheet (public/home/home.css) just for this one card. Every state's
+   `is-on` class and `data-towns` attribute already ride along in that markup — see locations-map.ts.
+   Scoped under .tpl-about so these class names (shared with the homepage's own markup) can never
+   leak into, or clash with, any other template. */
+
+.tpl-about .usmap-card {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(20, 12, 8, 0.08);
+  padding: clamp(16px, 2vw, 24px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tpl-about .usmap-frame { width: 100%; }
+.tpl-about .usmap-frame svg { width: 100%; height: auto; display: block; overflow: visible; }
+
+.tpl-about .usmap-frame .cc-st path { fill: #D7DDE2; transition: fill 0.16s ease; }
+.tpl-about .usmap-frame .cc-st.is-on path { fill: #DD2E44; }
+.tpl-about .usmap-frame .cc-st { cursor: default; outline: none; }
+.tpl-about .usmap-frame .cc-lines { stroke: #fff; stroke-width: 1.1; stroke-linejoin: round; }
+.tpl-about .usmap-frame .cc-pins { fill: #fff; }
+.tpl-about .usmap-frame .cc-tip { display: none; }
+
+.tpl-about .usmap-search {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  display: flex;
+  width: min(340px, 84%);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 10px 28px rgba(20, 12, 8, 0.18);
+}
+.tpl-about .usmap-search input {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  border: 1px solid #DFE3E7;
+  border-right: none;
+  border-radius: 0;
+  background: #fff;
+  padding: 0 14px;
+  font-size: 14px;
+  color: var(--text);
+}
+.tpl-about .usmap-search input::-webkit-search-cancel-button,
+.tpl-about .usmap-search input::-webkit-search-decoration { appearance: none; -webkit-appearance: none; }
+.tpl-about .usmap-search input:focus-visible { outline: 2px solid var(--brand-red); outline-offset: -2px; }
+.tpl-about .usmap-search button {
+  flex: none;
+  min-height: 44px;
+  padding: 0 18px;
+  border: none;
+  background: var(--brand-red);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+}
+.tpl-about .usmap-search button:hover { background: var(--brand-primary-deep); }
+
+@media (max-width: 480px) {
+  .tpl-about .usmap-search { width: min(280px, 90%); }
+  .tpl-about .usmap-search input { font-size: 13px; padding: 0 10px; }
+  .tpl-about .usmap-search button { padding: 0 14px; font-size: 13px; }
+}

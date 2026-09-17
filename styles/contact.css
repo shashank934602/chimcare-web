@@ -1,0 +1,281 @@
+/* Contact Us page (components/templates/ContactPage.tsx). Scoped under .tpl-contact so nothing here
+   leaks into any other template; reuses the site's own tokens (--brand-red, --text, --line, --radius,
+   --wrap) and global primitives (.wrap, .btn, .btn-primary/.btn-outline/.btn-dark, .sr-only) rather than
+   inventing a parallel set. The chip/section-head rhythm mirrors the About page (styles/about.css); the
+   FAQ accordion mechanics (.acc-panel grid-rows trick, data-acc-item/data-acc-trigger) mirror the hub
+   template's FAQ (styles/hub.css) — same interaction, its own visual skin for this page's two-column
+   layout. */
+
+.tpl-contact { background: var(--surface); color: var(--text); }
+
+/* ---- Section rhythm ------------------------------------------------------------------------- */
+.tpl-contact .section { padding: clamp(56px, 8vw, 96px) 0; }
+.tpl-contact .section.tinted { background: var(--surface-2); }
+.tpl-contact .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 16px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-size: 13.5px;
+  font-weight: 600;
+}
+.tpl-contact .section.tinted .chip { background: #fff; }
+.tpl-contact .chip .ico { width: 15px; height: 15px; }
+.tpl-contact .sec-top.center { max-width: 640px; margin: 0 auto clamp(40px, 6vw, 64px); text-align: center; }
+.tpl-contact .sec-top.center h1 {
+  margin: 0;
+  font-size: clamp(34px, 5vw, 54px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+}
+
+/* ---- Get in touch + form grid --------------------------------------------------------------- */
+.tpl-contact .contact-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 72px);
+  align-items: start;
+}
+/* Sticks the "Get in Touch" column while the taller "Send Us a Message" card scrolls past — same
+   sticky-rail pattern as the state hub's intro (styles/shared.css, `.tpl-state .section.intro .rail`),
+   same 96px offset to clear the sticky header. Grid-scoped: it naturally un-sticks once the shorter
+   column's row (sized by the taller form card, `align-items: start`) runs out, so it never escapes
+   this section. Desktop-only — the columns stack on narrower screens, where sticking would just pin
+   "Get in Touch" over the form as the visitor scrolls. */
+@media (min-width: 901px) {
+  .tpl-contact .contact-info { position: sticky; top: 96px; }
+}
+
+.tpl-contact .contact-info h2,
+.tpl-contact .contact-form-card h2 {
+  margin: 0 0 14px;
+  font-size: clamp(24px, 2.8vw, 32px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.tpl-contact .contact-info > p,
+.tpl-contact .contact-form-card > p {
+  margin: 0 0 30px;
+  font-size: 15.5px;
+  line-height: 1.7;
+  color: var(--text-2);
+  max-width: 46ch;
+}
+
+.tpl-contact .contact-methods { display: grid; gap: 16px; }
+.tpl-contact .contact-method {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid var(--line);
+  box-shadow: 0 4px 18px rgba(20, 12, 8, 0.05);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.tpl-contact .contact-method:hover {
+  transform: translateY(-3px);
+  border-color: rgba(221, 46, 68, 0.28);
+  box-shadow: 0 14px 32px rgba(20, 12, 8, 0.1);
+}
+.tpl-contact .cm-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--brand-red), var(--brand-red-deep));
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(221, 46, 68, 0.35);
+}
+.tpl-contact .cm-icon .ico { width: 20px; height: 20px; }
+.tpl-contact .cm-label { flex: 1; min-width: 0; font-size: 15.5px; font-weight: 700; }
+.tpl-contact .contact-method .btn { flex: none; }
+
+/* ---- Contact form ---------------------------------------------------------------------------- */
+.tpl-contact .contact-form-card {
+  position: relative;
+  padding: clamp(26px, 3vw, 36px);
+  border-radius: 20px;
+  background: #fff;
+  border: 1px solid var(--line);
+  box-shadow: 0 18px 44px rgba(20, 12, 8, 0.08);
+  overflow: hidden;
+}
+.tpl-contact .contact-form-card::before {
+  /* Reuses @keyframes cta-shimmer, defined once in styles/site-fixes.css for .btn-primary. */
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--brand-red), var(--brand-red-deep), var(--brand-red));
+  background-size: 240% 100%;
+  animation: cta-shimmer 5s ease infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tpl-contact .contact-form-card::before { animation: none; }
+}
+.tpl-contact .contact-form { display: grid; gap: 14px; }
+.tpl-contact .cf-field { display: grid; gap: 6px; }
+.tpl-contact .cf-field input,
+.tpl-contact .cf-field textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid transparent;
+  border-radius: 10px;
+  background: var(--surface-2);
+  font: inherit;
+  font-size: 15px;
+  color: var(--text);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.tpl-contact .cf-field input::placeholder,
+.tpl-contact .cf-field textarea::placeholder { color: var(--text-2); }
+.tpl-contact .cf-field textarea { resize: vertical; min-height: 132px; }
+.tpl-contact .cf-field input:focus-visible,
+.tpl-contact .cf-field textarea:focus-visible {
+  outline: none;
+  border-color: var(--brand-red);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(221, 46, 68, 0.12);
+}
+.tpl-contact .cf-field input[aria-invalid='true'],
+.tpl-contact .cf-field textarea[aria-invalid='true'] { border-color: var(--brand-red); }
+.tpl-contact .cf-err { font-size: 12.5px; font-weight: 600; font-style: normal; color: var(--brand-red); }
+.tpl-contact .cf-err-form { margin: 0; }
+.tpl-contact .cf-submit { width: 100%; margin-top: 4px; }
+.tpl-contact .cf-submit[disabled] { opacity: 0.7; cursor: default; animation: none; }
+
+.tpl-contact .contact-form-done { padding: 20px 4px; text-align: center; }
+.tpl-contact .contact-form-done .tick {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--brand-primary);
+}
+.tpl-contact .contact-form-done .tick .ico { width: 24px; height: 24px; }
+.tpl-contact .contact-form-done h3 { margin: 0 0 6px; font-size: 19px; font-weight: 800; }
+.tpl-contact .contact-form-done p { margin: 0 0 18px; font-size: 14.5px; color: var(--text-2); }
+
+/* ---- FAQ ---------------------------------------------------------------------------------- */
+/* `align-items: stretch` (the default — set explicitly so the intent survives the next edit) makes
+   both grid columns match the taller one's height; `.faq-intro` becomes a flex column so its figure
+   can grow to fill what's left after the chip/heading, keeping the image's bottom edge level with
+   the accordion + "Need More Help?" box on the right. Collapses back to an intrinsic aspect ratio on
+   narrow screens, where the columns stack instead (see the 900px media query below).
+
+   The <img> is absolutely positioned inside the figure rather than a normal `height:100%` child: a
+   portrait photo's own intrinsic ratio (687×1024) otherwise leaks into the grid's row-height math —
+   `min-height:0` on a flex item stops it fighting its *own* container, but not an ancestor auto-sized
+   grid track measuring `.faq-intro`'s natural size through it, so on some widths the row ended up
+   taller than the right column's real content and the image overhung the "Need More Help?" box.
+   Absolute positioning removes the image from that size computation entirely; the figure (an empty,
+   non-replaced box) then correctly clamps to 0 via min-height/minmax(0,…) and the row height tracks
+   only the right column, exactly as intended, at every width and accordion state. */
+.tpl-contact .faq-grid { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: clamp(32px, 5vw, 64px); align-items: stretch; }
+.tpl-contact .faq-intro { display: flex; flex-direction: column; }
+.tpl-contact .faq-intro h2 { margin: 0 0 24px; font-size: clamp(26px, 3.2vw, 38px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.14; }
+.tpl-contact .faq-intro figure { position: relative; flex: 1; min-height: 0; margin: 0; border-radius: 18px; overflow: hidden; background: var(--surface); }
+.tpl-contact .faq-intro img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* Card-per-item accordion — same visual language as the homepage's FAQ (its own Elementor accordion,
+   patched in app/_home/overrides.css §4: white card, red-tinted border + shadow while open, a circular
+   icon badge that swaps grey-plus for red-minus). Reproduced here with this page's own markup/classes
+   since the homepage's version is scoped to WordPress-specific selectors. */
+.tpl-contact .faq { display: grid; gap: 12px; }
+.tpl-contact .faq-item {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.tpl-contact .faq-item.is-open {
+  border-color: rgba(221, 46, 68, 0.35);
+  box-shadow: 0 12px 30px rgba(24, 14, 8, 0.08);
+}
+.tpl-contact .faq-q {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 64px;
+  padding: 16px 20px 16px 22px;
+  background: none;
+  border: 0;
+  text-align: left;
+  color: inherit;
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+.tpl-contact .faq-q-text { flex: 1; font-size: 17px; font-weight: 600; line-height: 1.4; color: var(--text); transition: color 0.2s ease; }
+.tpl-contact .faq-item.is-open .faq-q-text { color: var(--brand-red); }
+.tpl-contact .faq-q-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  color: var(--text);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.tpl-contact .faq-item.is-open .faq-q-icon { background: var(--brand-red); color: #fff; }
+.tpl-contact .faq-q-icon .ico { width: 13px; height: 13px; }
+.tpl-contact .faq-q-icon .icon-minus { display: none; }
+.tpl-contact .faq-item.is-open .faq-q-icon .icon-plus { display: none; }
+.tpl-contact .faq-item.is-open .faq-q-icon .icon-minus { display: block; }
+.tpl-contact .acc-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.tpl-contact .acc-panel > div { overflow: hidden; min-height: 0; }
+.tpl-contact .faq-item.is-open .acc-panel { grid-template-rows: 1fr; }
+.tpl-contact .faq-a { margin: 0; padding: 0 22px 20px; max-width: 60ch; font-size: 15.5px; line-height: 1.65; color: var(--text-2); }
+.tpl-contact .faq-item.is-open .faq-a { animation: contact-faq-in 0.25s ease; }
+@keyframes contact-faq-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tpl-contact .faq-item.is-open .faq-a { animation: none; }
+}
+@media (max-width: 767px) {
+  .tpl-contact .faq-q { gap: 12px; min-height: 56px; padding: 14px 14px 14px 16px; }
+  .tpl-contact .faq-q-text { font-size: 16px; }
+  .tpl-contact .faq-a { padding: 0 16px 16px; font-size: 15px; }
+}
+
+.tpl-contact .faq-help {
+  margin-top: clamp(28px, 4vw, 40px);
+  padding: clamp(28px, 4vw, 40px);
+  border-radius: 18px;
+  background: var(--brand-ink);
+  color: #fff;
+  text-align: center;
+}
+.tpl-contact .faq-help h3 { margin: 0 0 10px; font-size: clamp(22px, 2.6vw, 28px); font-weight: 800; letter-spacing: -0.01em; }
+.tpl-contact .faq-help h3 .accent { color: var(--brand-red); }
+.tpl-contact .faq-help p { margin: 0 0 22px; color: rgba(255, 255, 255, 0.7); font-size: 15px; }
+.tpl-contact .faq-help .btn { min-width: 168px; }
+
+@media (max-width: 900px) {
+  .tpl-contact .contact-grid,
+  .tpl-contact .faq-grid { grid-template-columns: 1fr; }
+  .tpl-contact .faq-intro figure { flex: none; aspect-ratio: 4 / 3; max-width: 440px; }
+}
+@media (max-width: 640px) {
+  .tpl-contact .contact-method { flex-wrap: wrap; }
+  .tpl-contact .contact-method .btn { flex: 1 0 100%; justify-content: center; }
+  .tpl-contact .faq-help .btn { width: 100%; }
+}

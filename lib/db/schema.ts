@@ -289,3 +289,18 @@ export type NewPageSource = typeof pageSource.$inferInsert;
 
 export type Booking = typeof bookings.$inferSelect;
 export type NewBooking = typeof bookings.$inferInsert;
+
+// ---- contact messages (Contact Us page) -----------------------------------------------------
+
+export const contactMessages = site.table('contact_messages', {
+  id: serial('id').primaryKey(),
+  name: text('name').notNull(),
+  email: text('email').notNull(),
+  message: text('message').notNull(),
+  pageSlug: text('page_slug'),
+  sourceUrl: text('source_url'),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type ContactMessage = typeof contactMessages.$inferSelect;
+export type NewContactMessage = typeof contactMessages.$inferInsert;

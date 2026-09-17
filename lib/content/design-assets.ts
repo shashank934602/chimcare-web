@@ -36,8 +36,8 @@ const TILES: Array<{ key: string; name: string; src: string; alt: string }> = [
 ];
 
 export const DESIGN = {
-  /** Header accreditation badge. Rendered only when the real asset is present. */
-  bbbBadge: asset('5333e04be04a.webp', 300, 300),
+  /** Header accreditation badge. The business's own logo file, not one pulled from the design mocks. */
+  bbbBadge: { src: '/img/bbb-logo.png', alt: 'BBB Accredited Business', width: 300, height: 300 } as DesignAsset,
   /** The three award marks the city hero shows beside the rating. */
   awards: [
     asset('1660ae673f91.webp', 113, 200),

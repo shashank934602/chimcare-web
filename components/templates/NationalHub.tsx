@@ -1,9 +1,11 @@
 import '@/styles/hub.css';
+import '@/styles/hub-hero.css';
 import type { CSSProperties } from 'react';
 import type { NationalHubProps } from '@/lib/content/assemble-hubs';
 import { Icon } from '@/components/chrome/Icon';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { Breadcrumbs, HeroAwards, SectionHead, TrustStrip } from '@/components/sections/shared';
+import { BookingForm } from '@/components/islands/BookingForm';
 import { BookingSheet } from '@/components/islands/BookingSheet';
 import { NationalFinder, StateDirectory } from '@/components/islands/StateDirectory';
 import { FloatingCta } from '@/components/chrome/FloatingCta';
@@ -23,7 +25,7 @@ export function NationalHub(p: NationalHubProps) {
       <section className="hero" id="o1-hero">
         <div className="wrap enter">
           <Breadcrumbs crumbs={[{ label: 'Home', href: '/' }, { label: 'Locations' }]} style={{ '--i': 0 } as CSSProperties} />
-          <div className="hero-grid" style={{ '--i': 1 } as CSSProperties}>
+          <div className="hero-grid has-book" style={{ '--i': 1 } as CSSProperties}>
             <div className="hero-copy">
               <h1>Find the <span className="hl">Chimcare</span> crew that works your street.</h1>
               <p className="lede">
@@ -40,11 +42,15 @@ export function NationalHub(p: NationalHubProps) {
                 <div><b>{p.hero.cities}</b><span>Cities listed</span></div>
                 <div><b>1989</b><span>Serving since</span></div>
               </div>
+              <div className="hero-certs">
+                <span className="lbl">MEMBERSHIPS &amp; AWARDS</span>
+                <HeroAwards />
+              </div>
             </div>
-          </div>
-          <div className="hero-certs">
-            <span className="lbl">MEMBERSHIPS &amp; AWARDS</span>
-            <HeroAwards />
+            {/* The same booking widget as the location pages; the hero's Schedule Service buttons scroll to it. */}
+            <div className="book-slot">
+              <BookingForm embedded options={p.booking} context={p.bookingContext} />
+            </div>
           </div>
         </div>
       </section>
@@ -109,7 +115,7 @@ export function NationalHub(p: NationalHubProps) {
           <div className="crew reveal">
             {p.crew.map((c) => (
               <div className="crew-card" key={c.title}>
-                <img className="ph-photo" loading="lazy" decoding="async" width={600} height={400} src={c.src} alt={c.alt} />
+                <img className="ph-photo" loading="lazy" decoding="async" width={600} height={400} src={c.src} alt={c.alt} title={c.alt} />
                 <div className="info"><b>{c.title}</b><span>{c.small}</span></div>
               </div>
             ))}

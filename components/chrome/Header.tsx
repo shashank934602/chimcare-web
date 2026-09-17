@@ -1,13 +1,8 @@
 import { Icon } from './Icon';
 import { HeaderMenu } from '@/components/islands/HeaderMenu';
-
-const NAV = [
-  { label: 'Home', href: '/' },
-  { label: 'Services', href: '#' },
-  { label: 'Locations', href: '/locations/' },
-  { label: 'About Us', href: '#' },
-  { label: 'Contact', href: '#' },
-];
+import { LocationsMenu } from '@/components/islands/LocationsMenu';
+import { NavActive } from '@/components/islands/NavActive';
+import type { LocationsMenuData } from '@/lib/content/locations-menu';
 
 /**
  * The one site header, shared by every template.
@@ -23,31 +18,32 @@ const NAV = [
 export function Header({
   phone,
   phoneHref,
-  current = 'Locations',
   bbb,
   bookLabel,
+  locationsMenu,
 }: {
   phone: string;
   phoneHref: string;
-  current?: string;
   bbb?: { src: string; alt: string; width: number; height: number };
   bookLabel?: 'schedule' | 'fast-online-booking';
+  locationsMenu: LocationsMenuData;
 }) {
   return (
     <header className="hdr" id="hdr">
       <div className="wrap">
+        <NavActive />
         <HeaderMenu />
         <a className="logo" href="/">
           <span className="sr-only">Chimcare home</span>
-          <img src="/img/logo.svg" alt="Chimcare" width={202} height={62} />
+          <img src="/img/logo.svg" alt="Chimcare" title="Chimcare" width={202} height={62} />
         </a>
         <div className="hdr-menu" id="hdr-menu">
           <nav className="nav" aria-label="Main">
-            {NAV.map((n) => (
-              <a key={n.label} href={n.href} aria-current={n.label === current ? 'page' : undefined}>
-                {n.label}
-              </a>
-            ))}
+            <a href="/">Home</a>
+            <a href="#">Services</a>
+            <LocationsMenu data={locationsMenu} />
+            <a href="/about-us/">About Us</a>
+            <a href="/contact-us/">Contact</a>
           </nav>
           <a className="phone phone-panel" href={phoneHref}>
             <Icon name="phone" />
@@ -72,11 +68,11 @@ export function Header({
               width={34}
               height={34}
               decoding="async"
-              alt={bbb.alt}
+              alt={bbb.alt} title={bbb.alt}
             />
           )}
         </div>
-        {bbb && <img className="hdr-bbb" src={bbb.src} width={bbb.width} height={bbb.height} decoding="async" alt={bbb.alt} />}
+        {bbb && <img className="hdr-bbb" src={bbb.src} width={bbb.width} height={bbb.height} decoding="async" alt={bbb.alt} title={bbb.alt} />}
         <a className="phone phone-bar" href={phoneHref}>
           <Icon name="phone" />
           {phone}

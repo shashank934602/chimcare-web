@@ -1,0 +1,131 @@
+/* Header "Locations" mega menu (components/islands/LocationsMenu.tsx). Hand-written in a new file —
+   styles/booking.css is the pattern — because no design mock covers this component. */
+.mega-trigger{display:flex;align-items:center;gap:2px}
+.mega-toggle{display:inline-flex;align-items:center;justify-content:center;flex:none;width:26px;height:26px;padding:0;border:0;background:none;color:var(--text-2);cursor:pointer;border-radius:50%;transition:background .15s,color .15s}
+.mega-toggle:hover{background:var(--surface-2);color:var(--text)}
+.mega-toggle:focus-visible{outline:2px solid var(--brand-primary);outline-offset:1px}
+.mega-chevron{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .18s}
+.mega-toggle[aria-expanded="true"] .mega-chevron{transform:rotate(180deg)}
+
+/* Anchored to `.hdr .wrap` (already `position:relative` in base.css), not to the nav item — `.hdr-menu`
+   between them is `display:contents` and doesn't establish a containing block, so this reaches past it.
+   That lets the panel span the header's own content width exactly — flush with the logo on the left
+   and the "Fast Online Booking" button on the right — instead of a narrow box centered under the
+   "Locations" link.
+   `top` is flush at 100%, not `calc(100% + Npx)`: `.mega` is `position:absolute` and so contributes no
+   height to `.nav-item.has-mega` (the element `onMouseLeave` is on) — any gap here is a dead strip
+   belonging to neither the trigger nor the panel, and the cursor crossing it on the way down closes
+   the menu before it ever reaches the panel's content. */
+.mega{position:absolute;top:100%;left:0;width:100%;max-width:calc(100vw - 48px);background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 30px 70px rgba(20,18,20,.18);padding:30px 32px;z-index:70;text-align:left}
+
+.mega-head{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:8px}
+.mega-eyebrow{display:flex;align-items:center;gap:8px;margin:0;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--brand-primary)}
+.mega-eyebrow .ico{width:14px;height:14px}
+.mega-title{margin:0 0 16px;font-size:23px;font-weight:800;letter-spacing:-.01em;color:var(--text)}
+.mega-lede{margin:0;max-width:44ch;font-size:14.5px;line-height:1.6;color:var(--text-2)}
+/* `.mega` sits inside the trigger's own `.nav` list (LocationsMenu.tsx renders alongside "Home",
+   "Services", …), so the generic `.nav a` hover rule (base.css: a reserved border-bottom that
+   turns red on hover) reaches every single-class link in this panel too and stacks a second line
+   under this one's own `:hover{text-decoration:underline}`. `.mega .mega-viewall` outranks `.nav a`
+   on specificity (two classes vs. one class + one element) so this component owns its own links
+   regardless of which page's `.nav` the trigger happens to sit in. */
+.mega .mega-viewall{flex:none;display:inline-flex;align-items:center;gap:6px;padding-top:3px;border-bottom:0;font-size:13.5px;font-weight:700;color:var(--brand-primary);text-decoration:none;white-space:nowrap}
+.mega .mega-viewall:hover{text-decoration:underline}
+.mega-viewall .ico{width:13px;height:13px}
+
+/* Search on the left, the lede paragraph filling the rest on the right — one row instead of the
+   two stacked, full-width blocks this used to be. */
+.mega-intro{display:flex;align-items:center;gap:28px;margin-bottom:24px}
+.mega-intro .mega-search{flex:1 1 360px;margin-bottom:0}
+.mega-intro .mega-lede{flex:1 1 320px}
+
+.mega-search{position:relative}
+.mega-search>.ico{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--text-2);pointer-events:none}
+.mega-search input{width:100%;box-sizing:border-box;padding:12px 40px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);font:inherit;font-size:14.5px;color:var(--text)}
+.mega-search input::-webkit-search-cancel-button{display:none}
+.mega-search input:focus-visible{outline:2px solid var(--brand-primary);outline-offset:1px;background:var(--surface)}
+.mega-search-clear{position:absolute;right:8px;top:50%;transform:translateY(-50%);display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;padding:0;border:0;background:none;color:var(--text-2);cursor:pointer;border-radius:50%}
+.mega-search-clear:hover{background:var(--line);color:var(--text)}
+.mega-search-clear .ico{width:12px;height:12px}
+.mega-search-results{position:absolute;top:calc(100% + 6px);left:0;right:0;max-height:min(360px,60vh);overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:0 20px 50px rgba(20,18,20,.16);z-index:20}
+.mega-search-results ul{list-style:none;margin:0;padding:6px;display:grid;gap:2px}
+.mega-search-results a{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:8px;text-decoration:none;color:var(--text);font-weight:700;font-size:14px}
+.mega-search-results a:hover{background:var(--surface-2);color:var(--brand-primary)}
+.mega-search-results a .ico{flex:none;width:14px;height:14px;color:var(--brand-primary)}
+.mega-search-results a span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mega-search-results a em{flex:none;font-style:normal;font-weight:600;font-size:12px;color:var(--text-2)}
+.mega-search-empty{margin:0;padding:14px 16px;font-size:13.5px;color:var(--text-2)}
+.mega-search-empty a{color:var(--brand-primary);font-weight:700;text-decoration:none}
+.mega-search-empty a:hover{text-decoration:underline}
+
+.mega-inner{display:grid;grid-template-columns:300px 1fr;gap:24px}
+
+.mega-popular{display:flex;flex-direction:column;background:var(--surface-2);border-radius:12px;padding:18px}
+.mega-panel-label{display:flex;align-items:center;gap:8px;margin:0 0 12px;font-size:13.5px;font-weight:800;color:var(--text)}
+.mega-panel-label .ico{width:15px;height:15px;color:var(--brand-primary)}
+.mega-popular ul{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:2px}
+.mega-popular a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:9px;text-decoration:none;color:var(--text);font-weight:700;font-size:14px;transition:background .15s,box-shadow .15s,color .15s}
+.mega-popular a span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mega-popular a em{flex:none;font-style:normal;font-weight:600;font-size:12px;color:var(--text-2)}
+.mega-popular a .go{flex:none;width:13px;height:13px;color:var(--text-2);transition:transform .15s,color .15s}
+.mega-popular a:hover,.mega-popular li.is-active a{background:#fff;box-shadow:0 2px 10px rgba(20,18,20,.08)}
+.mega-popular li.is-active a{color:var(--brand-primary)}
+.mega-popular a:hover .go,.mega-popular li.is-active a .go{color:var(--brand-primary);transform:translateX(2px)}
+/* Same `.nav a` leak as `.mega-viewall` above — raised to `.mega .mega-viewcities` so its own
+   padding and (lack of) border-bottom actually win. */
+.mega .mega-viewcities{display:inline-flex;align-items:center;gap:6px;margin-top:auto;padding:0 4px;border-bottom:0;font-size:13px;font-weight:700;color:var(--text-2);text-decoration:none}
+.mega .mega-viewcities:hover{color:var(--brand-primary)}
+.mega-viewcities .ico{width:12px;height:12px}
+
+.mega-map-col{min-height:230px}
+.mega-map-frame{position:relative;height:100%;min-height:230px;border-radius:12px;overflow:hidden;background:var(--surface-2)}
+/* Leaflet's own zoom/attribution controls sit at z-index:1000 *inside* `.mega-map`; without a
+   z-index of its own here, `.mega-map` never becomes a stacking context, so those controls leak
+   out and paint over `.mega-viewmap` (a plain sibling) despite its higher z-index below. Giving
+   `.mega-map` `z-index:1` traps everything Leaflet draws inside it. */
+.mega-map{position:absolute;inset:0;z-index:1}
+/* Same `.nav a` leak again — this one sits over the map's dark pill, so a stray red border-bottom
+   would be even more visible than on a plain-text link. */
+.mega .mega-viewmap{position:absolute;right:14px;bottom:14px;z-index:10;display:inline-flex;align-items:center;gap:10px;padding:8px 8px 8px 18px;border-bottom:0;border-radius:999px;background:rgba(27,26,27,.92);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);color:#fff;font-size:13.5px;font-weight:700;letter-spacing:-.01em;text-decoration:none;box-shadow:0 14px 30px rgba(20,18,20,.35),inset 0 0 0 1px rgba(255,255,255,.1);transition:background .18s ease,transform .18s ease,box-shadow .18s ease}
+.mega-viewmap:hover{background:var(--brand-ink);transform:translateY(-2px);box-shadow:0 18px 36px rgba(20,18,20,.4),inset 0 0 0 1px rgba(255,255,255,.14)}
+.mega-viewmap:active{transform:translateY(0)}
+.mega-viewmap-ico{display:inline-flex;align-items:center;justify-content:center;flex:none;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.14);transition:background .18s ease,transform .18s ease}
+.mega-viewmap-ico .ico{width:12px;height:12px}
+.mega-viewmap:hover .mega-viewmap-ico{background:var(--brand-primary);transform:translateX(1px)}
+
+/* The mini map's own pins. Secondary pins are a plain ringed dot; the busiest state's pin (the one
+   with the permanent label) gets the same soft-halo, scaled-up treatment as an active pin on the
+   state hub's own map (`.lpin.is-active` in state.css) — same idea, own names, light theme. */
+.mmpin{display:grid;place-items:center;border-radius:50%;cursor:pointer;transition:background .2s}
+.mmpin-dot{display:block;width:10px;height:10px;border-radius:50%;background:var(--brand-primary);border:2px solid #fff;box-shadow:0 1px 4px rgba(20,18,20,.35);transition:background .2s}
+.mmpin.is-primary{background:rgba(221,46,68,.2)}
+.mmpin.is-primary .mmpin-dot{width:15px;height:15px;background:var(--brand-accent);box-shadow:0 2px 6px rgba(20,18,20,.4)}
+.mega .leaflet-container{font-family:var(--font-body);background:var(--surface-2)}
+.mega .leaflet-control-attribution{font-size:9px;background:rgba(255,255,255,.85)}
+.mega .leaflet-control-zoom{border:0;box-shadow:0 4px 14px rgba(20,18,20,.18);margin-top:12px;margin-right:12px}
+.mega .leaflet-control-zoom a{width:28px;height:28px;line-height:28px;color:var(--text)}
+.mmtip.leaflet-tooltip{background:var(--brand-dark);border:0;color:#fff;font-size:11.5px;font-weight:700;padding:5px 9px;border-radius:6px;box-shadow:0 4px 12px rgba(20,18,20,.3)}
+.mmtip.leaflet-tooltip::before{border-top-color:var(--brand-dark)}
+
+@media (max-width:1040px){
+  .mega-inner{grid-template-columns:1fr}
+  .mega-map-col{min-height:200px}
+  .mega-map-frame{min-height:200px}
+}
+
+@media (max-width:900px){
+  .hdr .mega-trigger{padding:15px 0;border-bottom:1px solid var(--line);justify-content:space-between}
+  .hdr .mega-trigger>a{padding:0;border-bottom:0;flex:1}
+  .mega-toggle{width:36px;height:36px}
+  .mega{position:static;width:auto;max-width:none;margin:0 0 10px;box-shadow:none;border:0;border-radius:0;padding:14px 0 4px}
+  .mega-head{flex-direction:column;gap:10px}
+  .mega-title{font-size:19px}
+  /* flex-basis (360px/320px on the row layout) sizes the *cross* axis once flex-direction flips to
+     column — without resetting it here each child stretches to that many px tall, not wide, shoving
+     the search icon (absolute, vertically centered on `.mega-search`) far below its own input. */
+  .mega-intro{flex-direction:column;align-items:stretch;gap:14px}
+  .mega-intro .mega-search,.mega-intro .mega-lede{flex-basis:auto}
+  .mega-intro .mega-lede{max-width:none}
+  .mega-map-col{display:none}
+  .mega-inner{grid-template-columns:1fr;gap:0}
+}

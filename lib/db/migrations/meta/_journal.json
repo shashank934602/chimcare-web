@@ -29,6 +29,13 @@
       "when": 1789042009889,
       "tag": "0003_happy_frog_thor",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1789552553133,
+      "tag": "0004_tiny_mad_thinker",
+      "breakpoints": true
     }
   ]
 }

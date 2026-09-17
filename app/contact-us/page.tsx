@@ -3,6 +3,7 @@ import { ContactPage } from '@/components/templates/ContactPage';
 import type { BookingContext } from '@/lib/booking/types';
 import { SITE_URL, bookingOptions } from '@/lib/content/assemble';
 import { DESIGN } from '@/lib/content/design-assets';
+import { buildLocationsMenu } from '@/lib/content/locations-menu';
 import { getPrices } from '@/lib/data/pricing';
 
 export const dynamic = 'force-dynamic';
@@ -28,5 +29,5 @@ export default async function ContactUsPage() {
   const booking = bookingOptions(await getPrices(null));
   const bookingContext: BookingContext = { pageSlug: '/contact-us/', pageKind: 'hub', label: 'Chimcare · Contact' };
 
-  return <ContactPage booking={booking} bookingContext={bookingContext} />;
+  return <ContactPage booking={booking} bookingContext={bookingContext} locationsMenu={buildLocationsMenu()} />;
 }

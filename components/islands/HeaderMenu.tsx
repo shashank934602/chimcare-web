@@ -33,6 +33,8 @@ export function HeaderMenu({
         const next = !open;
         setOpen(next);
         document.getElementById(hdrId)?.classList.toggle('open', next);
+        // Menus inside it (the Locations panel) close with it.
+        document.dispatchEvent(new CustomEvent('chimcare:nav-menu', { detail: { open: next } }));
       }}
     >
       {icons === 'home' ? (

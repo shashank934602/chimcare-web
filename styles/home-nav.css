@@ -1,0 +1,183 @@
+/* The homepage header card as a shared component (components/chrome/HomeStyleNav.tsx), for pages that
+   carry their own nav over a hero photo instead of the site header (About, Contact). Identical to the
+   homepage header card (app/_home/content.ts + public/home/home.css), measured off that page at 1440,
+   820 and 390px: a 1140px white card with
+   15px corners, 202×62 logo, Inter 500 16px links 20px apart, a 40px BBB badge and the red
+   "CALL US NOW" pill. At 1024px and below the links fold into the menu toggle and the card reads
+   logo · badge · call button · toggle, the toggle on the right, as on the homepage.
+   Inter is the homepage's own webfont files (public/home/*.woff2), declared here because home.css
+   only loads on the homepage. */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/home/f11d729bb0a4.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/home/cf3eb50fb210.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+.hnav {
+  position: relative;
+  z-index: 2;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  width: min(1140px, 100%);
+  min-height: 90px;
+  margin: 0 auto;
+  padding: 10px 44px 10px 20px;
+  border-radius: 15px;
+  background: #fff;
+  /* Hero sections set `color:#fff` for their own copy; the card is opaque white. */
+  color: #222;
+  font-family: 'Inter', sans-serif;
+}
+/* Three columns, as the homepage card's Elementor row: logo 18.77%, links centred in 62.46%, and the
+   badge + pill packed to the right of the last 18.77% (the badge overhangs that column to the left,
+   exactly as it does on the homepage). */
+.hnav-logo { display: flex; flex: 0 0 18.77%; }
+.hnav-logo img { display: block; width: 100%; height: auto; }
+.hnav-links {
+  flex: 0 0 62.46%;
+  box-sizing: border-box;
+  justify-content: center;
+  gap: 20px;
+  /* The homepage menu carries a hidden trailing item 9–10px wide; the same offset keeps the links on
+     the same pixels. */
+  padding-right: 10px;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+}
+.hnav-links a,
+.hnav-links .mega-trigger > a {
+  padding: 15px 5px;
+  border-bottom: 0;
+  color: #000;
+  line-height: 20px;
+}
+/* The homepage marks no current page and shows no Locations chevron; the menu still opens on hover
+   and the toggle stays reachable by keyboard, just visually hidden. */
+.hnav-links a[aria-current='page'] { color: #000; }
+.hnav-links a:hover,
+.hnav-links a:focus-visible { color: #dd2e44; border-color: transparent; }
+.hnav-links .mega-toggle:not(:focus-visible) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.hnav-actions {
+  display: flex;
+  /* 56px wider than its column and pulled left by the same amount: badge + pill (253px) end on the
+     column's right edge and overhang to the left, as on the homepage. */
+  flex: 0 0 calc(18.77% + 56px);
+  margin-left: -56px;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+}
+.hnav-bbb { display: block; flex: none; width: auto; height: 40px; }
+/* The homepage nav's own "Call Us Now" pill: Inter 500 18px uppercase, 12px 24px padding, 10px
+   corners and the same red gradient, with the site's shared primary-CTA motion (styles/site-fixes.css). */
+.hnav-call {
+  position: relative;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 12px 24px;
+  border-radius: 10px;
+  background: linear-gradient(115deg, #dd2e44 0%, #c42239 45%, #dd2e44 100%);
+  background-size: 240% 240%;
+  animation: cta-shimmer 5s ease infinite, cta-pulse 2.4s ease-in-out infinite;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 20px;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.hnav-call:hover,
+.hnav-call:focus-visible {
+  animation-play-state: paused;
+  background: #c42239;
+}
+.hnav-phone-ico { display: block; width: 18px; height: 18px; flex: none; fill: currentColor; }
+/* Phone-only square call button and the homepage's borderless menu toggle. */
+.hnav-phone,
+.hnav .menu-btn { display: none; }
+.hnav-phone {
+  flex: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #b60e31 0%, #dd2e44 100%);
+  color: #fff;
+}
+.hnav .menu-btn {
+  order: 10;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 11px;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: #33373d;
+}
+.hnav .menu-btn .ico { width: 22px; height: 22px; fill: currentColor; stroke: none; }
+.hnav .menu-btn .ico-x { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .hnav-call { animation: none; }
+}
+
+@media (max-width: 1024px) {
+  .hnav { width: 100%; min-height: 84px; padding: 10px 0 10px 20px; }
+  /* The homepage's tablet logo column is 18% of the card (144px at 820, 181px at 1024). */
+  .hnav-logo { flex: 0 0 18%; }
+  .hnav-logo img { width: 100%; height: auto; }
+  .hnav-actions { flex: none; margin: 0 10px 0 auto; gap: 12px; }
+  .hnav-call { display: none; }
+  .hnav-phone { display: grid; }
+  .hnav .menu-btn { display: grid; margin-left: -2px; }
+  .hnav-links {
+    display: none;
+    position: absolute;
+    inset: 100% 0 auto 0;
+    margin-top: 8px;
+    flex-direction: column;
+    gap: 0;
+    padding: 4px 20px 12px;
+    border-radius: 15px;
+    background: #fff;
+    color: #222;
+    box-shadow: 0 22px 44px rgba(20, 12, 8, 0.18);
+  }
+  .hnav-links a,
+  .hnav-links .mega-trigger { padding: 13px 0; border-bottom: 1px solid var(--line); }
+  .hnav-links .mega-trigger > a { padding: 0; border-bottom: 0; }
+  .hnav-links a:last-child { border-bottom: 0; }
+  .hnav.open .hnav-links { display: flex; }
+  .hnav.open .menu-btn .ico-x { display: block; }
+  .hnav.open .menu-btn .ico-menu { display: none; }
+}
+@media (max-width: 767px) {
+  .hnav { width: calc(100% - 20px); padding-right: 0; }
+  /* On phones the homepage logo is half the card (175px at 390, 160px at 360). */
+  .hnav-logo { flex: 0 0 50%; }
+  .hnav-actions { margin-right: -2px; }
+  .hnav-bbb { height: 30px; }
+}

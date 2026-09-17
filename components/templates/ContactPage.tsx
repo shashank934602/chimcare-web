@@ -1,11 +1,13 @@
 import '@/styles/contact.css';
 import { Icon } from '@/components/chrome/Icon';
+import { HomeStyleNav } from '@/components/chrome/HomeStyleNav';
 import { Accordion } from '@/components/islands/Accordion';
 import { ContactForm } from '@/components/islands/ContactForm';
 import { BookingSheet } from '@/components/islands/BookingSheet';
 import { FloatingCta } from '@/components/chrome/FloatingCta';
 import type { BookingContext } from '@/lib/booking/types';
 import type { BookingOption } from '@/lib/content/assemble';
+import type { LocationsMenuData } from '@/lib/content/locations-menu';
 
 const NATIONAL_PHONE = '1-800-362-4840';
 const NATIONAL_PHONE_HREF = 'tel:18003624840';
@@ -38,19 +40,32 @@ const FAQS = [
   },
 ];
 
-export function ContactPage({ booking, bookingContext }: { booking: BookingOption[]; bookingContext: BookingContext }) {
+export function ContactPage({
+  booking,
+  bookingContext,
+  locationsMenu,
+}: {
+  booking: BookingOption[];
+  bookingContext: BookingContext;
+  locationsMenu: LocationsMenuData;
+}) {
   return (
     <>
       <main id="main" className="tpl-contact">
+        {/* The homepage header card over the homepage's own hero photo, as on the homepage and About. */}
+        <section className="contact-hero">
+          <HomeStyleNav id="contact-hero-nav" locationsMenu={locationsMenu} current="contact" />
+          <div className="wrap sec-top center">
+            <p className="chip">
+              <Icon name="user" className="ico" />
+              Contact us
+            </p>
+            <h1>Contact us</h1>
+          </div>
+        </section>
+
         <section className="section">
           <div className="wrap">
-            <div className="sec-top center">
-              <p className="chip">
-                <Icon name="user" className="ico" />
-                Contact us
-              </p>
-              <h1>Contact us</h1>
-            </div>
 
             <div className="contact-grid">
               <div className="contact-info">

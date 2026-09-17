@@ -16,15 +16,15 @@ const SEARCH_RESULT_LIMIT = 8;
  * and always on — a separate, self-contained feature from the site's directory search, which stays
  * off (`SEARCH_ENABLED` in lib/content/search.ts) until it's ready for visitors.
  *
- * "Locations" itself stays a normal link to `/locations/`; a separate chevron button opens the
- * panel without navigating, for anyone who wants to browse first — click, Enter/Space, or (on
- * desktop) hover. The button only ever *opens*, never toggles closed: a browser dispatches a
- * `mouseenter` right before any click (and, via its touch-compatibility events, before a tap's
- * click too), so a toggling click handler would immediately re-close whatever hover had just
- * opened and the button would appear to do nothing. Closing is `mouseleave` (desktop — after a
- * short grace period a re-entry cancels, since the panel is wide and a cursor crossing to its far
- * side can dip outside for an instant with no intention of leaving), Escape, or a click outside —
- * never the trigger itself. The panel's `hidden` attribute is the single source
+ * "Locations" itself stays a normal link to `/locations/`; a separate chevron button opens and
+ * closes the panel without navigating — click, tap, Enter/Space — and a mouse also opens it on
+ * hover. Hover is read from pointer events and only for `pointerType === 'mouse'`: a touch screen
+ * reports a tap as a hover too, and with no hover-out to follow, a phone could open the panel but
+ * never close it. A mouse click on the chevron that lands just after the hover opened the panel
+ * (under 400ms) keeps it open rather than toggling it straight back shut. Closing is the chevron,
+ * `pointerleave` for a mouse (after a short grace period a re-entry cancels, since the panel is wide
+ * and a cursor crossing to its far side can dip outside for an instant), Escape, a click outside, or
+ * the phone menu it sits in closing (HeaderMenu's `chimcare:nav-menu` event). The panel's `hidden` attribute is the single source
  * of truth for open/closed, so a visitor whose JS hasn't hydrated yet still gets a working
  * "Locations" link — they just don't get the panel. `aria-current` on the trigger link is
  * `<NavActive>`'s job, like every other nav link.
@@ -35,6 +35,7 @@ export function LocationsMenu({ data }: { data: LocationsMenuData }) {
   const panelId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hoverOpenedAt = useRef(0);
   const pathname = usePathname();
   const currentCode = useMemo(() => currentStateCode(pathname, data.states), [pathname, data.states]);
 
@@ -67,11 +68,17 @@ export function LocationsMenu({ data }: { data: LocationsMenuData }) {
     const onClick = (e: MouseEvent) => {
       if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false);
     };
+    // The phone menu this sits in closing takes the panel with it, so it is not still open next time.
+    const onNavMenu = (e: Event) => {
+      if (!(e as CustomEvent<{ open: boolean }>).detail?.open) setOpen(false);
+    };
     document.addEventListener('keydown', onKey);
     document.addEventListener('click', onClick);
+    document.addEventListener('chimcare:nav-menu', onNavMenu);
     return () => {
       document.removeEventListener('keydown', onKey);
       document.removeEventListener('click', onClick);
+      document.removeEventListener('chimcare:nav-menu', onNavMenu);
     };
   }, [open]);
 
@@ -79,11 +86,15 @@ export function LocationsMenu({ data }: { data: LocationsMenuData }) {
     <div
       className="nav-item has-mega"
       ref={rootRef}
-      onMouseEnter={() => {
+      onPointerEnter={(e) => {
+        if (e.pointerType !== 'mouse') return;
         cancelClose();
+        if (!open) hoverOpenedAt.current = Date.now();
         setOpen(true);
       }}
-      onMouseLeave={scheduleClose}
+      onPointerLeave={(e) => {
+        if (e.pointerType === 'mouse') scheduleClose();
+      }}
       onBlur={(e) => {
         if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setOpen(false);
       }}
@@ -98,7 +109,8 @@ export function LocationsMenu({ data }: { data: LocationsMenuData }) {
           aria-label="Show the locations menu"
           onClick={() => {
             cancelClose();
-            setOpen(true);
+            // Closed → open. Open → closed, unless a mouse hover opened it a moment before this click.
+            setOpen((wasOpen) => !wasOpen || Date.now() - hoverOpenedAt.current < 400);
           }}
         >
           <svg viewBox="0 0 24 24" aria-hidden="true" className="mega-chevron">

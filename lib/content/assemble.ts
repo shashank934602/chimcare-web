@@ -8,7 +8,9 @@ import { buildContext, fill, fillDeep, money, phoneHref, type SlotContext } from
 import type { BookingContext, ServiceKey } from '@/lib/booking/types';
 import { DESIGN, type DesignAsset } from './design-assets';
 
-export const SITE_URL = (process.env.SITE_URL ?? 'https://www.chimcare.com').replace(/\/$/, '');
+// `||`, not `??`: a deployment with SITE_URL defined but empty must still get the real origin, or
+// `new URL(SITE_URL)` in app/layout.tsx throws and the build fails.
+export const SITE_URL = (process.env.SITE_URL || 'https://www.chimcare.com').replace(/\/$/, '');
 const NATIONAL_PHONE = '1-800-362-4840';
 
 // ---- shared shapes -------------------------------------------------------------------------

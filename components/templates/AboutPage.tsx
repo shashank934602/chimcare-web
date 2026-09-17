@@ -8,8 +8,17 @@ import { HeaderMenu } from '@/components/islands/HeaderMenu';
 import { LocationsMenu } from '@/components/islands/LocationsMenu';
 import type { BookingContext } from '@/lib/booking/types';
 import type { BookingOption } from '@/lib/content/assemble';
-import type { DesignAsset } from '@/lib/content/design-assets';
+import { DESIGN, type DesignAsset } from '@/lib/content/design-assets';
 import type { LocationsMenuData } from '@/lib/content/locations-menu';
+
+/** The homepage header's solid phone glyph (Font Awesome phone-alt, from app/_home/content.ts). */
+function PhoneAltIcon() {
+  return (
+    <svg className="about-hero-phone-ico" viewBox="0 0 512 512" aria-hidden="true">
+      <path d="M497.39 361.8l-112-48a24 24 0 0 0-28 6.9l-49.6 60.6A370.66 370.66 0 0 1 130.6 204.11l60.6-49.6a23.94 23.94 0 0 0 6.9-28l-48-112A24.16 24.16 0 0 0 122.6.61l-104 24A24 24 0 0 0 0 48c0 256.5 207.9 464 464 464a24 24 0 0 0 23.4-18.6l24-104a24.29 24.29 0 0 0-14.01-27.6z" />
+    </svg>
+  );
+}
 
 const NATIONAL_PHONE = '1-800-362-4840';
 const NATIONAL_PHONE_HREF = 'tel:18003624840';
@@ -134,25 +143,44 @@ export function AboutPage({
     <>
       <main id="main" className="tpl-about">
         <section className={heroImage ? 'about-hero' : 'about-hero no-photo'} style={heroStyle}>
-          <div className="wrap">
-            <div className="about-hero-nav" id="about-hero-nav">
-              <a className="about-hero-logo" href="/">
-                <span className="sr-only">Chimcare home</span>
-                <img src="/img/logo.svg" alt="Chimcare" title="Chimcare" width={150} height={46} />
-              </a>
-              <HeaderMenu hdrId="about-hero-nav" menuId="about-hero-links" />
-              <nav className="nav about-hero-links" id="about-hero-links" aria-label="Main">
-                <a href="/">Home</a>
-                <a href="#">Services</a>
-                <LocationsMenu data={locationsMenu} />
-                <a href="/about-us/" aria-current="page">About Us</a>
-                <a href="/contact-us/">Contact Us</a>
-              </nav>
+          {/* The same nav card as the homepage header (app/_home/content.ts): logo, links, BBB badge and
+              "Call Us Now" on desktop; logo, badge, call button and menu toggle on tablets and phones.
+              It sits outside `.wrap` so its width can follow the homepage card, not the page gutter. */}
+          <div className="about-hero-nav" id="about-hero-nav">
+            <a className="about-hero-logo" href="/">
+              <span className="sr-only">Chimcare home</span>
+              <img src="/img/logo.svg" alt="Chimcare" title="Chimcare" width={202} height={62} />
+            </a>
+            <nav className="nav about-hero-links" id="about-hero-links" aria-label="Main">
+              <a href="/">Home</a>
+              <a href="#">Services</a>
+              <LocationsMenu data={locationsMenu} />
+              <a href="/about-us/" aria-current="page">About Us</a>
+              <a href="/contact-us/">Contact Us</a>
+            </nav>
+            <div className="about-hero-actions">
+              {DESIGN.bbbBadge && (
+                <img
+                  className="about-hero-bbb"
+                  src={DESIGN.bbbBadge.src}
+                  alt={DESIGN.bbbBadge.alt}
+                  title={DESIGN.bbbBadge.alt}
+                  width={DESIGN.bbbBadge.width}
+                  height={DESIGN.bbbBadge.height}
+                  decoding="async"
+                />
+              )}
               <a className="about-hero-call" href={HERO_PHONE_HREF}>
-                <Icon name="phone" />
-                Call Us Now
+                <PhoneAltIcon />
+                <span>Call Us Now</span>
               </a>
+              <a className="about-hero-phone" href={HERO_PHONE_HREF} aria-label={`Call Chimcare on ${HERO_PHONE}`}>
+                <PhoneAltIcon />
+              </a>
+              <HeaderMenu hdrId="about-hero-nav" menuId="about-hero-links" icons="home" />
             </div>
+          </div>
+          <div className="wrap">
             <p className="about-hero-eyebrow">About Chimcare</p>
             <h1>Care You Can Trust. People Who Truly Care.</h1>
             <p className="lede">Support That Feels Like Home.</p>

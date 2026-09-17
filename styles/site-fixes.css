@@ -161,3 +161,24 @@
   .fcta .fab { animation: none; }
   .fcta .fab::before { display: none; }
 }
+
+/* ---- Space under the footer on phones ------------------------------------------------------------
+   base.css and app/location/template.css reserve 96px under the page (`body{padding-bottom:…}`) so the
+   mobile Call / Book bar never covers the last content. StickyBar.tsx now hides that bar as soon as
+   the footer reaches the viewport, so the reservation only showed as a blank strip under the footer.
+   `html body` outranks both generated rules whichever stylesheet loads last. */
+@media (max-width: 900px) {
+  html body { padding-bottom: 0; }
+}
+
+/* ---- Menu toggle on the right on tablets and phones --------------------------------------------
+   The homepage header reads logo · BBB · call · menu, toggle last on the right; base.css put this
+   header's toggle first, before the logo. Same order here, and the homepage's borderless toggle. */
+@media (max-width: 900px) {
+  .hdr .menu-btn {
+    order: 10;
+    margin-left: -6px;
+    border: 0;
+    color: #33373d;
+  }
+}

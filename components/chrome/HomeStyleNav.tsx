@@ -61,7 +61,7 @@ export function HomeStyleNav({
           <a className="hnav-phone" href={CALL_PHONE_HREF} aria-label={`Call Chimcare on ${CALL_PHONE}`}>
             <PhoneAltIcon />
           </a>
-          <HeaderMenu hdrId={id} menuId={linksId} icons="home" />
+          <HeaderMenu icons="home" />
         </div>
       </div>
       {/* Sticks 20px from the top on scroll, as the homepage header does. */}

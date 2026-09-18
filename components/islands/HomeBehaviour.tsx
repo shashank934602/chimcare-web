@@ -2,13 +2,14 @@
 
 import { useEffect } from 'react';
 import type { BookingPrefill, ServiceKey } from '@/lib/booking/types';
+import { MOBILE_MENU_STATE_EVENT, openMobileMenu } from './MobileMenu';
 
 /**
  * The homepage is WordPress/Elementor markup rendered verbatim (app/_home/content.ts), with every WordPress
  * script stripped. This island gives that markup back the behaviour those scripts provided, working on the
  * existing classes and attributes so the page still looks exactly like production:
  *
- *   - Elementor nav menu toggle (mobile/tablet) and the sticky header bar
+ *   - the Elementor nav menu toggle (mobile/tablet) → the site's full-screen menu, and the sticky header bar
  *   - FAQ accordion (one item open at a time, as Elementor does)
  *   - counters counting up when they scroll into view
  *   - the US map tooltip (the saved page's own `chimcare-map-tip` script, ported)
@@ -46,44 +47,21 @@ export function HomeBehaviour() {
       }, { signal });
 
     // ---- nav menu toggle ----------------------------------------------------------------------
-    root.querySelectorAll<HTMLElement>('.elementor-menu-toggle').forEach((toggle) => {
-      const dropdown = toggle.nextElementSibling as HTMLElement | null;
-      const set = (on: boolean) => {
+    // Opens the site's full-screen menu (MobileMenu.tsx) instead of Elementor's short drop panel, which stays
+    // closed; the toggle keeps its `elementor-active` look and `aria-expanded` in step with the menu.
+    const toggles = root.querySelectorAll<HTMLElement>('.elementor-menu-toggle');
+    toggles.forEach((toggle) => {
+      toggle.setAttribute('aria-controls', 'mobile-menu');
+      toggle.addEventListener('click', openMobileMenu, { signal });
+      onKeyActivate(toggle, openMobileMenu);
+    });
+    document.addEventListener(MOBILE_MENU_STATE_EVENT, (e) => {
+      const on = Boolean((e as CustomEvent<{ open: boolean }>).detail?.open);
+      toggles.forEach((toggle) => {
         toggle.classList.toggle('elementor-active', on);
         toggle.setAttribute('aria-expanded', String(on));
-        if (dropdown) {
-          dropdown.setAttribute('aria-hidden', String(!on));
-          dropdown.style.setProperty('--menu-height', on ? `${dropdown.scrollHeight}px` : '0');
-        }
-      };
-      // The dropdown is `position: fixed` (a saved theme rule); overrides.css reads `--cc-menu-top` so the
-      // panel opens just under the white header card instead of on top of it, and follows the card when the
-      // sticky header moves.
-      const card = toggle.closest<HTMLElement>('.elementor-sticky') ?? toggle.closest<HTMLElement>('section');
-      const isOpen = () => toggle.classList.contains('elementor-active');
-      const place = () => {
-        if (dropdown && card) dropdown.style.setProperty('--cc-menu-top', `${Math.round(card.getBoundingClientRect().bottom + 8)}px`);
-      };
-      const flip = () => {
-        place();
-        set(!isOpen());
-      };
-      toggle.addEventListener('click', flip, { signal });
-      onKeyActivate(toggle, flip);
-      dropdown?.addEventListener('click', (e) => (e.target as HTMLElement).closest('a') && set(false), { signal });
-      window.addEventListener('scroll', () => isOpen() && place(), { passive: true, signal });
-      window.addEventListener('resize', () => isOpen() && place(), { signal });
-      document.addEventListener('click', (e) => {
-        const t = e.target as Node;
-        if (isOpen() && !toggle.contains(t) && !dropdown?.contains(t)) set(false);
-      }, { signal });
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && isOpen()) {
-          set(false);
-          toggle.focus();
-        }
-      }, { signal });
-    });
+      });
+    }, { signal });
 
     // ---- sticky header ------------------------------------------------------------------------
     // Elementor's sticky: once the bar reaches `sticky_offset` from the top it is fixed there, and a hidden
@@ -242,28 +220,161 @@ export function HomeBehaviour() {
       );
     };
 
+    const zipEl = heroForm?.querySelector<HTMLInputElement>('#cc-hero-zip') ?? null;
+    const serviceEl = heroForm?.querySelector<HTMLSelectElement>('#cc-hero-service') ?? null;
+    const heroNote = root.querySelector<HTMLElement>('#cc-hero-note');
+    const locateBtn = root.querySelector<HTMLButtonElement>('#cc-hero-locate');
+
+    const setError = (message: string, field?: HTMLInputElement | HTMLSelectElement | null) => {
+      if (heroErr) heroErr.textContent = message;
+      [zipEl, serviceEl].forEach((el) => el?.removeAttribute('aria-invalid'));
+      if (field) {
+        field.setAttribute('aria-invalid', 'true');
+        field.focus();
+      }
+    };
+    const setNote = (message: string) => {
+      if (heroNote) heroNote.textContent = message;
+    };
+    const place = (city: string | null, stateCode: string | null) =>
+      city ? `${city}${stateCode ? `, ${stateCode}` : ''}` : null;
+
+    // Auto-detect, no prompt: the ZIP the visitor's connection comes from (lib/content/locate.ts). Filled in
+    // only while the field is still empty and untouched, and labelled as a guess they can change.
+    let zipTouched = false;
+    if (zipEl && !zipEl.value) {
+      fetch('/api/locate/', { signal })
+        .then((r) => (r.ok ? r.json() : null))
+        .then((data: { ok: boolean; zip?: string; city?: string | null; stateCode?: string | null } | null) => {
+          if (!data?.ok || !data.zip || zipTouched || zipEl.value) return;
+          zipEl.value = data.zip;
+          const where = place(data.city ?? null, data.stateCode ?? null);
+          setNote(`${where ? `Near ${where}? ` : ''}ZIP filled in from your connection. Change it if it's not right, or tap the target for your exact location.`);
+        })
+        .catch(() => { /* no guess: the field just stays empty */ });
+    }
+
+    // "Use my current location": the device's own position → ZIP. Every way it can fail says what to do next.
+    const GEO_ERRORS: Record<number, string> = {
+      1: 'Location access is blocked. Allow it for this site in your browser settings, or type your ZIP.',
+      2: 'We couldn\u2019t find your location right now. Please type your ZIP code.',
+      3: 'Finding your location took too long. Try again, or type your ZIP code.',
+    };
+    const locate = () => {
+      if (!zipEl || !locateBtn || locateBtn.classList.contains('is-busy')) return;
+      if (!('geolocation' in navigator)) {
+        setError('This browser can\u2019t share your location. Please type your ZIP code.', zipEl);
+        return;
+      }
+      if (!window.isSecureContext) {
+        setError('Location only works over a secure (https) connection. Please type your ZIP code.', zipEl);
+        return;
+      }
+      if (!navigator.onLine) {
+        setError('You appear to be offline. Check your connection, or type your ZIP code.', zipEl);
+        return;
+      }
+      setError('');
+      setNote('Finding your location\u2026');
+      locateBtn.classList.add('is-busy');
+      locateBtn.setAttribute('aria-busy', 'true');
+      const done = () => {
+        locateBtn.classList.remove('is-busy');
+        locateBtn.removeAttribute('aria-busy');
+      };
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const { latitude, longitude } = pos.coords;
+          fetch(`/api/locate/?lat=${latitude.toFixed(5)}&lng=${longitude.toFixed(5)}`, { signal: withTimeout(8000) })
+            .then((r) => r.json())
+            .then((data: { ok: boolean; zip?: string; city?: string | null; stateCode?: string | null; error?: string }) => {
+              if (data.ok && data.zip) {
+                zipTouched = true;
+                zipEl.value = data.zip;
+                const where = place(data.city ?? null, data.stateCode ?? null);
+                setNote(`Found ${where ? `${where}, ` : ''}ZIP ${data.zip}.`);
+                // With a service already chosen, go straight on to the check.
+                if (serviceEl?.value) heroForm?.requestSubmit();
+                else setError('Now choose the service you need.', serviceEl);
+                return;
+              }
+              setNote('');
+              setError(
+                data.error === 'outside-us'
+                  ? 'Your location looks to be outside the US, and Chimcare serves US homes only. Type a US ZIP to check an address.'
+                  : data.error === 'not-found'
+                    ? 'We couldn\u2019t match your location to a ZIP code. Please type it in.'
+                    : 'We couldn\u2019t look up your ZIP just now. Please type it in.',
+                zipEl,
+              );
+            })
+            .catch(() => {
+              if (signal.aborted) return;
+              setNote('');
+              setError('We couldn\u2019t look up your ZIP just now. Please type it in.', zipEl);
+            })
+            .finally(done);
+        },
+        (err) => {
+          done();
+          setNote('');
+          setError(GEO_ERRORS[err.code] ?? GEO_ERRORS[2], zipEl);
+        },
+        { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 },
+      );
+    };
+    locateBtn?.addEventListener('click', locate, { signal });
+
+    // Digits only, as they type (a pasted "55124-1234" keeps its first five).
+    zipEl?.addEventListener('input', () => {
+      zipTouched = true;
+      const digits = zipEl.value.replace(/\D/g, '').slice(0, 5);
+      if (digits !== zipEl.value) zipEl.value = digits;
+      setNote('');
+    }, { signal });
+
+    // Gives up after `ms` as well as on unmount. AbortSignal.any is Safari 17.4+; older iPhones get unmount only.
+    const withTimeout = (ms: number): AbortSignal =>
+      typeof AbortSignal.any === 'function' && typeof AbortSignal.timeout === 'function' ? AbortSignal.any([signal, AbortSignal.timeout(ms)]) : signal;
+
+    const lookupFailed = (option: string, zip: string) =>
+      showResult(`
+        <p class="cc-hero-result-head">We couldn&rsquo;t check that ZIP just now.</p>
+        <p class="cc-hero-result-sub">${navigator.onLine ? 'Our lookup is having trouble.' : 'You appear to be offline.'} You can still book, or call and we&rsquo;ll confirm your area.</p>
+        <a class="cc-hero-result-cta" href="tel:8888552889">Call (888) 855-2889</a>
+        <button type="button" class="cc-hero-result-book" data-hero-book="${escapeHtml(option)}" data-hero-zip="${escapeHtml(zip)}">Continue to Online Booking</button>
+        <button type="button" class="cc-hero-result-again" data-hero-again>Try again</button>
+      `);
+
     heroForm?.addEventListener('submit', (e) => {
       e.preventDefault();
-      const serviceEl = heroForm.querySelector<HTMLSelectElement>('#cc-hero-service');
-      const zipEl = heroForm.querySelector<HTMLInputElement>('#cc-hero-zip');
       const option = serviceEl?.value ?? '';
       const zip = zipEl?.value.trim() ?? '';
       if (!option) {
-        if (heroErr) heroErr.textContent = 'Choose a service to continue.';
-        serviceEl?.focus();
+        setError('Choose a service to continue.', serviceEl);
+        return;
+      }
+      if (!zip) {
+        setError('Enter your ZIP code, or tap the target to use your location.', zipEl);
         return;
       }
       if (!/^\d{5}$/.test(zip)) {
-        if (heroErr) heroErr.textContent = 'Enter a 5-digit ZIP code.';
-        zipEl?.focus();
+        setError('A ZIP code is 5 digits, like 55124.', zipEl);
         return;
       }
-      if (heroErr) heroErr.textContent = '';
+      if (zip === '00000') {
+        setError('That isn\u2019t a valid ZIP code. Please check it.', zipEl);
+        return;
+      }
+      setError('');
 
       heroSubmit?.setAttribute('disabled', 'true');
       heroForm.classList.add('is-loading');
-      fetch(`/api/zip-lookup?zip=${encodeURIComponent(zip)}`)
-        .then((r) => r.json())
+      fetch(`/api/zip-lookup/?zip=${encodeURIComponent(zip)}`, { signal: withTimeout(8000) })
+        .then((r) => {
+          if (!r.ok) throw new Error(`zip-lookup ${r.status}`);
+          return r.json();
+        })
         .then((data: { match: 'city' | 'state' | 'none'; cityName?: string; stateCode?: string; stateName?: string; href?: string; addressLine?: string | null }) => {
           const svc = escapeHtml(option);
           if (data.match === 'city' && data.href && data.cityName) {
@@ -292,9 +403,11 @@ export function HomeBehaviour() {
             `);
           }
         })
-        .catch(() => {
-          // The lookup itself is a bonus, not a gate — a network hiccup still lets the visitor book.
-          openBooking(option, zip);
+        .catch((err: unknown) => {
+          if (signal.aborted) return;
+          // Network down, timeout or a server error: say so, and keep booking and calling one tap away.
+          console.warn('[hero] ZIP lookup failed', err);
+          lookupFailed(option, zip);
         })
         .finally(() => {
           heroSubmit?.removeAttribute('disabled');
@@ -302,7 +415,8 @@ export function HomeBehaviour() {
         });
     }, { signal });
     heroForm?.querySelectorAll('select, input').forEach((el) => {
-      el.addEventListener('input', () => { if (heroErr) heroErr.textContent = ''; }, { signal });
+      el.addEventListener('input', () => setError(''), { signal });
+      el.addEventListener('change', () => setError(''), { signal });
     });
 
     // ---- testimonials slider (phones) ---------------------------------------------------------

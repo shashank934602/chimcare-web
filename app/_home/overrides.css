@@ -890,3 +890,138 @@ body:has(.cc-rq) .wp-home .header-template {
 @media (max-width: 1024px) {
   .wp-home .elementor-button-wrapper .cc-hdr-bbb { height: 44px !important; }
 }
+
+/* 13 — the menu toggle opens the site's full-screen menu (components/islands/MobileMenu.tsx), so
+   Elementor's own drop panel (section 6) never shows, even while the toggle is marked active. */
+@media (max-width: 1024px) {
+  .wp-home .elementor-337148 .elementor-element-a5cb89c nav.elementor-nav-menu--dropdown.elementor-nav-menu__container {
+    display: none !important;
+  }
+}
+
+/* 14 — hero ZIP field: the "use my location" button inside the field, and the note under it that says where
+   an auto-filled ZIP came from (HomeBehaviour). The field's label is now a sibling of the input. */
+.wp-home .cc-hero-zipwrap {
+  position: relative;
+}
+.wp-home .cc-hero-zipwrap .cc-hero-input {
+  padding-right: 52px;
+}
+.wp-home .cc-hero-locate {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--brand-red);
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+.wp-home .cc-hero-locate:hover,
+.wp-home .cc-hero-locate:focus-visible {
+  background: rgba(221, 46, 68, 0.08);
+}
+.wp-home .cc-hero-locate svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+.wp-home .cc-hero-locate-spinner {
+  display: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(221, 46, 68, 0.25);
+  border-top-color: var(--brand-red);
+  border-radius: 50%;
+  animation: cc-spin 0.8s linear infinite;
+}
+.wp-home .cc-hero-locate.is-busy svg { display: none; }
+.wp-home .cc-hero-locate.is-busy .cc-hero-locate-spinner { display: block; }
+@keyframes cc-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .wp-home .cc-hero-locate-spinner { animation-duration: 2.4s; }
+}
+.wp-home .cc-hero-note {
+  margin: 0 !important;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #5f5a5c;
+}
+.wp-home .cc-hero-note:empty { display: none; }
+.wp-home .cc-hero-input[aria-invalid='true'] { border-color: var(--brand-red); }
+
+/* 15 — phones: the steps → trust card seam, the trust card's three photos, and the award badges. */
+@media (max-width: 767px) {
+  /* 100px of empty band between "3. Job Completion Satisfaction" and the red trust card: 50px under the
+     steps plus 50px over the card, and the same again under it before the testimonials. */
+  .wp-home .elementor-337148 .elementor-element.elementor-element-3874e33 { padding-bottom: 12px !important; }
+  .wp-home .elementor-337148 .elementor-element.elementor-element-4635a87 { padding-top: 12px !important; padding-bottom: 12px !important; }
+  /* Inside the card, the heading sat 36px under the trust seal. */
+  .wp-home .elementor-element-377303d .elementor-image-box-title { margin-top: 12px !important; }
+
+  /* The three photos as a masonry grid instead of a 1,000px column: the tall family photo down the left,
+     the fireplace and rooftop photos stacked on the right, both columns ending together. */
+  .wp-home .elementor-element-1974c96 > .elementor-container {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 170px 170px;
+    gap: 8px;
+  }
+  .wp-home .elementor-element-12056cb {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    width: auto !important;
+    min-width: 0;
+  }
+  /* The right column and its wrapper step aside, so its two photos are the grid's right-hand cells. */
+  .wp-home .elementor-element-13c2775,
+  .wp-home .elementor-element-13c2775 > .elementor-widget-wrap {
+    display: contents !important;
+  }
+  .wp-home .elementor-element-12056cb > .elementor-widget-wrap,
+  .wp-home .elementor-element-1974c96 .elementor-widget-image,
+  .wp-home .elementor-element-1974c96 .elementor-widget-image > .elementor-widget-container {
+    height: 100%;
+    min-width: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .wp-home .elementor-element-1974c96 .elementor-widget-image > .elementor-widget-container {
+    padding: 3px !important;
+    box-sizing: border-box;
+  }
+  .wp-home .elementor-element-1974c96 .elementor-widget-image img {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    object-fit: cover;
+  }
+
+  /* The award badges: the full container width (a 280px strip before) and the logos twice the size. */
+  .wp-home .elementor-337148 .elementor-element.elementor-element-ec87a17 { padding: 20px 10px 32px !important; }
+  .wp-home .elementor-337148 .elementor-element.elementor-element-ec87a17 > .elementor-container {
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    gap: 12px !important;
+  }
+  .wp-home .elementor-337148 .elementor-element.elementor-element-ec87a17 .elementor-widget-wrap.elementor-element-populated {
+    width: 100%;
+    min-height: 120px;
+    padding: 14px !important;
+  }
+  .wp-home .elementor-337148 .elementor-element.elementor-element-ec87a17 img { height: 84px !important; }
+  /* The "Need More Help?" card above it kept 50px of page under it. */
+  .wp-home .elementor-337148 .elementor-element.elementor-element-af64fb1 { padding-bottom: 12px !important; }
+}

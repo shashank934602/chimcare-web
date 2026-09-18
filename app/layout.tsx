@@ -8,6 +8,7 @@ import { Header } from '@/components/chrome/Header';
 import { Footer } from '@/components/chrome/Footer';
 import { StickyBar } from '@/components/chrome/StickyBar';
 import { Reveal } from '@/components/islands/Reveal';
+import { MobileMenu } from '@/components/islands/MobileMenu';
 import { getMigratedStates } from '@/lib/data/migrated-locations';
 import { buildLocationsMenu } from '@/lib/content/locations-menu';
 import { DESIGN } from '@/lib/content/design-assets';
@@ -49,6 +50,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         {children}
         <Footer states={states} />
         <StickyBar phoneHref="tel:18003624840" />
+        {/* The tablet/phone menu every header's toggle opens. */}
+        <MobileMenu data={locationsMenu} />
         <Reveal />
       </body>
     </html>

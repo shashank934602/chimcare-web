@@ -1,0 +1,158 @@
+/* The full-screen tablet/phone menu (components/islands/MobileMenu.tsx). Colours are the tokens' values
+   written out, so the panel looks the same on the homepage (WordPress markup under its own stylesheet) as on
+   every other page. Inter comes from styles/home-nav.css. */
+.mm {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000; /* above the homepage header card (1111111) and every floating button */
+  display: none;
+  flex-direction: column;
+  background: #fff;
+  color: #1b1a1b;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  text-align: left;
+}
+.mm.is-open { display: flex; }
+@media (min-width: 1025px) {
+  .mm.is-open { display: none; }
+}
+body.mm-lock { overflow: hidden; }
+
+.mm a { color: inherit; text-decoration: none; }
+.mm .ico { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.6; }
+.mm ul { margin: 0; padding: 0; list-style: none; } /* lists below that need spacing are written `.mm .x` to outrank this */
+
+.mm-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: none;
+  padding: 14px 16px 14px 20px;
+  border-bottom: 1px solid #e6e2e0;
+}
+.mm-logo img { display: block; width: 160px; height: auto; }
+.mm-close {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: #f5f2f1;
+  color: #1b1a1b;
+  cursor: pointer;
+}
+.mm-close .ico { width: 22px; height: 22px; }
+
+.mm-body {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px 20px calc(28px + env(safe-area-inset-bottom));
+}
+
+/* Links */
+.mm-nav { display: flex; flex-direction: column; }
+.mm-nav > a,
+.mm-sub-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 54px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid #e6e2e0;
+  background: none;
+  color: #1b1a1b;
+  font: inherit;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+.mm-nav > a:hover,
+.mm-sub-head:hover { color: #dd2e44; }
+.mm-sub-head .ico { width: 18px; height: 18px; color: #dd2e44; }
+
+/* Locations: every state, two per row */
+.mm .mm-states {
+  display: none;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2px 12px;
+  padding: 8px 0 14px;
+  border-bottom: 1px solid #e6e2e0;
+}
+.mm-sub.is-open .mm-states { display: grid; }
+.mm-states a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #3c3a3b;
+}
+.mm-states a:hover { color: #dd2e44; }
+.mm-states a .ico { width: 16px; height: 16px; color: #dd2e44; }
+.mm-states .mm-states-all { grid-column: 1 / -1; }
+.mm-states .mm-states-all a { gap: 6px; color: #dd2e44; font-weight: 600; }
+
+/* Call / book */
+.mm-ctas { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 22px 0 6px; }
+.mm-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 50px;
+  padding: 0 10px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.mm .mm-btn-call { background: linear-gradient(115deg, #dd2e44 0%, #c42239 45%, #dd2e44 100%); color: #fff; }
+.mm .mm-btn-book { background: #2c2b2e; color: #fff; }
+.mm-btn .ico { width: 18px; height: 18px; }
+@media (max-width: 360px) {
+  .mm-ctas { grid-template-columns: 1fr; }
+}
+
+/* Contact and trust */
+.mm-block { margin-top: 22px; padding: 18px; border-radius: 14px; background: #f7f4f3; }
+.mm-block h2 { margin: 0 0 12px; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #5f5a5c; }
+.mm-contact li,
+.mm-trust li { display: flex; align-items: center; gap: 12px; font-size: 15px; }
+.mm-contact li + li,
+.mm-trust li + li { margin-top: 12px; }
+.mm-contact a { font-weight: 600; word-break: break-all; }
+.mm-ico {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #fff;
+  color: #dd2e44;
+}
+.mm-ico .ico { width: 18px; height: 18px; }
+.mm-trust li { font-weight: 600; }
+.mm .mm-badges {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid #e6e2e0;
+}
+.mm-badges li { flex: 1 1 0; display: flex; justify-content: center; }
+.mm-badges img { display: block; width: auto; height: 56px; max-width: 100%; object-fit: contain; }

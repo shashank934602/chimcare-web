@@ -65,7 +65,7 @@ export function Header({
             <img
               className="hdr-bbb-panel"
               src={bbb.src}
-              width={34}
+              width={22}
               height={34}
               decoding="async"
               alt={bbb.alt} title={bbb.alt}

@@ -66,10 +66,17 @@ function buildHeroHtml(): string {
             <option value="Masonry Quote">Masonry Quote</option>
           </select>
         </label>
-        <label class="cc-hero-field">
-          <span class="cc-hero-label">ZIP Code</span>
-          <input id="cc-hero-zip" class="cc-hero-input" inputmode="numeric" maxlength="5" placeholder="Enter your ZIP code" autocomplete="postal-code">
-        </label>
+        <div class="cc-hero-field">
+          <label class="cc-hero-label" for="cc-hero-zip">ZIP Code</label>
+          <div class="cc-hero-zipwrap">
+            <input id="cc-hero-zip" class="cc-hero-input" inputmode="numeric" pattern="[0-9]*" maxlength="5" placeholder="Enter your ZIP code" autocomplete="postal-code" aria-describedby="cc-hero-note cc-hero-err">
+            <button type="button" class="cc-hero-locate" id="cc-hero-locate" aria-label="Use my current location" title="Use my current location">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><circle cx="12" cy="12" r="7.5" fill="none"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3" fill="none"/></svg>
+              <span class="cc-hero-locate-spinner" aria-hidden="true"></span>
+            </button>
+          </div>
+          <p class="cc-hero-note" id="cc-hero-note" aria-live="polite"></p>
+        </div>
         <p class="cc-hero-err" id="cc-hero-err" role="alert" aria-live="polite"></p>
         <button type="submit" class="cc-hero-submit">
           <span class="cc-hero-submit-label">Check My Area</span>

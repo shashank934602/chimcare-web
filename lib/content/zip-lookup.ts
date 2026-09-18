@@ -19,6 +19,19 @@ const STATE_ZIP3_RANGES: Record<string, Array<[number, number]>> = {
   OH: [[430, 459]],
   GA: [[300, 319], [398, 399]],
   WI: [[530, 549]],
+  CA: [[900, 961]],
+  CO: [[800, 816]],
+  CT: [[60, 69]],
+  OR: [[970, 979]],
+  WA: [[980, 994]],
+  ID: [[832, 838]],
+  IN: [[460, 479]],
+  MI: [[480, 499]],
+  PA: [[150, 196]],
+  TN: [[370, 385]],
+  UT: [[840, 847]],
+  NH: [[30, 38]],
+  RI: [[28, 29]],
 };
 
 function zip3InState(zip3: number, stateCode: string): boolean {

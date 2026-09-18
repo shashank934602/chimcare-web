@@ -223,5 +223,5 @@
   color: var(--foot-text-dim);
 }
 @media (max-width: 700px) {
-  .foot-legal .wrap { flex-direction: column; align-items: flex-start; }
+  .foot-legal .wrap { flex-direction: column; align-items: center; text-align: center; }
 }

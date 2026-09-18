@@ -1,0 +1,45 @@
+/* Section spacing on tablets and phones — one rhythm across every template.
+   Each section pads its own top and bottom, so the space between two sections is twice the padding.
+   The generated stylesheets (hub/state/city.css — do not edit) and the About/Contact/Services files
+   left 104–215px between one section's last line and the next one's first at 390px, and let intro,
+   #states and #directory sections grow ×1.18 on top of that, so gaps on one page ran 120px to 215px.
+   Here every section pads 40px on phones (≈80px between sections) and 56px on tablets, with no
+   per-section multiplier. Desktop is unchanged.
+   City pages take --sec from app/location/reference.css (`.option.o1-migrated .section`, 72px) and
+   the dark trust band pads its own .wrap (template.css, 64px on phones), so both are set here.
+   `html body` + an id inside :is() outranks `.tpl-hub #directory.section` (1,2,0), which the
+   generated files use and which load after this file. */
+
+@media (max-width: 820px) {
+  html body :is(.tpl-hub, .tpl-state) :is(.section, #states.section, #directory.section, #services.section) {
+    padding-block: 56px;
+  }
+  html body .option.o1-migrated .section {
+    --sec: 56px;
+  }
+  html body .option.o1-migrated .o1-trust-copy .wrap {
+    padding-block: 56px;
+  }
+  html body :is(.tpl-services, .tpl-about, .tpl-contact) .section {
+    padding-block: 56px;
+  }
+  /* The crew grid keeps a 40px bottom margin for content that never follows it. */
+  html body :is(.tpl-hub, .tpl-state) .crew:last-child {
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 520px) {
+  html body :is(.tpl-hub, .tpl-state) :is(.section, #states.section, #directory.section, #services.section) {
+    padding-block: 40px;
+  }
+  html body .option.o1-migrated .section {
+    --sec: 40px;
+  }
+  html body .option.o1-migrated .o1-trust-copy .wrap {
+    padding-block: 40px;
+  }
+  html body :is(.tpl-services, .tpl-about, .tpl-contact) .section {
+    padding-block: 40px;
+  }
+}

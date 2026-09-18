@@ -1071,3 +1071,17 @@ body:has(.cc-rq) .wp-home .header-template {
     pointer-events: none;
   }
 }
+
+/* 17 — phones: section padding 50px → 40px, the same ~80px section rhythm as every other template
+   (styles/section-rhythm.css). Only the sides the saved page set to 50px change; the 0/12/16/20/32px
+   seams between halves of one section stay as they were. home.css sets the 50px with
+   `.elementor-337148 > .elementor-top-section { … !important }`, so these need !important too and win
+   on specificity (5 classes vs 3). */
+@media (max-width: 520px) {
+  .wp-home .elementor-337148 :is(.elementor-element-f68c0e4, .elementor-element-bf6df8b, .elementor-element-3a97a5d, .elementor-element-513487c, .elementor-element-ac06853, .elementor-element-50e9921, .elementor-element-3874e33, .elementor-element-0a94068, .elementor-element-3ec657d, .elementor-element-af64fb1).elementor-element.elementor-top-section {
+    padding-top: 40px !important;
+  }
+  .wp-home .elementor-337148 :is(.elementor-element-f68c0e4, .elementor-element-3a97a5d, .elementor-element-6cbd526, .elementor-element-ac06853, .elementor-element-3ec657d).elementor-element.elementor-top-section {
+    padding-bottom: 40px !important;
+  }
+}

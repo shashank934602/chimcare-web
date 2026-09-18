@@ -39,9 +39,10 @@ export const DESIGN = {
   /** Header accreditation badge. The business's own logo, traced to a transparent SVG (public/img/bbb-logo.svg)
    *  from bbb-logo.png so it carries no white disc on dark or tinted backgrounds. */
   bbbBadge: { src: '/img/bbb-logo.svg', alt: 'BBB Accredited Business', width: 260, height: 396 } as DesignAsset,
-  /** The three award marks the city hero shows beside the rating. */
+  /** The three award marks the city hero shows beside the rating. The Guild "Member" mark is a vector
+   *  trace (public/img/ncsg-member.svg) of the logo Chimcare supplied; the mock's copy was a blurry 113×200. */
   awards: [
-    asset('1660ae673f91.webp', 113, 200),
+    { src: '/img/ncsg-member.svg', alt: 'National Chimney Sweep Guild member', width: 1152, height: 1600 } as DesignAsset,
     asset('858464cfd64c.webp', 177, 200),
     asset('164602b6aa3b.webp', 148, 200),
   ].filter((a): a is DesignAsset => a !== null),

@@ -56,7 +56,7 @@ export function SectionHead({
 /** The three membership and award badges, each on its own white tile — the same files, alt text and
  *  sizes the location page hero renders from the reference, so the hubs and the leaf pages match. */
 const AWARD_BADGES = [
-  { src: '/reference/img-1660ae67.webp', alt: 'National Chimney Sweep Guild member', width: 113, height: 200 },
+  { src: '/img/ncsg-member.svg', alt: 'National Chimney Sweep Guild member', width: 1152, height: 1600 },
   { src: '/reference/img-858464cf.webp', alt: 'Angie’s List Super Service Award 2020', width: 177, height: 200 },
   { src: '/reference/img-164602b6.webp', alt: 'Angi Super Service Award 2021', width: 148, height: 200 },
 ];

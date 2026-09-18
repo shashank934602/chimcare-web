@@ -30,7 +30,18 @@ const CARD_SELECTOR = '.header-template';
  * never touched (no aria-expanded/aria-controls added to it), so the saved header truly stays
  * unchanged. Escape and an outside click still close it, for anyone who does reach it by keyboard.
  */
-export function HomeLocationsMenu({ data }: { data: LocationsMenuData }) {
+export function HomeLocationsMenu({
+  data,
+  linkSelector = LOCATIONS_SELECTOR,
+  cardSelector = CARD_SELECTOR,
+}: {
+  data: LocationsMenuData;
+  /** The "Locations" link to hang the panel off. Defaults to the saved homepage header's link. */
+  linkSelector?: string;
+  /** The card the panel lines up under. About and Contact pass their own `.hnav` card
+   *  (components/chrome/HomeStyleNav.tsx), so all three pages open the same panel in the same place. */
+  cardSelector?: string;
+}) {
   const [open, setOpen] = useState(false);
   const [hasOpened, setHasOpened] = useState(false);
   const [pos, setPos] = useState<{ top: number; left: number; width: number } | null>(null);
@@ -55,10 +66,10 @@ export function HomeLocationsMenu({ data }: { data: LocationsMenuData }) {
   };
 
   useEffect(() => {
-    const link = document.querySelector<HTMLAnchorElement>(LOCATIONS_SELECTOR);
+    const link = document.querySelector<HTMLAnchorElement>(linkSelector);
     if (!link) return;
     linkRef.current = link;
-    const anchor = link.closest<HTMLElement>(CARD_SELECTOR) ?? link;
+    const anchor = link.closest<HTMLElement>(cardSelector) ?? link;
 
     const place = () => {
       const r = anchor.getBoundingClientRect();
@@ -86,14 +97,14 @@ export function HomeLocationsMenu({ data }: { data: LocationsMenuData }) {
       window.removeEventListener('resize', place);
       cancelClose();
     };
-  }, []);
+  }, [linkSelector, cardSelector]);
 
   useEffect(() => {
     if (!open) return;
     const link = linkRef.current;
     const reflow = () => {
       if (!link) return;
-      const anchor = link.closest<HTMLElement>(CARD_SELECTOR) ?? link;
+      const anchor = link.closest<HTMLElement>(cardSelector) ?? link;
       const r = anchor.getBoundingClientRect();
       const width = Math.min(r.width, window.innerWidth - 48);
       setPos({ top: r.bottom + 14, left: Math.max(24, Math.min(r.left, window.innerWidth - width - 24)), width });
@@ -118,7 +129,7 @@ export function HomeLocationsMenu({ data }: { data: LocationsMenuData }) {
       document.removeEventListener('keydown', onKey);
       document.removeEventListener('click', onClick);
     };
-  }, [open]);
+  }, [open, cardSelector]);
 
   if (!pos || typeof document === 'undefined') return null;
 

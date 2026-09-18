@@ -1,6 +1,6 @@
 import '@/styles/home-nav.css';
 import { HeaderMenu } from '@/components/islands/HeaderMenu';
-import { LocationsMenu } from '@/components/islands/LocationsMenu';
+import { HomeLocationsMenu } from '@/components/islands/HomeLocationsMenu';
 import { StickyHomeNav } from '@/components/islands/StickyHomeNav';
 import { DESIGN } from '@/lib/content/design-assets';
 import type { LocationsMenuData } from '@/lib/content/locations-menu';
@@ -48,7 +48,10 @@ export function HomeStyleNav({
         <nav className="nav hnav-links" id={linksId} aria-label="Main">
           <a href="/">Home</a>
           <a href="#">Services</a>
-          <LocationsMenu data={locationsMenu} />
+          {/* A plain link with the homepage's own hover panel (HomeLocationsMenu) rather than the site
+              header's <LocationsMenu>: that one sat inside this row, so the row's link rules restyled
+              the panel's links, and it hung flush under the card instead of 14px below it. */}
+          <a href="/locations/" data-hnav-locations="">Locations</a>
           <a href="/about-us/" aria-current={current === 'about' ? 'page' : undefined}>About Us</a>
           <a href="/contact-us/" aria-current={current === 'contact' ? 'page' : undefined}>Contact Us</a>
         </nav>
@@ -64,6 +67,7 @@ export function HomeStyleNav({
           <HeaderMenu icons="home" />
         </div>
       </div>
+      <HomeLocationsMenu data={locationsMenu} linkSelector={`#${id} [data-hnav-locations]`} cardSelector={`#${id}`} />
       {/* Sticks 20px from the top on scroll, as the homepage header does. */}
       <StickyHomeNav targetId={id} />
     </div>

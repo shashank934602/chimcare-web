@@ -67,7 +67,8 @@
 /* The homepage marks no current page and shows no Locations chevron; the menu still opens on hover
    and the toggle stays reachable by keyboard, just visually hidden. */
 .hnav-links a[aria-current='page'] { color: #000; }
-.hnav-links a:hover,
+/* The homepage's links stay black under the mouse; only keyboard focus is marked, in the brand red. */
+.hnav-links a:hover { color: #000; border-color: transparent; }
 .hnav-links a:focus-visible { color: #dd2e44; border-color: transparent; }
 .hnav-links .mega-toggle:not(:focus-visible) {
   position: absolute;

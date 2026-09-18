@@ -98,8 +98,9 @@ export function StateDirectory({
           <article className="state-card reveal" key={s.code} hidden={!visibleCodes.has(s.code)}>
             {s.photo ? (
               <div className="ph">
+                {/* No photo credit on the card itself: the licence credit is shown where the same photo runs
+                    large, on the state page's hero (StateHub.tsx, `.hero-credit`). */}
                 <img className="ph-photo" loading="lazy" decoding="async" src={s.photo} alt={s.photoAlt ?? `Chimney service in ${s.name}`} title={s.photoAlt ?? `Chimney service in ${s.name}`} />
-                {s.photoCredit && <small className="ph-credit">{s.photoCredit}</small>}
               </div>
             ) : (
               <div className="ph ph-plain"><span className="ph-plain-name">{s.name}</span><span className="ph-plain-note">Local photo to come</span></div>

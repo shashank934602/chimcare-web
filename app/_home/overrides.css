@@ -1041,3 +1041,35 @@ body:has(.cc-rq) .wp-home .header-template {
   /* The "Need More Help?" card above it kept 50px of page under it. */
   .wp-home .elementor-337148 .elementor-element.elementor-element-af64fb1 { padding-bottom: 12px !important; }
 }
+
+/* 16 — phones: the trust card's seal on the first photo (option F of the placement sheet). Above the heading
+   it stood alone on a row with nothing beside it, ~200px of empty red; tablets and desktops keep it beside
+   the heading. The saved seal image is hidden and the same file is drawn over the photo's top-left corner,
+   overhanging into a 26px gap above the photos. Decorative: the heading beside it says the same thing. */
+@media (max-width: 767px) {
+  .wp-home .elementor-element-377303d figure.elementor-image-box-img {
+    display: none !important;
+  }
+  .wp-home .elementor-element-377303d .elementor-image-box-title {
+    margin-top: 0 !important;
+  }
+  .wp-home .elementor-element-1974c96 {
+    margin-top: 26px !important;
+  }
+  .wp-home .elementor-element-12056cb .elementor-widget-image > .elementor-widget-container {
+    position: relative;
+    overflow: visible !important;
+  }
+  .wp-home .elementor-element-12056cb .elementor-widget-image > .elementor-widget-container::before {
+    content: '';
+    position: absolute;
+    top: -26px;
+    left: -8px;
+    z-index: 1;
+    width: 96px;
+    height: 96px;
+    background: url('/home/5053d05962ed.webp') center / contain no-repeat;
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
+    pointer-events: none;
+  }
+}

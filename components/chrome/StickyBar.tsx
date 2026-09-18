@@ -50,12 +50,36 @@ export function StickyBar({ phoneHref }: { phoneHref: string }) {
     const vv = window.visualViewport;
     // A visual viewport much shorter than the window means the on-screen keyboard is up.
     const keyboardOpen = () => !!vv && vv.height < window.innerHeight * 0.75;
+    let offset = 0;
+    const setOffset = (px: number) => {
+      offset = Math.round(px);
+      bar.style.setProperty('--sfoot-offset', `${offset}px`);
+    };
+    // Self-check: once the bar is showing (and its slide-in has finished), its bottom edge must meet the
+    // bottom of what the visitor sees. If Safari has left it anywhere else, move it by the difference.
+    // This does not depend on which of Safari's viewport numbers went stale, only on where the bar is.
+    const correct = () => {
+      if (!vv || !bar.classList.contains('is-on') || !phone.matches) return;
+      const gap = bar.getBoundingClientRect().bottom - (vv.offsetTop + vv.height);
+      if (Math.abs(gap) > 2) setOffset(offset + gap);
+    };
     const pinToVisibleBottom = () => {
       if (!vv) return;
       // Positive when the visible bottom is above the layout bottom, negative when below it.
-      const offset = Math.round(window.innerHeight - (vv.offsetTop + vv.height));
-      bar.style.setProperty('--sfoot-offset', `${offset}px`);
+      setOffset(window.innerHeight - (vv.offsetTop + vv.height));
       update();
+      requestAnimationFrame(correct);
+    };
+    // Safari moves the viewport after the keyboard has gone and after the toolbar settles, a moment after
+    // the events that caused it. Look again once each has finished animating.
+    let settle: number[] = [];
+    const recheckSoon = () => {
+      settle.forEach((t) => window.clearTimeout(t));
+      settle = [120, 400, 800].map((ms) => window.setTimeout(pinToVisibleBottom, ms));
+    };
+    const phone = window.matchMedia('(max-width: 900px)');
+    const onFocusOut = (e: FocusEvent) => {
+      if ((e.target as HTMLElement | null)?.matches?.('input, textarea, select')) recheckSoon();
     };
     // The reference's own 60ms throttle, plus a trailing read: a scroll that ends inside the window (a jump
     // to an anchor, or the homepage's sticky header nudging the page) must still leave the bar right.
@@ -77,12 +101,23 @@ export function StickyBar({ phoneHref }: { phoneHref: string }) {
     window.addEventListener('resize', onScroll, { passive: true });
     vv?.addEventListener('resize', pinToVisibleBottom);
     vv?.addEventListener('scroll', pinToVisibleBottom);
+    vv?.addEventListener('resize', recheckSoon);
+    document.addEventListener('focusout', onFocusOut);
+    window.addEventListener('scrollend', correct);
+    bar.addEventListener('transitionend', correct);
+    window.addEventListener('pageshow', recheckSoon); // back/forward cache restores keep stale positions
     return () => {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
       vv?.removeEventListener('resize', pinToVisibleBottom);
       vv?.removeEventListener('scroll', pinToVisibleBottom);
+      vv?.removeEventListener('resize', recheckSoon);
+      document.removeEventListener('focusout', onFocusOut);
+      window.removeEventListener('scrollend', correct);
+      bar.removeEventListener('transitionend', correct);
+      window.removeEventListener('pageshow', recheckSoon);
       window.clearTimeout(trailing);
+      settle.forEach((t) => window.clearTimeout(t));
     };
   }, []);
 

@@ -296,7 +296,7 @@ export function HomeBehaviour() {
                 setNote(`Found ${where ? `${where}, ` : ''}ZIP ${data.zip}.`);
                 // With a service already chosen, go straight on to the check.
                 if (serviceEl?.value) heroForm?.requestSubmit();
-                else setError('Now choose the service you need.', serviceEl);
+                else setError('Now select a service.', serviceEl);
                 return;
               }
               setNote('');
@@ -352,7 +352,7 @@ export function HomeBehaviour() {
       const option = serviceEl?.value ?? '';
       const zip = zipEl?.value.trim() ?? '';
       if (!option) {
-        setError('Choose a service to continue.', serviceEl);
+        setError('Select a service to continue.', serviceEl);
         return;
       }
       if (!zip) {

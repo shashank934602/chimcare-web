@@ -58,7 +58,7 @@ function buildHeroHtml(): string {
         <label class="cc-hero-field">
           <span class="cc-hero-label">Service Needed</span>
           <select id="cc-hero-service" class="cc-hero-input">
-            <option value="" disabled selected>Choose the Service You Need</option>
+            <option value="" disabled selected>Select Service</option>
             <option value="Chimney Inspection">$69 Chimney Inspection</option>
             <option value="Gas Fireplace Diagnostic">$49 Gas Fireplace Diagnostic</option>
             <option value="Chimney Sweep + Inspection">$299 Chimney Sweep + Inspection</option>

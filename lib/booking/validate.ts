@@ -13,7 +13,7 @@ export function todayISO(): string {
 export function validateBooking(raw: Record<string, unknown>): { errors: Record<string, string>; value?: BookingSubmission } {
   const errors: Record<string, string> = {};
   const service = str(raw.service);
-  if (!(SERVICE_KEYS as readonly string[]).includes(service)) errors.service = 'Choose the service you need.';
+  if (!(SERVICE_KEYS as readonly string[]).includes(service)) errors.service = 'Select a service.';
   const date = str(raw.date);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) errors.date = 'Pick a preferred date.';
   else if (date < todayISO()) errors.date = 'Pick today or a later date.';

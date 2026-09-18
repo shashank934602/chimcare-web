@@ -354,7 +354,7 @@ body:has(.cc-rq) .wp-home .header-template {
   padding: 12px 15px;
   border: 1px solid #e4e8eb;
   border-radius: 8px;
-  background: #f5f7f8;
+  background: #f4f4f2;
   color: #1b1a1b;
   font: inherit;
   font-size: 16px;
@@ -1090,4 +1090,17 @@ body:has(.cc-rq) .wp-home .header-template {
    The services page's copy of these cards (styles/services.css) uses the same colour. */
 .wp-home .elementor-337148 .elementor-element-3a97a5d :is(.elementor-element-f799996, .elementor-element-ae21a0b, .elementor-element-343f5b9, .elementor-element-e2cd05d, .elementor-element-223663d, .elementor-element-4a237d7, .elementor-element-3d5adf6, .elementor-element-1c89b82).elementor-element > .elementor-widget-wrap {
   background-color: #f4f4f2;
+}
+
+/* 19 — one light gray, #F4F4F2, as on every other page (styles/site-fixes.css): the alternating section
+   bands (#F5F4F2), the section chips ("Services", "Our Location", … #F5F5F5), the location/headquarters
+   boxes beside the map (#F8F9FA) and the testimonial card borders (#F5F5F5 / #F8F9FA). */
+.wp-home .elementor-337148 > .elementor-section:is(.elementor-element-f68c0e4, .elementor-element-513487c, .elementor-element-6cbd526, .elementor-element-50e9921, .elementor-element-3874e33, .elementor-element-4635a87, .elementor-element-af64fb1, .elementor-element-984a035) {
+  background-color: #f4f4f2;
+}
+.wp-home .elementor-337148 .elementor-element:is(.elementor-element-5a51359, .elementor-element-25769d4, .elementor-element-2a6b9eb, .elementor-element-74cc115, .elementor-element-ff20f88, .elementor-element-5763e91, .elementor-element-acbff57, .elementor-element-3846cd2, .elementor-element-a85e9e5, .elementor-element-c53c7bd) > .elementor-widget-container {
+  background-color: #f4f4f2;
+}
+.wp-home .elementor-337148 .elementor-element:is(.elementor-element-00e3c52, .elementor-element-29a8d03, .elementor-element-6b67ff0) > .elementor-element-populated {
+  border-color: #f4f4f2;
 }

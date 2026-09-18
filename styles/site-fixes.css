@@ -191,3 +191,18 @@
 @media (max-width: 360px) {
   .hdr .hdr-bbb { height: 40px; }
 }
+
+/* ---- One light gray: #F4F4F2 ----------------------------------------------------------------------
+   The site's light surface (tinted section bands, chips, the booking sheet panel, city-page bands) is
+   the generated token --surface-2 (#F5F4F2, set on :root, .tpl-state and .option by the generated
+   files), and the booking widget's panel is --bk-panel (#F1F5F8). One warm gray everywhere since the
+   2026-09-18 review; the homepage's own grays are aligned in app/_home/overrides.css §19. The `html`
+   prefix outranks each generated declaration whatever order the stylesheets load in. */
+html:root,
+html .tpl-state,
+html .option {
+  --surface-2: #f4f4f2;
+}
+html .book {
+  --bk-panel: #f4f4f2;
+}

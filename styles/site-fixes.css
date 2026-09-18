@@ -206,3 +206,16 @@ html .option {
 html .book {
   --bk-panel: #f4f4f2;
 }
+
+/* ---- No red dash before hero eyebrows --------------------------------------------------------------
+   The user asked, twice (2026-09-18), for the short red bar before the hero eyebrow to go: first on the
+   homepage ("America's Fireplace & Chimney Experts"), then on About ("About Chimcare") and Contact.
+   It is a ::before decoration in several stylesheets (styles/page-hero.css shared by About / Services /
+   Contact, styles/about.css, and app/_home/overrides.css for the homepage). The `html` prefix outranks
+   each of those, so the dash stays gone even if one of them adds it back. */
+html .page-hero-eyebrow::before,
+html .tpl-about .about-hero-eyebrow::before,
+html .wp-home .cc-hero-eyebrow::before {
+  content: none;
+  display: none;
+}

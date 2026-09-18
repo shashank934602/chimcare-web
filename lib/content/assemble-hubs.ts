@@ -79,9 +79,13 @@ export type HubState = {
   photoCredit?: string;
 };
 
-/** "Chimcare serves Ohio homeowners through 12 location pages across 12 cities." — counted, never typed. */
+/**
+ * The state card line (and a generic state page's meta description): what Chimcare does, in that state —
+ * no page, location or city counts, at the client's request. The wording is the site's own: the services
+ * named across the hubs and the "family-owned … since 1989" line from the state hero copy.
+ */
 export function stateBlurb(s: MigratedState): string {
-  return `Chimcare serves ${s.name} homeowners through ${plural(s.locations.length, 'location page', 'location pages')} across ${plural(s.cities.length, 'city', 'cities')}.`;
+  return `Chimney sweeping, inspection, repair and masonry from local Chimcare crews across ${s.name} — family-owned and serving homeowners since 1989.`;
 }
 
 /** A state that has a reviewed `site.states` row (Minnesota): its own copy, slots filled with its prices. */

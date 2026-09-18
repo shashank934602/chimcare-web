@@ -136,13 +136,13 @@ export function MobileMenu({ data }: { data: LocationsMenuData }) {
         </nav>
 
         <div className="mm-ctas">
-          <a className="mm-btn mm-btn-call" href={PHONE_HREF}>
-            <Icon name="phone" />
-            Call {PHONE}
-          </a>
           <a className="mm-btn mm-btn-book" href="#booking" data-book-sheet>
             <Icon name="cal" />
             Book Online
+          </a>
+          <a className="mm-btn mm-btn-call" href={PHONE_HREF}>
+            <Icon name="phone" />
+            Call {PHONE}
           </a>
         </div>
 

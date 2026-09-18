@@ -122,12 +122,12 @@ export function StickyBar({ phoneHref }: { phoneHref: string }) {
   }, []);
 
   return (
-    <div className="sfoot" id="sfoot" aria-label="Call or book service">
-      <a className="sfoot-btn sfoot-call" href={phoneHref}>
-        <Icon name="phone" />Call Now
-      </a>
+    <div className="sfoot" id="sfoot" aria-label="Book or call for service">
       <a className="sfoot-btn sfoot-book" href="#booking" data-book-sheet>
         <Icon name="cal" />Book Online
+      </a>
+      <a className="sfoot-btn sfoot-call" href={phoneHref}>
+        <Icon name="phone" />Call Now
       </a>
     </div>
   );

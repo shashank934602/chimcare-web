@@ -1,0 +1,87 @@
+/* The photo hero shared by About, Services and Contact (components/templates/*Page.tsx), taken from the
+   About hero so the three pages, and the homepage hero that app/_home/overrides.css §18 styles to
+   match, read as one template: the homepage header card over a full-bleed photo, an uppercase eyebrow
+   (no red dash: removed at the user's request, styles/site-fixes.css),
+   a Manrope 800 headline, left-aligned copy and the About buttons.
+   The photo is set per page with --page-hero-img / --page-hero-pos. Home, Services and Contact use the
+   same photo, crop and overlay; About keeps its own photo. Every hero is 800px tall on desktop, the
+   homepage hero's height, with the copy centred in the space under the nav card. */
+
+.page-hero {
+  position: relative;
+  isolation: isolate;
+  /* The site header's layer (.hdr in styles/base.css): the stuck nav card and its Locations panel
+     stay above the sections below. */
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  padding: 50px 0 clamp(64px, 8vw, 100px);
+  font-family: var(--font-body);
+  color: #fff;
+}
+.page-hero::before,
+.page-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+.page-hero::before {
+  background: var(--page-hero-img, url('/img/hero-chimney-sweep.jpg')) var(--page-hero-pos, center 15%) / cover no-repeat;
+  z-index: -2;
+}
+/* No stand-in photo if the real asset is ever missing: a flat brand-dark panel instead. */
+.page-hero.no-photo::before { background: var(--surface-dark); }
+.page-hero::after {
+  background: linear-gradient(200deg, rgba(20, 10, 8, 0.35) 6%, rgba(20, 10, 8, 0.62) 55%, rgba(16, 8, 6, 0.88) 100%);
+  z-index: -1;
+}
+.page-hero .hnav { margin-bottom: clamp(56px, 10vw, 140px); }
+@media (min-width: 1025px) {
+  .page-hero { min-height: 800px; }
+  .page-hero .hnav { margin-bottom: 56px; }
+  /* Starts at the nav card's left edge (styles/home-nav.css, .hnav: min(1140px, 100%)), as the
+     homepage hero's copy does. */
+  .page-hero .page-hero-body { width: min(1140px, calc(100% - 56px)); margin-block: auto; }
+}
+@media (max-width: 1024px) {
+  .page-hero { padding-top: 20px; }
+}
+
+.page-hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 18px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+}
+.page-hero h1 {
+  margin: 0 0 16px;
+  max-width: 16ch;
+  font-size: clamp(34px, 5vw, 60px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+/* A one-line tagline (About's "Support That Feels Like Home."). */
+.page-hero .lede {
+  margin: 0 0 30px;
+  max-width: 46ch;
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 700;
+  color: #fff;
+}
+/* A longer description (Services, the homepage): the same place, in regular weight. */
+.page-hero .page-hero-copy {
+  margin: 0 0 30px;
+  max-width: 56ch;
+  font-size: clamp(16px, 1.6vw, 17.5px);
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.86);
+}
+.page-hero .ctas { display: flex; flex-wrap: wrap; gap: 14px; }
+.page-hero .ctas .btn { min-height: 54px; padding: 0 30px; font-size: 15.5px; font-weight: 700; }

@@ -1,3 +1,4 @@
+import '@/styles/page-hero.css';
 import '@/styles/about.css';
 import '@/styles/usa-map.css';
 import type { CSSProperties } from 'react';
@@ -129,14 +130,14 @@ export function AboutPage({
   bookingContext: BookingContext;
   locationsMenu: LocationsMenuData;
 }) {
-  const heroStyle = heroImage ? ({ '--about-hero-img': `url(${heroImage.src})` } as CSSProperties) : undefined;
+  const heroStyle = heroImage ? ({ '--page-hero-img': `url(${heroImage.src})`, '--page-hero-pos': 'center 30%' } as CSSProperties) : undefined;
   return (
     <>
       <main id="main" className="tpl-about">
-        <section className={heroImage ? 'about-hero' : 'about-hero no-photo'} style={heroStyle}>
+        <section className={heroImage ? 'page-hero' : 'page-hero no-photo'} style={heroStyle}>
           <HomeStyleNav id="about-hero-nav" locationsMenu={locationsMenu} current="about" />
-          <div className="wrap">
-            <p className="about-hero-eyebrow">About Chimcare</p>
+          <div className="wrap page-hero-body">
+            <p className="page-hero-eyebrow">About Chimcare</p>
             <h1>Care You Can Trust. People Who Truly Care.</h1>
             <p className="lede">Support That Feels Like Home.</p>
             <div className="ctas">

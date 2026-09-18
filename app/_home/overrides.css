@@ -1104,3 +1104,43 @@ body:has(.cc-rq) .wp-home .header-template {
 .wp-home .elementor-337148 .elementor-element:is(.elementor-element-00e3c52, .elementor-element-29a8d03, .elementor-element-6b67ff0) > .elementor-element-populated {
   border-color: #f4f4f2;
 }
+
+/* 18 — the hero in the shared page template (styles/page-hero.css, the About hero): Manrope instead of
+   the saved theme's Inter, About's eyebrow spacing (no red dash, see styles/site-fixes.css), About's headline
+   size and tracking, and About's overlay over the same photo and crop the Services and Contact heroes
+   use (center 15%, set in §8). The ZIP card and the badges stay. The sub-copy is a full sentence, so
+   it keeps the template's regular-weight description style rather than the bold one-line tagline. */
+.wp-home .cc-hero,
+.wp-home .cc-hero :is(p, h1, span, em, label, select, input, button, a, li) {
+  font-family: var(--font-body) !important;
+}
+.wp-home .cc-hero-eyebrow {
+  margin: 0 0 18px !important;
+}
+.wp-home .cc-hero .cc-hero-title {
+  margin: 0 0 16px !important;
+  font-size: clamp(34px, 5vw, 60px) !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.02em !important;
+}
+.wp-home .cc-hero-sub {
+  margin: 0 0 30px !important;
+  max-width: 56ch;
+  font-size: clamp(16px, 1.6vw, 17.5px);
+  line-height: 1.65;
+}
+.wp-home [data-id="47ce424"] > .elementor-background-overlay {
+  background: linear-gradient(200deg, rgba(20, 10, 8, 0.35) 6%, rgba(20, 10, 8, 0.62) 55%, rgba(16, 8, 6, 0.88) 100%) !important;
+}
+/* Phones: the saved theme hides every <br> (`.page-id-337148 br { display:none !important }`), which
+   ran "Chimney Sweeps" into "Done" with no space once the title took the template's 34px size. The
+   rotating word gets its own line instead, as on desktop. The copy and card start 18px in, the
+   template's phone gutter (.wrap), not the nav card's 10px. */
+@media (max-width: 767px) {
+  .wp-home .cc-hero .cc-hero-rot {
+    display: block;
+  }
+  .wp-home .cc-hero-inner {
+    padding-inline: 8px;
+  }
+}

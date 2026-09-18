@@ -1,3 +1,4 @@
+import '@/styles/page-hero.css';
 import '@/styles/contact.css';
 import { Icon } from '@/components/chrome/Icon';
 import { HomeStyleNav } from '@/components/chrome/HomeStyleNav';
@@ -12,7 +13,7 @@ import type { LocationsMenuData } from '@/lib/content/locations-menu';
 const NATIONAL_PHONE = '1-800-362-4840';
 const NATIONAL_PHONE_HREF = 'tel:18003624840';
 // Same "Call Us Now" number the homepage hero and the About page show — one number, everywhere.
-const HERO_PHONE = '888-855-2889';
+const HERO_PHONE = '(888) 855-2889';
 const HERO_PHONE_HREF = 'tel:8888552889';
 
 const FAQS = [
@@ -53,14 +54,20 @@ export function ContactPage({
     <>
       <main id="main" className="tpl-contact">
         {/* The homepage header card over the homepage's own hero photo, as on the homepage and About. */}
-        <section className="contact-hero">
+        <section className="page-hero">
           <HomeStyleNav id="contact-hero-nav" locationsMenu={locationsMenu} current="contact" />
-          <div className="wrap sec-top center">
-            <p className="chip">
-              <Icon name="user" className="ico" />
-              Contact us
-            </p>
+          <div className="wrap page-hero-body">
+            <p className="page-hero-eyebrow">Contact Chimcare</p>
             <h1>Contact us</h1>
+            <div className="ctas">
+              <a className="btn btn-primary" href={HERO_PHONE_HREF}>
+                <Icon name="phone" />
+                Call Now {HERO_PHONE}
+              </a>
+              <a className="btn btn-dark" href="#booking" data-book>
+                <em className="fast">Fast</em> Online Booking
+              </a>
+            </div>
           </div>
         </section>
 

@@ -15,74 +15,7 @@
 body:has(> .tpl-about) > .hdr {
   display: none;
 }
-.tpl-about .about-hero {
-  position: relative;
-  isolation: isolate;
-  color: #fff;
-  padding: clamp(28px, 4vw, 44px) 0 clamp(64px, 8vw, 100px);
-}
-.tpl-about .about-hero::before,
-.tpl-about .about-hero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-}
-.tpl-about .about-hero::before {
-  background: var(--about-hero-img) center 30% / cover no-repeat;
-  z-index: -2;
-}
-/* No stand-in photo if the real asset is ever missing — a flat brand-dark panel instead, same rule
-   the rest of the design assets follow (lib/content/design-assets.ts). */
-.tpl-about .about-hero.no-photo::before { background: var(--surface-dark); }
-.tpl-about .about-hero::after {
-  background: linear-gradient(200deg, rgba(20, 10, 8, 0.35) 6%, rgba(20, 10, 8, 0.62) 55%, rgba(16, 8, 6, 0.88) 100%);
-  z-index: -1;
-}
-
-.tpl-about .about-hero { padding-top: 50px; }
-/* The site header's layer (.hdr in styles/base.css), so the stuck nav card and its Locations panel stay
-   above the sections below. */
-.tpl-about .about-hero { z-index: 60; }
-.tpl-about .about-hero .hnav { margin-bottom: clamp(56px, 10vw, 140px); }
-@media (max-width: 1024px) {
-  .tpl-about .about-hero { padding-top: 20px; }
-}
-
-.tpl-about .about-hero-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0 0 18px;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.85);
-}
-.tpl-about .about-hero-eyebrow::before {
-  content: '';
-  width: 24px;
-  height: 3px;
-  background: var(--brand-red);
-}
-.tpl-about .about-hero h1 {
-  margin: 0 0 16px;
-  max-width: 16ch;
-  font-size: clamp(34px, 5vw, 60px);
-  font-weight: 800;
-  line-height: 1.08;
-  letter-spacing: -0.02em;
-  color: #fff;
-}
-.tpl-about .about-hero .lede {
-  margin: 0 0 30px;
-  max-width: 46ch;
-  font-size: clamp(18px, 2vw, 24px);
-  font-weight: 700;
-  color: #fff;
-}
-.tpl-about .about-hero .ctas { display: flex; flex-wrap: wrap; gap: 14px; }
-.tpl-about .about-hero .btn { min-height: 54px; padding: 0 30px; font-size: 15.5px; font-weight: 700; }
+/* The hero itself is the shared photo hero, styles/page-hero.css. */
 
 /* ---- Section rhythm ------------------------------------------------------------------------- */
 .tpl-about .section { padding: clamp(56px, 8vw, 96px) 0; }

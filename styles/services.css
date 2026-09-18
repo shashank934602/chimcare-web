@@ -10,32 +10,7 @@
 
 /* ---- Hero ------------------------------------------------------------------------------------ */
 body:has(> .tpl-services) > .hdr { display: none; }
-.tpl-services .services-hero {
-  position: relative;
-  isolation: isolate;
-  /* The site header's layer (.hdr in styles/base.css): the stuck nav card and its Locations panel
-     stay above the sections below, which otherwise painted over the panel. */
-  z-index: 60;
-  padding: 50px 0 clamp(48px, 7vw, 88px);
-  color: #fff;
-}
-.tpl-services .services-hero::before,
-.tpl-services .services-hero::after { content: ''; position: absolute; inset: 0; }
-.tpl-services .services-hero::before { background: url('/img/hero-chimney-sweep.jpg') center 35% / cover no-repeat; z-index: -2; }
-.tpl-services .services-hero::after {
-  background: linear-gradient(200deg, rgba(20, 10, 8, 0.35) 6%, rgba(20, 10, 8, 0.62) 55%, rgba(16, 8, 6, 0.88) 100%);
-  z-index: -1;
-}
-.tpl-services .services-hero .hnav { margin-bottom: clamp(48px, 8vw, 96px); }
-.tpl-services .services-hero .sec-top.center { margin-bottom: 0; }
-.tpl-services .services-hero .chip { background: rgba(255, 255, 255, 0.14); color: #fff; }
-.tpl-services .services-hero h1 { color: #fff; }
-.tpl-services .services-hero .lede { margin: 0 auto clamp(28px, 4vw, 36px); max-width: 62ch; font-size: clamp(16px, 2vw, 18.5px); line-height: 1.65; color: rgba(255, 255, 255, 0.88); }
-.tpl-services .services-hero .ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
-.tpl-services .services-hero .btn { min-height: 52px; padding: 0 28px; font-size: 15px; font-weight: 700; }
-@media (max-width: 1024px) {
-  .tpl-services .services-hero { padding-top: 20px; }
-}
+/* The hero itself is the shared photo hero, styles/page-hero.css. */
 
 /* ---- Section rhythm (About/Contact's own pattern, copied) ------------------------------------- */
 .tpl-services .section { padding: clamp(56px, 8vw, 96px) 0; }

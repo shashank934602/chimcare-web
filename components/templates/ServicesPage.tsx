@@ -1,3 +1,4 @@
+import '@/styles/page-hero.css';
 import '@/styles/services.css';
 import { Icon } from '@/components/chrome/Icon';
 import { HomeStyleNav } from '@/components/chrome/HomeStyleNav';
@@ -130,16 +131,13 @@ export function ServicesPage({
   return (
     <>
       <main id="main" className="tpl-services">
-        {/* The homepage header card over the homepage's own hero photo, as on the homepage, About and Contact. */}
-        <section className="services-hero">
+        {/* The shared photo hero (styles/page-hero.css), the About page's template. */}
+        <section className="page-hero">
           <HomeStyleNav id="services-hero-nav" locationsMenu={locationsMenu} current="services" />
-          <div className="wrap sec-top center">
-            <p className="chip">
-              <Icon name="wrench" className="ico" />
-              Chimney &amp; Fireplace Services
-            </p>
+          <div className="wrap page-hero-body">
+            <p className="page-hero-eyebrow">Chimney &amp; Fireplace Services</p>
             <h1>Professional Chimney &amp; Fireplace Services You Can Trust</h1>
-            <p className="lede">
+            <p className="page-hero-copy">
               From routine chimney maintenance to repairs, inspections, and fireplace services, Chimcare provides professional solutions designed to
               keep your home safe, comfortable, and protected.
             </p>
@@ -148,7 +146,7 @@ export function ServicesPage({
                 <Icon name="cal" />
                 Schedule Your Service
               </a>
-              <a className="btn btn-outline" href="#our-services">
+              <a className="btn btn-dark" href="#our-services">
                 Explore Our Services
               </a>
             </div>

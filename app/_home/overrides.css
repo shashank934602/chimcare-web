@@ -865,6 +865,10 @@ body:has(.cc-rq) .wp-home .header-template {
   width: 44px !important;
   height: 44px !important;
   object-fit: contain;
+  /* The white line icons are drawn edge to edge of their 250px canvas, so at tile size they ran into the red
+     tile's rounded corners (the 24/7 arrow and the tools were cut off). Inset them so each sits whole inside. */
+  box-sizing: border-box;
+  padding: 9px;
 }
 .wp-home .elementor-element-ac06853 .elementor-inner-column:not(.elementor-element-dbfc3e2) > .elementor-widget-wrap > .elementor-widget-heading {
   flex: 1 1 0;

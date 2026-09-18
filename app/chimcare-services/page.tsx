@@ -7,7 +7,7 @@ import { getPrices } from '@/lib/data/pricing';
 
 export const dynamic = 'force-dynamic';
 
-const canonical = `${SITE_URL}/services/`;
+const canonical = `${SITE_URL}/chimcare-services/`;
 const TITLE = 'Chimney & Fireplace Services | Chimcare';
 const DESCRIPTION =
   'Chimney sweeps, inspections, repairs, rebuilding and fireplace installation from certified Chimcare technicians. Transparent pricing — schedule your service today.';
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 
 export default async function ServicesRoute() {
   const booking = bookingOptions(await getPrices(null));
-  const bookingContext: BookingContext = { pageSlug: '/services/', pageKind: 'hub', label: 'Chimcare · Services' };
+  const bookingContext: BookingContext = { pageSlug: '/chimcare-services/', pageKind: 'hub', label: 'Chimcare · Services' };
 
   return <ServicesPage booking={booking} bookingContext={bookingContext} locationsMenu={buildLocationsMenu()} />;
 }

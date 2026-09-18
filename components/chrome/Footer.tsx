@@ -10,7 +10,7 @@ const TRUST = [
 ];
 
 // The full real catalogue, but the column only ever shows the first four (see JSX below) — the
-// rest are one click away through "View All Services" (app/services/page.tsx). The four shown
+// rest are one click away through "View All Services" (app/chimcare-services/page.tsx). The four shown
 // still open the booking sheet directly (#booking) as a quick-book shortcut for a common service.
 const SERVICES = [
   'Chimney Sweep & Cleaning',
@@ -30,7 +30,7 @@ const SERVICES_SHOWN = 4;
 // set of "useful" links. Terms of Use / Privacy Policy / Sitemap already live in the bottom bar.
 const QUICK_LINKS = [
   { label: 'Home', href: '/' },
-  { label: 'Services', href: '/services/' },
+  { label: 'Services', href: '/chimcare-services/' },
   { label: 'Locations', href: '/locations/' },
   { label: 'About Us', href: '/about-us/' },
   { label: 'Contact', href: '/contact-us/' },
@@ -97,7 +97,7 @@ export function Footer({ states }: { states: FooterState[] }) {
                   </li>
                 ))}
                 <li>
-                  <a className="foot-more" href="/services/">
+                  <a className="foot-more" href="/chimcare-services/">
                     View All Services
                     <Icon name="arrow" className="ico" />
                   </a>

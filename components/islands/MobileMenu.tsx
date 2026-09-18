@@ -108,7 +108,7 @@ export function MobileMenu({ data }: { data: LocationsMenuData }) {
       <div className="mm-body">
         <nav className="mm-nav" aria-label="Mobile">
           <a href="/">Home</a>
-          <a href="/services/">Services</a>
+          <a href="/chimcare-services/">Services</a>
           <div className={statesOpen ? 'mm-sub is-open' : 'mm-sub'}>
             <button type="button" className="mm-sub-head" aria-expanded={statesOpen} aria-controls="mm-states" onClick={() => setStatesOpen((v) => !v)}>
               Locations

@@ -10,7 +10,7 @@ const INTERNAL_ABOUT_HREF = '/about-us/';
 const LEGACY_CONTACT_HREF = 'https://www.chimcare.com/contact-us-v1/';
 const INTERNAL_CONTACT_HREF = '/contact-us/';
 const LEGACY_SERVICES_HREF = 'https://www.chimcare.com/chimcare-services/';
-const INTERNAL_SERVICES_HREF = '/services/';
+const INTERNAL_SERVICES_HREF = '/chimcare-services/';
 
 export function withInternalAboutLink(html: string): string {
   return html.split(LEGACY_ABOUT_HREF).join(INTERNAL_ABOUT_HREF);

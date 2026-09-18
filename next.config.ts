@@ -16,6 +16,11 @@ const nextConfig: NextConfig = {
     // The homepage reads its CSS corrections as text so they load after home.css (see app/page.tsx).
     '/': ['./app/_home/overrides.css'],
   },
+  // The services hub lives at WordPress's own URL, /chimcare-services/. It was briefly built at /services/;
+  // anything that picked that address up lands on the real one.
+  async redirects() {
+    return [{ source: '/services', destination: '/chimcare-services/', permanent: true }];
+  },
 };
 
 export default nextConfig;

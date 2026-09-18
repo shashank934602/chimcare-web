@@ -58,11 +58,27 @@ body:has(> .wp-home) > .hdr {
 body:has(> .wp-home) {
   overflow-x: clip !important;
 }
-@media (min-width: 1025px) {
+/* Tablets too (768px up, where the heading and the cards still sit side by side); below that the columns
+   stack and there is nothing to stick beside. The header card is 84px there instead of 90px.
+   A stuck block must fit under the header, or the foot of the illustration stays hidden the whole time the
+   cards scroll (the block is 741px on desktop, 657–703px on tablets). The illustration shrinks to the room
+   left after the text above it (~211px desktop, up to ~290px tablet), never below 260px. */
+@media (min-width: 768px) {
   .wp-home .elementor-337148 .elementor-element.elementor-element-176954d {
     position: sticky !important;
-    top: 130px;
+    top: 124px;
     align-self: flex-start;
+  }
+  .wp-home .elementor-element-176954d .elementor-element-ad65b15 img {
+    width: auto !important;
+    max-height: max(260px, calc(100vh - 124px - 330px - 24px));
+    margin-inline: auto;
+  }
+}
+@media (min-width: 1025px) {
+  .wp-home .elementor-337148 .elementor-element.elementor-element-176954d { top: 130px; }
+  .wp-home .elementor-element-176954d .elementor-element-ad65b15 img {
+    max-height: max(260px, calc(100vh - 130px - 211px - 24px));
   }
 }
 

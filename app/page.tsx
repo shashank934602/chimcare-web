@@ -13,7 +13,6 @@ import { HOME_BODY_CLASS, HOME_CSS_HREF, HOME_HTML, HOME_META, HOME_SCHEMA } fro
 import { withHomeHero } from './_home/hero';
 import { withHeaderBbb } from './_home/header-bbb';
 import { withEvenMapPins } from './_home/map-pins';
-import { withSharpAwardLogos } from './_home/award-logos';
 import { withoutEmDash } from '@/lib/content/typography';
 import { withInternalAboutLink, withInternalContactLink } from './_home/nav-links';
 import { FloatingCta } from '@/components/chrome/FloatingCta';
@@ -87,7 +86,7 @@ function homeSchemaWithTitle(): Record<string, unknown> | null {
 export default async function Home() {
   const booking = bookingOptions(await getPrices(null));
   const bookingContext: BookingContext = { pageSlug: '/', pageKind: 'hub', label: 'Chimcare' };
-  const homeHtml = withSharpAwardLogos(withEvenMapPins(withoutEmDash(withHeaderBbb(withInternalAboutLink(withInternalContactLink(withHomeHero(HOME_HTML)))))));
+  const homeHtml = withEvenMapPins(withoutEmDash(withHeaderBbb(withInternalAboutLink(withInternalContactLink(withHomeHero(HOME_HTML))))));
   const homeSchema = homeSchemaWithTitle();
   return (
     <>

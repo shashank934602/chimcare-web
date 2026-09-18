@@ -26,7 +26,7 @@ const TRUST = [
 ];
 const BADGES = [
   { src: '/img/bbb-logo.svg', alt: 'BBB Accredited Business', width: 260, height: 396 },
-  { src: '/img/ncsg-logo.webp', alt: 'National Chimney Sweep Guild member', width: 432, height: 592 },
+  { src: '/reference/img-1660ae67.webp', alt: 'National Chimney Sweep Guild member', width: 113, height: 200 },
   { src: '/reference/img-858464cf.webp', alt: 'Angie’s List Super Service Award 2020', width: 177, height: 200 },
   { src: '/reference/img-164602b6.webp', alt: 'Angi Super Service Award 2021', width: 148, height: 200 },
 ];

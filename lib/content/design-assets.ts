@@ -39,10 +39,9 @@ export const DESIGN = {
   /** Header accreditation badge. The business's own logo, traced to a transparent SVG (public/img/bbb-logo.svg)
    *  from bbb-logo.png so it carries no white disc on dark or tinted backgrounds. */
   bbbBadge: { src: '/img/bbb-logo.svg', alt: 'BBB Accredited Business', width: 260, height: 396 } as DesignAsset,
-  /** The three award marks the city hero shows beside the rating. The Guild mark is NCSG's own emblem
-   *  (public/img/ncsg-logo.webp, from ncsg.org): the mock's copy was a blurry 113×200 "MEMBER" mark. */
+  /** The three award marks the city hero shows beside the rating. */
   awards: [
-    { src: '/img/ncsg-logo.webp', alt: 'National Chimney Sweep Guild member', width: 432, height: 592 } as DesignAsset,
+    asset('1660ae673f91.webp', 113, 200),
     asset('858464cfd64c.webp', 177, 200),
     asset('164602b6aa3b.webp', 148, 200),
   ].filter((a): a is DesignAsset => a !== null),

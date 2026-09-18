@@ -18,7 +18,7 @@
   align-items: center;
   justify-content: center;
 }
-.tpl-about .usmap-frame { width: 100%; }
+.tpl-about .usmap-frame { position: relative; width: 100%; }
 .tpl-about .usmap-frame svg { width: 100%; height: auto; display: block; overflow: visible; }
 
 .tpl-about .usmap-frame .cc-st path { fill: #D7DDE2; transition: fill 0.16s ease; }
@@ -26,7 +26,51 @@
 .tpl-about .usmap-frame .cc-st { cursor: default; outline: none; }
 .tpl-about .usmap-frame .cc-lines { stroke: #fff; stroke-width: 1.1; stroke-linejoin: round; }
 .tpl-about .usmap-frame .cc-pins { fill: #fff; }
-.tpl-about .usmap-frame .cc-tip { display: none; }
+/* Hover, focus and tooltip exactly as on the homepage map (public/home/home.css, `.wp-home .cc-st…`/`.cc-tip`). */
+.tpl-about .usmap-frame .cc-st.is-on { cursor: pointer; }
+.tpl-about .usmap-frame .cc-st:hover path,
+.tpl-about .usmap-frame .cc-st:focus-visible path { fill: #BFC7CE; }
+.tpl-about .usmap-frame .cc-st.is-on:hover path,
+.tpl-about .usmap-frame .cc-st.is-on:focus-visible path,
+.tpl-about .usmap-frame .cc-st.is-active path { fill: #B21E31; }
+.tpl-about .usmap-frame .cc-st:focus-visible { outline: 2px solid #DD2E44; outline-offset: 2px; border-radius: 3px; }
+.tpl-about .usmap-frame .cc-tip {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  width: max-content;
+  max-width: 270px;
+  background: #1B1A1B;
+  color: #fff;
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  box-shadow: 0 10px 28px rgba(20, 12, 8, 0.28);
+  transform: translate(-50%, -115%);
+  transition: opacity 0.12s ease;
+}
+.tpl-about .usmap-frame .cc-tip b { display: block; font-size: 13.5px; font-weight: 700; margin-bottom: 2px; }
+.tpl-about .usmap-frame .cc-tip span { color: rgba(255, 255, 255, 0.72); }
+.tpl-about .usmap-frame .cc-tip::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  margin-left: -6px;
+  border: 6px solid transparent;
+  border-top-color: #1B1A1B;
+}
+.tpl-about .usmap-frame .cc-tip.is-below { transform: translate(-50%, 0); }
+.tpl-about .usmap-frame .cc-tip.is-below::after { top: auto; bottom: 100%; border-top-color: transparent; border-bottom-color: #1B1A1B; }
+.tpl-about .usmap-frame .cc-tip[hidden] { display: none; }
+@media (max-width: 767px) {
+  .tpl-about .usmap-frame .cc-tip { max-width: min(78vw, 250px); font-size: 12px; padding: 8px 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tpl-about .usmap-frame .cc-st path,
+  .tpl-about .usmap-frame .cc-tip { transition: none; }
+}
 
 .tpl-about .usmap-search {
   position: absolute;

@@ -5,6 +5,7 @@ import { Icon } from '@/components/chrome/Icon';
 import { BookingSheet } from '@/components/islands/BookingSheet';
 import { FloatingCta } from '@/components/chrome/FloatingCta';
 import { HomeStyleNav } from '@/components/chrome/HomeStyleNav';
+import { UsaMapTooltip } from '@/components/islands/UsaMapTooltip';
 import type { BookingContext } from '@/lib/booking/types';
 import type { BookingOption } from '@/lib/content/assemble';
 import type { DesignAsset } from '@/lib/content/design-assets';
@@ -264,11 +265,20 @@ export function AboutPage({
             <div className="loc-grid">
               <div className="loc-card">
                 <div className="usmap-card">
-                  {usaMapSvg && <div className="usmap-frame" dangerouslySetInnerHTML={{ __html: usaMapSvg }} />}
+                  {usaMapSvg && (
+                    // The homepage map's own tooltip and state highlight (usaMapTip.ts): point at, tap or
+                    // tab to a state for its name and towns.
+                    <div className="usmap-frame" id="about-usmap">
+                      <div dangerouslySetInnerHTML={{ __html: usaMapSvg }} />
+                      <div className="cc-tip" role="status" aria-live="polite" hidden />
+                      <UsaMapTooltip frameId="about-usmap" />
+                    </div>
+                  )}
+                  {/* Same destination and parameter as the homepage map's search (`/locations/?q=`). */}
                   <form className="usmap-search" action="/locations/" method="get">
                     <input
                       type="search"
-                      name="s"
+                      name="q"
                       placeholder="Search by City or Zip"
                       aria-label="Search by city or zip"
                       autoComplete="off"

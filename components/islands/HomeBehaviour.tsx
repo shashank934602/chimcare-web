@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import type { BookingPrefill, ServiceKey } from '@/lib/booking/types';
 import { MOBILE_MENU_STATE_EVENT, openMobileMenu } from './MobileMenu';
+import { attachUsaMapTooltip } from './usaMapTip';
 
 /**
  * The homepage is WordPress/Elementor markup rendered verbatim (app/_home/content.ts), with every WordPress
@@ -495,61 +496,10 @@ export function HomeBehaviour() {
     }
 
     // ---- US map tooltip -----------------------------------------------------------------------
+    // Shared with the About page's copy of the map (components/islands/usaMapTip.ts).
     const map = root.querySelector<HTMLElement>('.cc-usmap');
     const tip = map?.querySelector<HTMLElement>('.cc-tip');
-    if (map && tip) {
-      let active: Element | null = null;
-      const show = (g: Element, x: number, y: number) => {
-        if (active && active !== g) active.classList.remove('is-active');
-        active = g;
-        g.classList.add('is-active');
-        const name = g.getAttribute('data-name') ?? '';
-        const towns = g.getAttribute('data-towns');
-        const body = towns || (g.classList.contains('is-on') ? 'Chimcare serves this state' : '');
-        tip.replaceChildren();
-        const b = document.createElement('b');
-        b.textContent = name;
-        tip.append(b);
-        if (body) {
-          const span = document.createElement('span');
-          span.textContent = body;
-          tip.append(span);
-        }
-        tip.hidden = false;
-        const r = map.getBoundingClientRect();
-        tip.style.left = '0px';
-        tip.style.top = '0px';
-        const tw = tip.offsetWidth;
-        const pad = 6;
-        tip.style.left = `${Math.max(tw / 2 + pad, Math.min(x - r.left, r.width - tw / 2 - pad))}px`;
-        const above = y - r.top - 10;
-        const below = above - tip.offsetHeight * 1.15 < 0;
-        tip.classList.toggle('is-below', below);
-        tip.style.top = `${below ? y - r.top + 16 : above}px`;
-      };
-      const hide = () => {
-        active?.classList.remove('is-active');
-        active = null;
-        tip.hidden = true;
-      };
-      const at = (e: Event) => (e.target as Element).closest?.('.cc-st') ?? null;
-      const follow = (e: PointerEvent | MouseEvent) => {
-        const g = at(e);
-        if (g) show(g, e.clientX, e.clientY);
-        else hide();
-      };
-      map.addEventListener('pointermove', follow, { signal });
-      map.addEventListener('click', follow, { signal });
-      map.addEventListener('pointerleave', hide, { signal });
-      map.addEventListener('focusin', (e) => {
-        const g = at(e);
-        if (!g) return;
-        const b = g.getBoundingClientRect();
-        show(g, b.left + b.width / 2, b.top + b.height / 2);
-      }, { signal });
-      map.addEventListener('focusout', hide, { signal });
-      document.addEventListener('keydown', (e) => e.key === 'Escape' && hide(), { signal });
-    }
+    if (map && tip) attachUsaMapTooltip(map, tip, signal);
 
     // ---- location search → locations hub ------------------------------------------------------
     root.querySelectorAll<HTMLFormElement>('.e-search-form').forEach((search) => {

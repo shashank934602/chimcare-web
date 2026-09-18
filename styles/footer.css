@@ -1,16 +1,18 @@
-/* Site footer (components/chrome/Footer.tsx) — a dark navy band, distinct from the site's usual
-   red/near-black chrome, on purpose: this is the one section built to match a supplied reference
-   design exactly. New classes (`foot-*`) rather than the generated `.ftr-*` rules in styles/base.css
-   (do not edit that file — scripts/port-css.mjs owns it), the same "new styles go in a new file"
-   pattern as styles/booking.css. The outer element keeps the plain `ftr` class so StickyBar's own
-   `footer.ftr` lookup (components/chrome/StickyBar.tsx) still finds it. */
+/* Site footer (components/chrome/Footer.tsx) — a black band (navy in the supplied reference design;
+   black since the 2026-09-18 phone review), with neutral greys for text so nothing reads blue. New
+   classes (`foot-*`) rather than the generated `.ftr-*` rules in styles/base.css (do not edit that
+   file — scripts/port-css.mjs owns it), the same "new styles go in a new file" pattern as
+   styles/booking.css. The outer element keeps the plain `ftr` class so StickyBar's own `footer.ftr`
+   lookup (components/chrome/StickyBar.tsx) still finds it. The selector is `html body footer.ftr`
+   because base.css and app/location/template.css both set `.ftr{background:#200609}`, and the city
+   page's copy loads after this file. */
 
-.ftr {
-  --foot-bg: #0c1a2b;
-  --foot-bg-2: #091422;
-  --foot-line: rgba(255, 255, 255, 0.1);
-  --foot-text: rgba(226, 232, 240, 0.72);
-  --foot-text-dim: rgba(226, 232, 240, 0.45);
+html body footer.ftr {
+  --foot-bg: #000;
+  --foot-bg-2: #0a0a0a;
+  --foot-line: rgba(255, 255, 255, 0.12);
+  --foot-text: rgba(235, 235, 235, 0.72);
+  --foot-text-dim: rgba(235, 235, 235, 0.45);
   position: relative;
   overflow: hidden;
   background: var(--foot-bg);
@@ -127,7 +129,6 @@
   color: var(--brand-red);
 }
 .foot-area-ico .ico { width: 13px; height: 13px; }
-.foot-area-count { flex: none; padding: 3px 10px; border-radius: 999px; background: rgba(255, 255, 255, 0.07); font-size: 11px; font-weight: 700; color: var(--foot-text-dim); white-space: nowrap; }
 /* A plain two-column bulleted list — small red square, plain text — not pill chips: the same
    language the national hub's own state cards use (styles/state-cards.css), so "service areas"
    reads as one design wherever the site lists a state's cities. */

@@ -162,7 +162,6 @@ export function Footer({ states }: { states: FooterState[] }) {
                       </span>
                       {s.name}
                     </a>
-                    <span className="foot-area-count">{s.cities.length} {s.cities.length === 1 ? 'city' : 'cities'}</span>
                   </div>
                   <ul className="foot-area-cities">
                     {s.cities.map((c) => (

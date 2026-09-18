@@ -1085,3 +1085,9 @@ body:has(.cc-rq) .wp-home .header-template {
     padding-bottom: 40px !important;
   }
 }
+
+/* 18 — "Our Services" cards: warm light gray #F4F4F2 instead of the saved page's #F8F9FA (2026-09-18 review).
+   The services page's copy of these cards (styles/services.css) uses the same colour. */
+.wp-home .elementor-337148 .elementor-element-3a97a5d :is(.elementor-element-f799996, .elementor-element-ae21a0b, .elementor-element-343f5b9, .elementor-element-e2cd05d, .elementor-element-223663d, .elementor-element-4a237d7, .elementor-element-3d5adf6, .elementor-element-1c89b82).elementor-element > .elementor-widget-wrap {
+  background-color: #f4f4f2;
+}

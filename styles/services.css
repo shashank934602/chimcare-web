@@ -91,7 +91,7 @@ body:has(> .tpl-services) > .hdr { display: none; }
 /* ---- Services grid ----------------------------------------------------------------------------
    Reproduces the homepage's own "Our Services" section (app/_home/content.ts: the "Services" chip +
    "Our Services" heading + "Book Now" button row, then eight `.ser-box` cards) measured off the
-   rendered homepage — light-gray card (#F8F9FA), 20px radius/padding, title + one line of copy at
+   rendered homepage — warm light-gray card (#F4F4F2, per the 2026-09-18 review), 20px radius/padding, title + one line of copy at
    the top, a round white arrow badge in the corner (the same arrow-icon image, public/home/home.css)
    and the photo pinned to the bottom (10px radius, 180px, object-fit: cover), with the homepage's own
    `translateY(-10px)` hover lift. Reproduced with this page's own markup/classes rather than the
@@ -116,7 +116,7 @@ body:has(> .tpl-services) > .hdr { display: none; }
   min-height: 320px;
   padding: 20px;
   border-radius: 20px;
-  background: #f8f9fa;
+  background: #f4f4f2;
   text-decoration: none;
   color: var(--text);
   transition: transform 0.3s ease, box-shadow 0.3s ease;

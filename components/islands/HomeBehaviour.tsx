@@ -268,7 +268,7 @@ export function HomeBehaviour() {
           const svc = escapeHtml(option);
           if (data.match === 'city' && data.href && data.cityName) {
             showResult(`
-              <p class="cc-hero-result-head">Good news — we serve ${escapeHtml(data.cityName)}${data.stateCode ? `, ${escapeHtml(data.stateCode)}` : ''}!</p>
+              <p class="cc-hero-result-head">Good news! We serve ${escapeHtml(data.cityName)}${data.stateCode ? `, ${escapeHtml(data.stateCode)}` : ''}!</p>
               ${data.addressLine ? `<p class="cc-hero-result-sub">${escapeHtml(data.addressLine)}</p>` : ''}
               <a class="cc-hero-result-cta" href="${escapeHtml(data.href)}">View This Location</a>
               <button type="button" class="cc-hero-result-book" data-hero-book="${svc}" data-hero-zip="${escapeHtml(zip)}">Continue to Online Booking</button>

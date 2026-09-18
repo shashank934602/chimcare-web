@@ -14,3 +14,12 @@
     transform: translateX(-50%) translateY(16px);
   }
 }
+
+/* Phones: the bar sits on the bottom of the visible screen. StickyBar.tsx measures the gap between the
+   layout viewport's bottom and the visual viewport's bottom (iOS Safari leaves them apart after the
+   keyboard closes) and hands it over as --sfoot-offset. */
+@media (max-width: 900px) {
+  html body .sfoot {
+    bottom: var(--sfoot-offset, 0px);
+  }
+}

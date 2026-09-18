@@ -59,7 +59,7 @@ export function Footer({ states }: { states: FooterState[] }) {
               <span className="logo-chip">
                 <img src="/img/logo.svg" alt="Chimcare" title="Chimcare" />
               </span>
-              <p>America&rsquo;s Fireplace &amp; Chimney Experts. Founded 1989 — working toward every rooftop and hearth in the country.</p>
+              <p>America&rsquo;s Fireplace &amp; Chimney Experts. Founded 1989, working toward every rooftop and hearth in the country.</p>
               <ul className="foot-trust">
                 {TRUST.map((t) => (
                   <li key={t.label}>

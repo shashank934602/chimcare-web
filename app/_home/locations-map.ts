@@ -1,4 +1,5 @@
 import { HOME_HTML } from './content';
+import { withEvenMapPins } from './map-pins';
 
 /**
  * The homepage's own interactive USA map — `.cc-usmap-svg` in HOME_HTML (app/_home/content.ts) —
@@ -17,5 +18,5 @@ export function getHomeUsaMapSvg(): string | null {
   if (start === -1) return null;
   const end = HOME_HTML.indexOf(MAP_END_MARKER, start);
   if (end === -1) return null;
-  return HOME_HTML.slice(start, end + MAP_END_MARKER.length);
+  return withEvenMapPins(HOME_HTML.slice(start, end + MAP_END_MARKER.length));
 }

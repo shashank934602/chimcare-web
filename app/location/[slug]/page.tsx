@@ -31,6 +31,7 @@ import { readJsonCached } from '@/lib/json-cache';
 // pipeline's SQLite store, read by slug. See `lib/route-store.ts` for why.
 import { readRoute, readRedirect, listRouteSlugs } from '@/lib/route-store';
 import { placeFromSlug } from '@/lib/content/place-from-slug.mjs';
+import { deepWithoutEmDash } from '@/lib/content/typography';
 
 /**
  * The dispatcher. One route for every legacy `/location/{slug}/` URL, and ONE template behind it.
@@ -196,6 +197,9 @@ function plateFor(assets: RefAsset[], section: string): RefAsset | null {
    ===================================================================== */
 const STANDARD_SERVICES = path.join(process.cwd(), 'app/location/standard-services.json');
 
+/** A standard-copy file, with the site's no-em-dash rule applied (lib/content/typography.ts). */
+const readStandard = (file: string): unknown => deepWithoutEmDash(readJsonCached(file));
+
 type StandardService = {
   key: string;
   n: string;
@@ -229,7 +233,7 @@ function isStandardService(v: unknown): v is StandardService {
  */
 function standardServices(): StandardService[] {
   try {
-    const raw: unknown = readJsonCached(STANDARD_SERVICES);
+    const raw: unknown = readStandard(STANDARD_SERVICES);
     if (raw === null) return [];
     const list = raw && typeof raw === 'object' ? (raw as Record<string, unknown>).services : null;
     if (!Array.isArray(list) || list.length === 0) return [];
@@ -330,7 +334,7 @@ const AREAS_FIELDS = ['eyebrow', 'heading', 'lede', 'subHeading', 'subLede', 'ct
  */
 function standardAreas(): StandardAreas | null {
   try {
-    const raw: unknown = readJsonCached(STANDARD_AREAS);
+    const raw: unknown = readStandard(STANDARD_AREAS);
     if (raw === null) return null;
     const copy = raw && typeof raw === 'object' ? (raw as Record<string, unknown>).areas : null;
     if (!copy || typeof copy !== 'object') return null;
@@ -392,7 +396,7 @@ function isStandardFaq(v: unknown): v is StandardFaq {
  */
 function standardFaqs(): StandardFaq[] {
   try {
-    const raw: unknown = readJsonCached(STANDARD_FAQS);
+    const raw: unknown = readStandard(STANDARD_FAQS);
     if (raw === null) return [];
     const list = raw && typeof raw === 'object' ? (raw as Record<string, unknown>).faqs : null;
     if (!Array.isArray(list) || list.length === 0) return [];
@@ -464,7 +468,7 @@ function isTrustTile(v: unknown): v is TrustTile {
  */
 function standardTrust(): TrustTile[] {
   try {
-    const raw: unknown = readJsonCached(STANDARD_TRUST);
+    const raw: unknown = readStandard(STANDARD_TRUST);
     if (raw === null) return [];
     const list = raw && typeof raw === 'object' ? (raw as Record<string, unknown>).tiles : null;
     if (!Array.isArray(list) || list.length !== 4) return [];
@@ -496,7 +500,7 @@ const STANDARD_LEDE = path.join(process.cwd(), 'app/location/standard-lede.json'
  */
 function standardLede(): string | null {
   try {
-    const raw: unknown = readJsonCached(STANDARD_LEDE);
+    const raw: unknown = readStandard(STANDARD_LEDE);
     if (raw === null) return null;
     const lede = raw && typeof raw === 'object' ? (raw as Record<string, unknown>).lede : null;
     return typeof lede === 'string' && lede.trim().length > 0 ? lede : null;
@@ -1161,14 +1165,14 @@ const REASONS = [
   {
     n: '03',
     title: 'The structure itself',
-    text: 'Maintenance is far cheaper than a rebuild — and keeps the chimney standing straight.',
+    text: 'Maintenance is far cheaper than a rebuild, and keeps the chimney standing straight.',
   },
 ];
 
 const STEPS = [
   { n: '01', title: 'Inspect', text: 'A certified technician examines the firebox, damper, smoke chamber and flue.' },
   { n: '02', title: 'Diagnose', text: 'We pinpoint the cause of any leak, crack or draft problem and show you what we found.' },
-  { n: '03', title: 'Clean or repair', text: 'Dust-free sweeping, or masonry, crown, flashing and liner repairs — quoted before we start.' },
+  { n: '03', title: 'Clean or repair', text: 'Dust-free sweeping, or masonry, crown, flashing and liner repairs, quoted before we start.' },
   { n: '04', title: 'Protect', text: 'Caps, waterproofing and a maintenance schedule keep the repair, and the chimney, lasting.' },
 ];
 
@@ -1770,7 +1774,7 @@ function ReferencePage({ view }: { view: PageView }) {
                   <p className="eyebrow">How it works</p>
                   <h2>From first look to lasting protection.</h2>
                 </div>
-                <p>One crew from inspection to repair — no hand-offs, no second contractor.</p>
+                <p>One crew from inspection to repair. No hand-offs, no second contractor.</p>
               </div>
               <ol className="o1-steps reveal">
                 {STEPS.map((step) => (
@@ -1977,10 +1981,10 @@ async function load(slug: string) {
   if (moved) return { kind: 'redirect' as const, to: `/location/${moved}/` };
 
   const route = findRoute(slug);
-  if (route) return { kind: 'page' as const, view: await viewFromManifest(route) };
+  if (route) return { kind: 'page' as const, view: deepWithoutEmDash(await viewFromManifest(route)) };
 
   const view = await viewFromDatabase(slug, page);
-  if (view) return { kind: 'page' as const, view };
+  if (view) return { kind: 'page' as const, view: deepWithoutEmDash(view) };
   return { kind: 'missing' as const };
 }
 

@@ -830,3 +830,63 @@ body:has(.cc-rq) .wp-home .header-template {
 @media (max-width: 767px) {
   .wp-home .elementor-button-wrapper .cc-hdr-bbb { height: 30px; }
 }
+
+/* 10 — "Why choose Chimcare" cards: icon and heading on one line. Each card is an icon widget and a
+   heading widget, both fixed-width, in a wrapping row; a longer heading dropped under the icon and a
+   short one sat off the icon's middle. The icon is now a fixed 44px square, the heading takes the rest
+   of the row, centred on the icon, and the text runs full width below. */
+.wp-home .elementor-element-ac06853 .elementor-inner-column:not(.elementor-element-dbfc3e2) > .elementor-widget-wrap:has(> .elementor-widget-image + .elementor-widget-heading) {
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: flex-start;
+  column-gap: 14px;
+}
+.wp-home .elementor-element-ac06853 .elementor-inner-column:not(.elementor-element-dbfc3e2) > .elementor-widget-wrap > .elementor-widget-image {
+  flex: none;
+  width: 44px !important;
+  margin: 0 !important;
+}
+.wp-home .elementor-element-ac06853 .elementor-inner-column:not(.elementor-element-dbfc3e2) > .elementor-widget-wrap > .elementor-widget-image > .elementor-widget-container {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.wp-home .elementor-element-ac06853 .elementor-inner-column:not(.elementor-element-dbfc3e2) > .elementor-widget-wrap > .elementor-widget-image img {
+  display: block;
+  width: 44px !important;
+  height: 44px !important;
+  object-fit: contain;
+}
+.wp-home .elementor-element-ac06853 .elementor-inner-column:not(.elementor-element-dbfc3e2) > .elementor-widget-wrap > .elementor-widget-heading {
+  flex: 1 1 0;
+  min-width: 0;
+  width: auto !important;
+  margin: 0 !important;
+}
+.wp-home .elementor-element-ac06853 .elementor-inner-column:not(.elementor-element-dbfc3e2) > .elementor-widget-wrap > .elementor-widget-heading .elementor-heading-title {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.wp-home .elementor-element-ac06853 .elementor-inner-column:not(.elementor-element-dbfc3e2) > .elementor-widget-wrap > .elementor-widget-text-editor {
+  flex: 0 0 100%;
+  margin-top: 12px !important;
+}
+
+/* 11 — "Where does Chimcare operate?" on phones: the intro text's bottom margin (40px), the map section's
+   top padding (50px) and the column padding stacked into ~100px of empty space above the map card. */
+@media (max-width: 767px) {
+  .wp-home .elementor-element-4ba8a08 .elementor-widget-container {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  .wp-home .elementor-element-4ba8a08 .elementor-widget-container > :last-child {
+    margin-bottom: 0 !important;
+  }
+  .wp-home .elementor-337148 .elementor-element.elementor-element-6cbd526 {
+    padding-top: 16px !important;
+  }
+}
+
+/* 12 — BBB badge the height of the call button beside it (44px), on tablets and phones. */
+@media (max-width: 1024px) {
+  .wp-home .elementor-button-wrapper .cc-hdr-bbb { height: 44px !important; }
+}

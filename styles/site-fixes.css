@@ -182,3 +182,12 @@
     color: #33373d;
   }
 }
+
+/* ---- BBB badge the height of the call button (tablets and phones) --------------------------------
+   base.css sized the badge 36/30/28px while the square call button beside it is 44px (40px at 360px). */
+@media (max-width: 900px) {
+  .hdr .hdr-bbb { height: 44px; }
+}
+@media (max-width: 360px) {
+  .hdr .hdr-bbb { height: 40px; }
+}

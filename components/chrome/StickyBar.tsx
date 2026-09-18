@@ -23,6 +23,13 @@ import '@/styles/sticky-bar.css';
  *
  * It hides again once the footer scrolls into view: the footer carries its own phone and links, and the
  * bar would otherwise sit over them.
+ *
+ * On phones it is pinned to the bottom of what the visitor actually sees. `position: fixed; bottom: 0`
+ * follows the layout viewport, and iOS Safari can leave that above the visible bottom — after the
+ * on-screen keyboard closes the bar stayed parked at the keyboard's old top edge, mid-screen. The
+ * visual viewport's real bottom is read on every resize/scroll of it and handed to CSS as
+ * `--sfoot-offset`; while the keyboard is open (visual viewport well short of the window) the bar
+ * hides, since it could only cover the form being typed into.
  */
 export function StickyBar({ phoneHref }: { phoneHref: string }) {
   useEffect(() => {
@@ -37,7 +44,18 @@ export function StickyBar({ phoneHref }: { phoneHref: string }) {
         ? hero.getBoundingClientRect().bottom <= 0
         : window.scrollY > window.innerHeight;
       const inFooter = footer ? footer.getBoundingClientRect().top < window.innerHeight : false;
-      bar.classList.toggle('is-on', past && !inFooter);
+      bar.classList.toggle('is-on', past && !inFooter && !keyboardOpen());
+    };
+
+    const vv = window.visualViewport;
+    // A visual viewport much shorter than the window means the on-screen keyboard is up.
+    const keyboardOpen = () => !!vv && vv.height < window.innerHeight * 0.75;
+    const pinToVisibleBottom = () => {
+      if (!vv) return;
+      // Positive when the visible bottom is above the layout bottom, negative when below it.
+      const offset = Math.round(window.innerHeight - (vv.offsetTop + vv.height));
+      bar.style.setProperty('--sfoot-offset', `${offset}px`);
+      update();
     };
     // The reference's own 60ms throttle, plus a trailing read: a scroll that ends inside the window (a jump
     // to an anchor, or the homepage's sticky header nudging the page) must still leave the bar right.
@@ -54,11 +72,16 @@ export function StickyBar({ phoneHref }: { phoneHref: string }) {
     };
 
     update(); // a page restored mid-scroll must not start with the bar in the wrong state
+    pinToVisibleBottom();
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
+    vv?.addEventListener('resize', pinToVisibleBottom);
+    vv?.addEventListener('scroll', pinToVisibleBottom);
     return () => {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
+      vv?.removeEventListener('resize', pinToVisibleBottom);
+      vv?.removeEventListener('scroll', pinToVisibleBottom);
       window.clearTimeout(trailing);
     };
   }, []);

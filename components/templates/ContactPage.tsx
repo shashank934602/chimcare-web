@@ -23,7 +23,7 @@ const FAQS = [
   {
     question: 'Do you offer 24/7 Chimney services?',
     answer:
-      'We offer flexible scheduling and can accommodate urgent requests during business hours — call our team to check same-day availability in your area.',
+      'We offer flexible scheduling and can accommodate urgent requests during business hours. Call our team to check same-day availability in your area.',
   },
   {
     question: 'How can I schedule a service appointment?',
@@ -32,11 +32,11 @@ const FAQS = [
   {
     question: 'How much do your services cost?',
     answer:
-      'Pricing depends on the service and your location. Chimney sweeps, inspections and gas diagnostics start at a set rate — request a quote for repair or masonry work.',
+      'Pricing depends on the service and your location. Chimney sweeps, inspections and gas diagnostics start at a set rate. Request a quote for repair or masonry work.',
   },
   {
     question: 'Do you offer warranties on your work?',
-    answer: 'Yes — our repair and installation work is backed by a workmanship warranty. Ask your technician for details specific to your service.',
+    answer: 'Yes, our repair and installation work is backed by a workmanship warranty. Ask your technician for details specific to your service.',
   },
 ];
 

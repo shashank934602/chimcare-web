@@ -5,6 +5,7 @@ import { assembleStateHub, genericHubState, hubStateFromRow } from '@/lib/conten
 import { SEARCH_ENABLED } from '@/lib/content/search';
 import { getMigratedState } from '@/lib/data/migrated-locations';
 import { getPrices } from '@/lib/data/pricing';
+import { deepWithoutEmDash } from '@/lib/content/typography';
 import { getBranchesForState, getStateBySlug } from '@/lib/data/states';
 
 export const dynamic = 'force-dynamic';
@@ -24,10 +25,10 @@ async function load(slug: string) {
   if (row?.verified) {
     const branches = await getBranchesForState(row.id);
     const prices = await getPrices(branches.find((b) => b.regionId != null)?.regionId ?? null);
-    return assembleStateHub({ state: hubStateFromRow(row, prices, migrated), migrated, prices, localPrices: !prices.isDefault });
+    return deepWithoutEmDash(assembleStateHub({ state: hubStateFromRow(row, prices, migrated), migrated, prices, localPrices: !prices.isDefault }));
   }
   const prices = await getPrices(null);
-  return assembleStateHub({ state: genericHubState(migrated), migrated, prices, localPrices: false });
+  return deepWithoutEmDash(assembleStateHub({ state: genericHubState(migrated), migrated, prices, localPrices: false }));
 }
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {

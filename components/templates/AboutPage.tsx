@@ -195,7 +195,7 @@ export function AboutPage({
             <div className="cta-band">
               <div>
                 <h2>Ready to Get Started?</h2>
-                <p>Book your appointment online in minutes — real-time scheduling with instant confirmation.</p>
+                <p>Book your appointment online in minutes, with real-time scheduling and instant confirmation.</p>
               </div>
               <div className="ctas">
                 <a className="btn btn-primary" href="#booking" data-book>

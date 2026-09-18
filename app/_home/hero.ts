@@ -49,7 +49,7 @@ function buildHeroHtml(): string {
   <div class="cc-hero-inner">
     <div class="cc-hero-copy">
       <p class="cc-hero-eyebrow"><span class="cc-hero-eyebrow-bar" aria-hidden="true"></span>America&rsquo;s Fireplace &amp; Chimney Experts</p>
-      <h1 class="cc-hero-title">Chim<span class="cc-hero-accent">care</span> &mdash; Fast &amp; Reliable<br><span class="cc-hero-rot" id="cc-hero-rot">Chimney Sweeps</span><br>Done Right Since 1989.</h1>
+      <h1 class="cc-hero-title">Chim<span class="cc-hero-accent">care</span> Fast &amp; Reliable<br><span class="cc-hero-rot" id="cc-hero-rot">Chimney Sweeps</span><br>Done Right Since 1989.</h1>
       <p class="cc-hero-sub">The USA&rsquo;s Most Trusted Chimney Sweep, Chimney Repair, Masonry and Fireplace Company <em>Since 1989</em>.</p>
       ${badgesHtml()}
     </div>
@@ -59,9 +59,9 @@ function buildHeroHtml(): string {
           <span class="cc-hero-label">Service Needed</span>
           <select id="cc-hero-service" class="cc-hero-input">
             <option value="" disabled selected>Choose the Service You Need</option>
-            <option value="Chimney Inspection">Chimney Inspection &mdash; $69</option>
-            <option value="Gas Fireplace Diagnostic">Gas Fireplace Diagnostic &mdash; $49</option>
-            <option value="Chimney Sweep + Inspection">Chimney Sweep + Inspection &mdash; $299</option>
+            <option value="Chimney Inspection">$69 Chimney Inspection</option>
+            <option value="Gas Fireplace Diagnostic">$49 Gas Fireplace Diagnostic</option>
+            <option value="Chimney Sweep + Inspection">$299 Chimney Sweep + Inspection</option>
             <option value="Repair Quote">Repair Quote</option>
             <option value="Masonry Quote">Masonry Quote</option>
           </select>

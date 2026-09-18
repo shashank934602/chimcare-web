@@ -179,5 +179,10 @@
   /* On phones the homepage logo is half the card (175px at 390, 160px at 360). */
   .hnav-logo { flex: 0 0 50%; }
   .hnav-actions { margin-right: -2px; }
-  .hnav-bbb { height: 30px; }
+  .hnav-bbb { height: 44px; }
+}
+
+/* BBB badge the height of the square call button beside it (44px) on tablets and phones. */
+@media (max-width: 1024px) {
+  .hnav-bbb { height: 44px; }
 }

@@ -48,7 +48,7 @@ export function ContactForm({ pageSlug }: { pageSlug: string }) {
           <Icon name="check" />
         </span>
         <h3>Message sent</h3>
-        <p>Thanks for reaching out — our team will get back to you shortly.</p>
+        <p>Thanks for reaching out! Our team will get back to you shortly.</p>
         <button type="button" className="btn btn-outline btn-sm" onClick={() => setStatus('idle')}>
           Send another message
         </button>

@@ -251,7 +251,7 @@ export function NationalFinder({
         ) : shown === 0 && covShown === 0 ? (
           <span>No location matches <b>{query.trim()}</b>.</span>
         ) : shown === 0 ? (
-          <span>Chimcare covers <b>{first}</b> — city listings for it are on the way.</span>
+          <span>Chimcare covers <b>{first}</b>. City listings for it are on the way.</span>
         ) : (
           <span>Showing <b>{shown} of {totalCities} locations</b>{first ? <> in {first}</> : null}.</span>
         )}

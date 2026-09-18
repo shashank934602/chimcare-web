@@ -213,7 +213,7 @@ export function BookingForm({
                 {draft.address && <div><dt>Address</dt><dd>{draft.address}</dd></div>}
               </dl>
             </div>
-            <p className="bk-note">{receipt.status === 'failed' ? 'We saved your request but could not reach the scheduler — our office will call you to confirm.' : 'Our office will confirm the exact arrival time by email or phone.'}</p>
+            <p className="bk-note">{receipt.status === 'failed' ? 'We saved your request but could not reach the scheduler. Our office will call you to confirm.' : 'Our office will confirm the exact arrival time by email or phone.'}</p>
             {onClose ? (
               <button className="bk-btn primary" type="button" onClick={onClose}>Done</button>
             ) : (

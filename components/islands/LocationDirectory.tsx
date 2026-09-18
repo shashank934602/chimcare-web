@@ -107,7 +107,7 @@ export function LocationDirectory({ cards, initialQuery = '' }: { cards: Locatio
 
       {matching.length === 0 && (
         <p className="dir-empty">
-          No location matches “{query}”. Our service areas overlap, so try a nearby town — or call and we will tell you
+          No location matches “{query}”. Our service areas overlap, so try a nearby town, or call and we will tell you
           straight away whether we cover your address.
         </p>
       )}

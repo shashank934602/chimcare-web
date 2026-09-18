@@ -164,7 +164,7 @@ export function StateHub(p: StateHubProps & { query?: string; stateSlug: string 
       {/* CREW */}
       <section className="section crew">
         <div className="wrap">
-          <SectionHead eyebrow="Our people" heading="Real technicians, real certifications." lede="The same faces show up on your street year after year — trained, background-checked, and certified to work on your chimney." />
+          <SectionHead eyebrow="Our people" heading="Real technicians, real certifications." lede="The same faces show up on your street year after year: trained, background-checked, and certified to work on your chimney." />
           <div className="crew-grid">
             {p.crew.map((c) => (
               <div className="crew-card reveal" key={c.title}>

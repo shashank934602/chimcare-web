@@ -40,7 +40,7 @@ export function Header({
         <div className="hdr-menu" id="hdr-menu">
           <nav className="nav" aria-label="Main">
             <a href="/">Home</a>
-            <a href="#">Services</a>
+            <a href="/services/">Services</a>
             <LocationsMenu data={locationsMenu} />
             <a href="/about-us/">About Us</a>
             <a href="/contact-us/">Contact</a>

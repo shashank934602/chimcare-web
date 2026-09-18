@@ -34,7 +34,7 @@ export function HomeStyleNav({
 }: {
   id: string;
   locationsMenu: LocationsMenuData;
-  current?: 'about' | 'contact';
+  current?: 'about' | 'contact' | 'services';
 }) {
   const linksId = `${id}-links`;
   const bbb = DESIGN.bbbBadge;
@@ -47,7 +47,7 @@ export function HomeStyleNav({
         </a>
         <nav className="nav hnav-links" id={linksId} aria-label="Main">
           <a href="/">Home</a>
-          <a href="#">Services</a>
+          <a href="/services/" aria-current={current === 'services' ? 'page' : undefined}>Services</a>
           {/* A plain link with the homepage's own hover panel (HomeLocationsMenu) rather than the site
               header's <LocationsMenu>: that one sat inside this row, so the row's link rules restyled
               the panel's links, and it hung flush under the card instead of 14px below it. */}

@@ -1151,3 +1151,10 @@ body:has(.cc-rq) .wp-home .header-template {
     padding-top: calc(clamp(56px, 10vw, 140px) + 3px);
   }
 }
+
+/* 20 — hero headline "Chimney & Gas Fireplace Service Since 1989" (2026-09-18): "Since 1989" on its own line
+   at every width. A <br> can't do it: the saved theme hides every <br> on phones (see the note above §18's
+   phone rules), so the date is a block span instead. */
+.wp-home .cc-hero-title .cc-hero-title-date {
+  display: block;
+}

@@ -14,7 +14,7 @@ import { attachUsaMapTooltip } from './usaMapTip';
  *   - FAQ accordion (one item open at a time, as Elementor does)
  *   - counters counting up when they scroll into view
  *   - the US map tooltip (the saved page's own `chimcare-map-tip` script, ported)
- *   - the hero's rotating headline word and its "Check My Area" card → opens the app booking sheet,
+ *   - the hero's "Check My Area" card → opens the app booking sheet,
  *     prefilled with the service and ZIP already entered (see app/_home/hero.ts for the markup)
  *   - the location search → the locations hub
  *
@@ -156,22 +156,6 @@ export function HomeBehaviour() {
         io.disconnect();
         counters.forEach((c) => (c.textContent = c.dataset.toValue ?? c.textContent));
       });
-    }
-
-    // ---- hero rotating word ---------------------------------------------------------------------
-    const rot = root.querySelector<HTMLElement>('#cc-hero-rot');
-    if (rot && !reduceMotion) {
-      const words = ['Chimney Sweeps', 'Chimney Inspections', 'Chimney Repairs', 'Gas Fireplace Service'];
-      let i = 0;
-      const timer = window.setInterval(() => {
-        rot.classList.add('is-swap');
-        window.setTimeout(() => {
-          i = (i + 1) % words.length;
-          rot.textContent = words[i];
-          rot.classList.remove('is-swap');
-        }, 220);
-      }, 2800);
-      cleanups.push(() => window.clearInterval(timer));
     }
 
     // ---- hero "Check My Area" card → real ZIP lookup, then booking -----------------------------

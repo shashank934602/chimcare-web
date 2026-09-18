@@ -13,7 +13,7 @@ import { DESIGN, type DesignAsset } from '@/lib/content/design-assets';
  * splice; if the hero markup itself is ever regenerated differently, the original HTML is returned
  * unchanged rather than corrupted.
  *
- * The card's behaviour (the rotating headline word, ZIP/service validation and handing the request to
+ * The card's behaviour (ZIP/service validation and handing the request to
  * the app booking sheet) lives in components/islands/HomeBehaviour.tsx, the same place every other
  * bit of life this saved markup needs already lives. Its visual styling is
  * app/_home/overrides.css, section 8.
@@ -49,7 +49,7 @@ function buildHeroHtml(): string {
   <div class="cc-hero-inner">
     <div class="cc-hero-copy">
       <p class="cc-hero-eyebrow">America&rsquo;s Fireplace &amp; Chimney Experts</p>
-      <h1 class="cc-hero-title">Chim<span class="cc-hero-accent">care</span> Fast &amp; Reliable<br><span class="cc-hero-rot" id="cc-hero-rot">Chimney Sweeps</span><br>Done Right Since 1989.</h1>
+      <h1 class="cc-hero-title">Chimney &amp; <span class="cc-hero-accent">Gas Fireplace</span> Service <span class="cc-hero-title-date">Since 1989</span></h1>
       <p class="cc-hero-sub">The USA&rsquo;s Most Trusted Chimney Sweep, Chimney Repair, Masonry and Fireplace Company <em>Since 1989</em>.</p>
       ${badgesHtml()}
     </div>

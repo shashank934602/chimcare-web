@@ -146,7 +146,7 @@ export function AboutPage({
                 Call Now {HERO_PHONE}
               </a>
               <a className="btn btn-dark" href="#booking" data-book>
-                <em className="fast">Fast</em> Online Booking
+                Online Booking
               </a>
             </div>
           </div>
@@ -201,7 +201,7 @@ export function AboutPage({
               </div>
               <div className="ctas">
                 <a className="btn btn-primary" href="#booking" data-book>
-                  <em className="fast">Fast</em> Online Booking
+                  Online Booking
                 </a>
                 <a className="btn btn-outline" href={NATIONAL_PHONE_HREF}>
                   <Icon name="phone" />

@@ -65,7 +65,7 @@ export function ContactPage({
                 Call Now {HERO_PHONE}
               </a>
               <a className="btn btn-dark" href="#booking" data-book>
-                <em className="fast">Fast</em> Online Booking
+                Online Booking
               </a>
             </div>
           </div>

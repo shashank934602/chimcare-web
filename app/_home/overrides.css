@@ -1144,3 +1144,10 @@ body:has(.cc-rq) .wp-home .header-template {
     padding-inline: 8px;
   }
 }
+/* Tablets and phones: the copy starts as far under the nav card as it does in the shared template
+   (styles/page-hero.css: .hnav margin-bottom clamp(56px, 10vw, 140px)), not 32px under it. */
+@media (max-width: 1024px) {
+  .wp-home .cc-hero {
+    padding-top: calc(clamp(56px, 10vw, 140px) + 3px);
+  }
+}

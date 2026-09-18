@@ -44,7 +44,9 @@
   .page-hero .page-hero-body { width: min(1140px, calc(100% - 56px)); margin-block: auto; }
 }
 @media (max-width: 1024px) {
-  .page-hero { padding-top: 20px; }
+  /* One height on tablets and phones too, so a short hero (Contact: a title and two buttons) is the
+     same size as About and Services, with the copy starting at the same point on every page. */
+  .page-hero { padding-top: 20px; min-height: 680px; }
 }
 
 .page-hero-eyebrow {
@@ -85,3 +87,6 @@
 }
 .page-hero .ctas { display: flex; flex-wrap: wrap; gap: 14px; }
 .page-hero .ctas .btn { min-height: 54px; padding: 0 30px; font-size: 15.5px; font-weight: 700; }
+/* No tagline or description between the headline and the buttons (Contact): the same 30px gap the
+   tagline leaves above them elsewhere. */
+.page-hero h1 + .ctas { margin-top: 30px; }

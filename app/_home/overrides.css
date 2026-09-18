@@ -505,12 +505,6 @@ body:has(.cc-rq) .wp-home .header-template {
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.85);
 }
-.wp-home .cc-hero-eyebrow-bar {
-  width: 24px;
-  height: 3px;
-  flex: none;
-  background: var(--brand-red);
-}
 .wp-home .cc-hero-title {
   margin: 0 0 20px !important;
   font-size: clamp(40px, 5.4vw, 72px);

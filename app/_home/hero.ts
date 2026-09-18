@@ -48,7 +48,7 @@ function buildHeroHtml(): string {
   return `<div class="cc-hero" id="cc-hero">
   <div class="cc-hero-inner">
     <div class="cc-hero-copy">
-      <p class="cc-hero-eyebrow"><span class="cc-hero-eyebrow-bar" aria-hidden="true"></span>America&rsquo;s Fireplace &amp; Chimney Experts</p>
+      <p class="cc-hero-eyebrow">America&rsquo;s Fireplace &amp; Chimney Experts</p>
       <h1 class="cc-hero-title">Chim<span class="cc-hero-accent">care</span> Fast &amp; Reliable<br><span class="cc-hero-rot" id="cc-hero-rot">Chimney Sweeps</span><br>Done Right Since 1989.</h1>
       <p class="cc-hero-sub">The USA&rsquo;s Most Trusted Chimney Sweep, Chimney Repair, Masonry and Fireplace Company <em>Since 1989</em>.</p>
       ${badgesHtml()}

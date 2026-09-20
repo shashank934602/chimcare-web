@@ -82,7 +82,7 @@ export function Header({
         </a>
         {bookLabel === 'fast-online-booking' ? (
           <a className="btn btn-primary hdr-book" href="#booking" data-book>
-            <em className="fast">Fast</em> Online Booking
+            Online Booking
           </a>
         ) : (
           <a className="btn btn-primary" href="#booking" data-book>

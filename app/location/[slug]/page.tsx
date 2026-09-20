@@ -1428,7 +1428,7 @@ function ReferencePage({ view }: { view: PageView }) {
                 {lede && <p className="lede">{lede}</p>}
                 <div className="ctas">
                   <a className="btn btn-primary" href="#booking" data-book>
-                    <em className="fast">Fast</em> Online Booking
+                    Online Booking
                   </a>
                   {view.phone && (
                     <a className="btn btn-outline" href={telHref(view.phone)}>

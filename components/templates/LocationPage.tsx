@@ -50,7 +50,7 @@ export function LocationPage(p: LocationPageProps) {
                 <h1 style={{ '--i': 2 } as CSSProperties}>{hero.title}</h1>
                 {hero.lede && <p className="lede" style={{ '--i': 3 } as CSSProperties}>{hero.lede}</p>}
                 <div className="ctas" style={{ '--i': 4 } as CSSProperties}>
-                  <a className="btn btn-primary" href="#booking" data-book><em className="fast">Fast</em> Online Booking</a>
+                  <a className="btn btn-primary" href="#booking" data-book>Online Booking</a>
                   {hero.phone && hero.phoneHref && (
                     <a className="btn btn-outline" href={hero.phoneHref}><Icon name="phone" />Call {hero.phone}</a>
                   )}

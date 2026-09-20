@@ -1476,7 +1476,17 @@ function ReferencePage({ view }: { view: PageView }) {
                   <figure className="hero-figure">
                     <img
                       src={view.heroImage.src}
-                      alt={view.heroImage.alt ?? ''}
+                      /* WordPress often stores this photo with no alt text at all, and an empty alt
+                         says "decorative" — wrong for the one photograph the page is about, and the
+                         only SEO check still failing after the 2026-09-20 audit (25 of 1,056 pages).
+                         Falling back to the place names the picture for a screen reader and a crawler
+                         without inventing anything the page does not already say. */
+                      alt={
+                        view.heroImage.alt?.trim() ||
+                        (view.place
+                          ? `Chimney and fireplace service in ${view.place.city}, ${view.place.code}`
+                          : view.title)
+                      }
                       title={view.heroImage.alt || undefined}
                       {...(view.heroImage.width != null && view.heroImage.height != null
                         ? { width: view.heroImage.width, height: view.heroImage.height }

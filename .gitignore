@@ -26,3 +26,7 @@ data/seed/*.page-source.jsonl
 
 # vercel
 .vercel
+
+# macOS folder metadata, and the throwaway browser-check scripts a session writes at the root
+.DS_Store
+.probe-*.mjs

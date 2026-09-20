@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import {
-  batches, checks, images, ledgerAvailable, spaces, totals, urls,
-  type CheckRow, type UrlRow,
+  batches, checks, images, issues, ledgerAvailable, spaces, totals, urls,
+  type CheckRow, type IssueRow, type UrlRow,
 } from '@/lib/data/migration-ledger';
 
 export const dynamic = 'force-dynamic';
@@ -70,6 +70,8 @@ export default async function BatchesAdmin({
   const spaceRows = spaces();
   const img = images();
   const list: UrlRow[] = urls({ batch, only, limit: 200 });
+  const register: IssueRow[] = issues();
+  const openIssues = register.filter((i) => i.status !== 'fixed' && i.status !== 'accepted');
   const failing = checkRows.filter((c) => c.failed > 0);
   const missed = spaceRows.filter((s) => s.covered !== 'yes');
   const missedClicks = missed.reduce((sum, s) => sum + s.clicks, 0);
@@ -136,6 +138,47 @@ export default async function BatchesAdmin({
                   <td style={num}>{Math.round(b.clicks).toLocaleString()}</td>
                 </tr>
               ))}
+            </tbody>
+          </table>
+
+          <h2 style={{ fontSize: 20, margin: '0 0 6px' }}>
+            Known problems <span style={openIssues.length ? warn : ok}>{openIssues.length} open</span>
+          </h2>
+          <p style={{ fontSize: 13.5, color: 'var(--text-2)', margin: '0 0 12px' }}>
+            The register kept by <code>scripts/issues.py</code>. &ldquo;Blocks&rdquo; says what each one
+            stands in the way of: the next batch, the cutover, or the long tail.
+          </p>
+          <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: 34 }}>
+            <thead>
+              <tr>
+                <th style={th}>Problem</th>
+                <th style={th}>Size</th>
+                <th style={th}>Blocks</th>
+                <th style={th}>Status</th>
+                <th style={th}>Effort</th>
+              </tr>
+            </thead>
+            <tbody>
+              {register.map((i) => {
+                const done = i.status === 'fixed' || i.status === 'accepted';
+                return (
+                  <tr key={i.id} style={done ? { opacity: 0.55 } : undefined}>
+                    <td style={td}>
+                      <strong>{i.id}</strong> {i.title}
+                      <div style={{ fontSize: 12.5, color: 'var(--text-2)', marginTop: 3 }}>{i.fix}</div>
+                    </td>
+                    <td style={td}>{i.scale}</td>
+                    <td style={td}>
+                      {i.blocks === 'batch' ? <span style={bad}>batch</span>
+                        : i.blocks === 'cutover' ? <span style={warn}>cutover</span>
+                        : i.blocks === 'scale' ? <span style={warn}>scale</span>
+                        : <span style={ok}>none</span>}
+                    </td>
+                    <td style={td}>{done ? <span style={ok}>{i.status}</span> : i.status}</td>
+                    <td style={td}>{i.effort}</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
 

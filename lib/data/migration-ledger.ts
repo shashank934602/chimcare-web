@@ -105,6 +105,19 @@ export type UrlRow = {
 
 export type CheckRow = { check: string; question: string; failed: number; sample: string[] };
 
+export type IssueRow = {
+  id: string;
+  title: string;
+  scale: string;
+  blocks: string;
+  status: string;
+  effort: string;
+  fix: string;
+  cause: string;
+  evidence: string;
+  log: string;
+};
+
 export function ledgerAvailable(): boolean {
   return open() !== null;
 }
@@ -181,6 +194,17 @@ export function urls(options: { batch?: string; only?: string; limit?: number } 
            live_status, service_count, defect
     FROM ledger ${where} ORDER BY COALESCE(clicks, 0) DESC, slug LIMIT ${Number(limit) || 200}
   `, params);
+}
+
+/** The problem register (`scripts/issues.py`), worst-blocking first. Unfinished work leads. */
+export function issues(): IssueRow[] {
+  const rows = all<IssueRow>('SELECT id, title, scale, blocks, status, effort, fix, cause, evidence, log FROM issues');
+  const order: Record<string, number> = { batch: 0, cutover: 1, scale: 2, none: 3 };
+  const done = (s: string) => s === 'fixed' || s === 'accepted';
+  return rows.sort((a, b) =>
+    Number(done(a.status)) - Number(done(b.status)) ||
+    (order[a.blocks] ?? 9) - (order[b.blocks] ?? 9) ||
+    a.id.localeCompare(b.id));
 }
 
 export function totals(): { urls: number; published: number; liveOk: number; clicks: number; defects: number } {

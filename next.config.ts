@@ -15,6 +15,9 @@ const nextConfig: NextConfig = {
     '/*': ['./data/routes.sqlite', './data/migrated-geocode.json'],
     // The homepage reads its CSS corrections as text so they load after home.css (see app/page.tsx).
     '/': ['./app/_home/overrides.css'],
+    // The batch dashboard reads the published tracking database the same way the pages read the
+    // route store: a data file, not an import, so it must be named here to reach the deployment.
+    '/admin/batches': ['./data/migration-ledger.sqlite'],
   },
   // The services hub lives at WordPress's own URL, /chimcare-services/. It was briefly built at /services/;
   // anything that picked that address up lands on the real one.

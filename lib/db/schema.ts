@@ -304,3 +304,54 @@ export const contactMessages = site.table('contact_messages', {
 
 export type ContactMessage = typeof contactMessages.$inferSelect;
 export type NewContactMessage = typeof contactMessages.$inferInsert;
+
+// ---- out-of-area leads ------------------------------------------------------------------------
+
+/**
+ * Where a lead stands in the resale workflow. `new` until someone works it.
+ */
+export const leadStatus = site.enum('lead_status', ['new', 'contacted', 'sold', 'dead']);
+
+/**
+ * A service request from a ZIP this business does not cover.
+ *
+ * Deliberately a separate table from `bookings`, not a flag on it: these are never scheduled, never
+ * reach the booking adapter, and never become a Chimcare job. The client resells them, so this row
+ * is the product — it carries the contact details, what the visitor asked for, the page the request
+ * came from, and where the ZIP actually resolves to (`zipCity`/`zipState`), which is what a buyer
+ * needs to know.
+ *
+ * Which requests land here is decided server-side by `classifyZip()` (lib/content/coverage.ts) from
+ * the ZIP alone. The client never chooses its own table.
+ *
+ * No date or time window: nothing here is being booked. That is the whole distinction.
+ */
+export const leads = site.table('leads', {
+  id: serial('id').primaryKey(),
+  reference: text('reference').notNull().unique(), // shown to the visitor, e.g. CHM-L-7F3K2Q
+  status: leadStatus('status').notNull().default('new'),
+  name: text('name').notNull(),
+  phone: text('phone').notNull(),
+  email: text('email').notNull(),
+  zip: text('zip').notNull(),
+  // Where the ZIP actually is, when the ZIP directory could tell us. Null when it was unreachable —
+  // never guessed, because a buyer would be paying for the guess.
+  zipCity: text('zip_city'),
+  zipState: text('zip_state'),
+  // What they asked for. Optional: a request can arrive without a service picked.
+  serviceKey: text('service_key'),
+  serviceLabel: text('service_label'),
+  message: text('message'), // free-text "what do you need"
+  // Attribution — the same page context a booking carries, minus the city/branch foreign keys,
+  // which by definition do not apply to a ZIP we do not serve.
+  pageSlug: text('page_slug'),
+  pageKind: text('page_kind'),
+  sourceUrl: text('source_url'),
+  // Set when a request reached /api/bookings with an out-of-area ZIP and was diverted here rather
+  // than booked. Tells the admin the visitor may have been expecting a scheduled visit.
+  divertedFromBooking: boolean('diverted_from_booking').notNull().default(false),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type Lead = typeof leads.$inferSelect;
+export type NewLead = typeof leads.$inferInsert;

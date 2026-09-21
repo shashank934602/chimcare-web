@@ -3,6 +3,12 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   // WordPress URLs end with a slash; keep them byte-identical so no legacy URL ever 308s.
   trailingSlash: true,
+  // Development only. Next blocks cross-origin requests to dev assets (fonts, CSS, client JS, HMR)
+  // from any host but localhost, so opening the dev server on a phone over the LAN served the HTML
+  // and then blocked everything that makes it a page. Testing on a real phone is not optional here
+  // (most of this site's visitors are on one), so the private LAN range is allowed in. This has no
+  // effect on a production build.
+  allowedDevOrigins: ['192.168.1.143', '192.168.1.*', '192.168.*.*', '10.*.*.*'],
   // Native / WASM database drivers must not be bundled into the server build.
   serverExternalPackages: ['@electric-sql/pglite', 'postgres'],
   // The route store is a data file, not an import, so nothing in the module graph points at it and
@@ -10,7 +16,6 @@ const nextConfig: NextConfig = {
   // locally and 404s in production, because the lookup finds no store and falls through. Naming it
   // here is what puts it in the function's filesystem.
   outputFileTracingIncludes: {
-    '/location/[slug]': ['./data/routes.sqlite'],
     // The footer (on every page) and the location hubs list the migrated routes and their map pins.
     '/*': ['./data/routes.sqlite', './data/migrated-geocode.json'],
     // The homepage reads its CSS corrections as text so they load after home.css (see app/page.tsx).
@@ -18,6 +23,8 @@ const nextConfig: NextConfig = {
     // The batch dashboard reads the published tracking database the same way the pages read the
     // route store: a data file, not an import, so it must be named here to reach the deployment.
     '/admin/batches': ['./data/migration-ledger.sqlite'],
+    // The location route reads the ledger at BUILD time to decide which pages to prerender.
+    '/location/[slug]': ['./data/routes.sqlite', './data/migration-ledger.sqlite'],
   },
   // The services hub lives at WordPress's own URL, /chimcare-services/. It was briefly built at /services/;
   // anything that picked that address up lands on the real one.

@@ -203,6 +203,76 @@ export function HomeBehaviour() {
         },
         { signal },
       );
+      // The out-of-area request form. Posting it stores a lead (site.leads) rather than a booking;
+      // the server re-checks the ZIP, so if it turns out we do cover it, this opens booking instead
+      // of selling a real customer on.
+      const leadForm = heroResult.querySelector<HTMLFormElement>('form[data-hero-lead]');
+      leadForm?.addEventListener(
+        'submit',
+        (e) => {
+          e.preventDefault();
+          const data = new FormData(leadForm);
+          const val = (k: string) => String(data.get(k) ?? '').trim();
+          const service = leadForm.dataset.heroService ?? '';
+          const zip = leadForm.dataset.heroZip ?? '';
+          const submit = leadForm.querySelector<HTMLButtonElement>('.cc-hero-lead-submit');
+          const err = leadForm.querySelector<HTMLElement>('[data-hero-lead-err]');
+          const fail = (m: string) => {
+            if (err) err.textContent = m;
+            submit?.removeAttribute('disabled');
+            leadForm.classList.remove('is-loading');
+          };
+          if (err) err.textContent = '';
+          submit?.setAttribute('disabled', 'true');
+          leadForm.classList.add('is-loading');
+          fetch('/api/leads/', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+              name: val('name'),
+              phone: val('phone'),
+              email: val('email'),
+              zip,
+              message: val('message'),
+              service: serviceFromOption(service),
+              serviceLabel: service,
+              pageKind: 'hub',
+              pageSlug: '/',
+            }),
+            signal: withTimeout(10000),
+          })
+            .then((r) => r.json().then((body: Record<string, unknown>) => ({ ok: r.ok, body })))
+            .then(({ ok, body }) => {
+              if (!ok || body.ok === false) {
+                const errors = body.errors as Record<string, string> | undefined;
+                const first = errors ? Object.values(errors)[0] : undefined;
+                fail(first ?? 'We could not send that just now. Please try again.');
+                return;
+              }
+              if (body.served) {
+                // We cover this ZIP after all: book it, do not sell it.
+                openBooking(service, zip);
+                return;
+              }
+              const firstName = val('name').split(' ')[0];
+              // Echo the number back the way it would be read aloud, not as the ten digits a phone
+              // keypad produces.
+              const digits = val('phone').replace(/\D/g, '');
+              const shownPhone = digits.length === 10 ? `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}` : val('phone');
+              showResult(`
+                <p class="cc-hero-result-head">Thank you${firstName ? `, ${escapeHtml(firstName)}` : ''}. We&rsquo;ll get back to you soon.</p>
+                <p class="cc-hero-result-sub">We have your request${body.reference ? ` (reference <b>${escapeHtml(String(body.reference))}</b>)` : ''} and we&rsquo;ll be in touch at ${escapeHtml(shownPhone)}.</p>
+                <button type="button" class="cc-hero-result-again" data-hero-again>Send another request</button>
+              `);
+            })
+            .catch((error: unknown) => {
+              if (signal.aborted) return;
+              console.warn('[hero] lead submit failed', error);
+              fail('We could not send that just now. Please try again.');
+            });
+        },
+        { signal },
+      );
     };
 
     const zipEl = heroForm?.querySelector<HTMLInputElement>('#cc-hero-zip') ?? null;
@@ -360,7 +430,13 @@ export function HomeBehaviour() {
           if (!r.ok) throw new Error(`zip-lookup ${r.status}`);
           return r.json();
         })
-        .then((data: { match: 'city' | 'state' | 'none'; cityName?: string; stateCode?: string; stateName?: string; href?: string; addressLine?: string | null }) => {
+        .then((data: { match: 'city' | 'state' | 'none'; cityName?: string; stateCode?: string; stateName?: string; href?: string; addressLine?: string | null; usZip?: boolean; zipCity?: string; zipState?: string }) => {
+          // Not a US ZIP. Keep the form up and point at the field, rather than showing the request
+          // panel for a place that does not exist — the server would refuse it on submit anyway.
+          if (data.usZip === false) {
+            setError('That isn\u2019t a US ZIP code. We serve the United States only.', zipEl);
+            return;
+          }
           const svc = escapeHtml(option);
           if (data.match === 'city' && data.href && data.cityName) {
             showResult(`
@@ -379,11 +455,29 @@ export function HomeBehaviour() {
               <button type="button" class="cc-hero-result-again" data-hero-again>Search another ZIP</button>
             `);
           } else {
+            // The visitor is told nothing about coverage. This panel is deliberately the same
+            // offer, in the same voice, as the served result above it: a request that goes through
+            // and gets answered. The difference is entirely server-side — /api/leads stores it in
+            // site.leads instead of site.bookings — and surfacing it here would turn a saleable
+            // lead away at the door, which is exactly what the old "give us a call" copy did.
+            //
+            // Do not reintroduce "we don't cover", "not in your area", or a phone number as the
+            // primary action here. It says "we can help in X", never "we serve X": the request is
+            // genuinely answered, but claiming a branch in a town with none is a different thing.
+            const where = data.zipCity
+              ? `${escapeHtml(data.zipCity)}${data.zipState ? `, ${escapeHtml(data.zipState)}` : ''}`
+              : 'your area';
             showResult(`
-              <p class="cc-hero-result-head">We don&rsquo;t have a page for that ZIP yet.</p>
-              <p class="cc-hero-result-sub">Give us a call and we&rsquo;ll confirm availability in your area.</p>
-              <a class="cc-hero-result-cta" href="tel:8888552889">Call (888) 855-2889</a>
-              <button type="button" class="cc-hero-result-book" data-hero-book="${svc}" data-hero-zip="${escapeHtml(zip)}">Continue to Online Booking</button>
+              <p class="cc-hero-result-head">Good news, we can help in ${where}!</p>
+              <p class="cc-hero-result-sub">Tell us how to reach you and we&rsquo;ll get back to you soon.</p>
+              <form class="cc-hero-lead" data-hero-lead data-hero-zip="${escapeHtml(zip)}" data-hero-service="${svc}">
+                <input name="name" type="text" placeholder="Name*" aria-label="Name" required autocomplete="name">
+                <input name="phone" type="tel" placeholder="Phone*" aria-label="Phone" required autocomplete="tel">
+                <input name="email" type="email" placeholder="Email*" aria-label="Email" required autocomplete="email">
+                <textarea name="message" rows="2" placeholder="What do you need? (optional)" aria-label="What do you need"></textarea>
+                <p class="cc-hero-lead-err" data-hero-lead-err role="alert" aria-live="polite"></p>
+                <button type="submit" class="cc-hero-result-cta cc-hero-lead-submit">Send My Request</button>
+              </form>
               <button type="button" class="cc-hero-result-again" data-hero-again>Search another ZIP</button>
             `);
           }

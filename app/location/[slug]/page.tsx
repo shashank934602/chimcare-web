@@ -30,6 +30,8 @@ import { readJsonCached } from '@/lib/json-cache';
 // The migrated pages themselves do NOT come from a JSON file any more: they are one row each in the
 // pipeline's SQLite store, read by slug. See `lib/route-store.ts` for why.
 import { readRoute, readRedirect, listRouteSlugs } from '@/lib/route-store';
+import { topSlugsByClicks } from '@/lib/data/migration-ledger';
+import { metaDescriptionFor } from '@/lib/content/description';
 import { placeFromSlug } from '@/lib/content/place-from-slug.mjs';
 import { deepWithoutEmDash } from '@/lib/content/typography';
 
@@ -72,16 +74,32 @@ import { deepWithoutEmDash } from '@/lib/content/typography';
 export const revalidate = 3600;
 
 /**
- * Prerender every migrated page at build time.
+ * Prerender the pages people actually reach, and let the rest render on demand.
  *
- * Without this the first visitor to each URL pays for a cold render. With 1,000 pages that is 1,000
- * people getting the slow version. `dynamicParams` stays true so a slug added to the store after the
- * build still renders on demand rather than 404ing.
+ * This used to prerender every migrated page. At 1,000 pages that was right: the build cost a minute
+ * and no visitor ever paid for a cold render. At 12,954 the same rule made a Vercel build take 70
+ * minutes, generating pages one worker at a time, and it scales linearly — two hours at 23,000, and
+ * at the full 229,621 it simply cannot finish.
+ *
+ * The traffic is extremely uneven: 17,073 of 139,064 known URLs earn any click at all, and the top
+ * 5,000 hold 84% of them. So the top slice by traffic is prerendered and everything else renders on
+ * first request and is then cached by `revalidate` above — one visitor pays ~400ms, nobody after them
+ * does, and the page is identical either way. `dynamicParams` stays true, which is what makes the
+ * long tail work at all.
+ *
+ * PRERENDER_LIMIT tunes it: 0 prerenders nothing (fastest build), unset uses the default below.
  */
 export const dynamicParams = true;
 
+const PRERENDER_LIMIT = Number(process.env.PRERENDER_LIMIT ?? 2000);
+
 export async function generateStaticParams() {
-  return listRouteSlugs().map((slug) => ({ slug }));
+  if (!PRERENDER_LIMIT) return [];
+  const busiest = topSlugsByClicks(PRERENDER_LIMIT);
+  // No ledger in this build (it is a published artefact, not a source file): fall back to the store's
+  // own order rather than prerendering nothing, so a build without it still warms the common pages.
+  const slugs = busiest.length ? busiest : listRouteSlugs().slice(0, PRERENDER_LIMIT);
+  return slugs.map((slug) => ({ slug }));
 }
 
 type Params = Promise<{ slug: string }>;
@@ -2038,7 +2056,9 @@ async function load(slug: string) {
 function referenceMetadata(view: PageView): Metadata {
   const url = view.canonical;
   const title = view.seoTitle ?? view.title;
-  const description = view.metaDescription ?? undefined;
+  // WordPress wrote a description on 122 of its 229,621 pages. Where it did not, one is composed
+  // from this page's own opening paragraph, or from its heading and place — see lib/content/description.ts.
+  const description = metaDescriptionFor(view);
   const place = view.place;
   return {
     title,

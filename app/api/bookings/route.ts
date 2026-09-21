@@ -1,20 +1,24 @@
 import { NextResponse } from 'next/server';
-import { desc } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 import { getDb } from '@/lib/db/client';
 import { bookings } from '@/lib/db/schema';
 import { getBookingAdapter } from '@/lib/booking/adapter';
 import { validateBooking } from '@/lib/booking/validate';
+import { classifyZip } from '@/lib/content/coverage';
+import { insertLead } from '@/lib/data/leads';
+import { reference } from '@/lib/reference';
 
 export const dynamic = 'force-dynamic';
 
-function reference(): string {
-  const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  let s = '';
-  for (let i = 0; i < 6; i++) s += alphabet[Math.floor(Math.random() * alphabet.length)];
-  return `CHM-${s}`;
-}
-
-/** POST /api/bookings — validate → store → hand to the adapter (mock now, Workiz later). */
+/**
+ * POST /api/bookings — validate → classify the ZIP → store → hand to the adapter (mock now, Workiz later).
+ *
+ * The classification is the fork. A request from a ZIP we do not serve is never a booking: it is
+ * written to site.leads instead, the adapter is never called, and no job is created for work nobody
+ * will do. That decision is made here from the ZIP alone (lib/content/coverage.ts), never from
+ * anything the client sent — the front end normally routes out-of-area requests to /api/leads, and
+ * this is the backstop for when it does not.
+ */
 export async function POST(req: Request) {
   let raw: Record<string, unknown>;
   try {
@@ -24,6 +28,35 @@ export async function POST(req: Request) {
   }
   const { errors, value } = validateBooking(raw);
   if (!value) return NextResponse.json({ ok: false, errors }, { status: 422 });
+
+  const coverage = await classifyZip(value.zip);
+  // Not a US ZIP at all. Nothing is stored: an unreal place is not a lead anyone can sell, and it
+  // is not a job anyone can do. Returned as a field error so the form can point at the ZIP box.
+  if (!coverage.usZip) {
+    return NextResponse.json(
+      { ok: false, errors: { zip: 'Enter a valid US ZIP code. We serve the United States only.' } },
+      { status: 422 },
+    );
+  }
+  if (!coverage.served) {
+    const lead = await insertLead(
+      {
+        name: value.name,
+        phone: value.phone,
+        email: value.email,
+        zip: value.zip,
+        service: value.service,
+        serviceLabel: value.serviceLabel,
+        message: value.notes,
+        pageSlug: value.context.pageSlug,
+        pageKind: value.context.pageKind,
+        sourceUrl: value.sourceUrl ?? req.headers.get('referer') ?? undefined,
+      },
+      coverage,
+      { divertedFromBooking: true },
+    );
+    return NextResponse.json({ ok: true, served: false, reference: lead.reference, status: 'received' }, { status: 201 });
+  }
 
   const db = await getDb();
   const adapter = getBookingAdapter();
@@ -59,15 +92,13 @@ export async function POST(req: Request) {
   try {
     const result = await adapter.createBooking({ ...value, reference: ref });
     status = result.status;
-    const { eq } = await import('drizzle-orm');
     await db.update(bookings).set({ status, externalId: result.externalId }).where(eq(bookings.id, row.id));
   } catch (e) {
     console.error('[booking] adapter failed', e);
-    const { eq } = await import('drizzle-orm');
     await db.update(bookings).set({ status: 'failed' }).where(eq(bookings.id, row.id));
     status = 'failed';
   }
-  return NextResponse.json({ ok: true, reference: ref, status }, { status: 201 });
+  return NextResponse.json({ ok: true, served: true, reference: ref, status }, { status: 201 });
 }
 
 /** GET /api/bookings — the last 50 bookings. Open in development; needs ADMIN_TOKEN in production. */

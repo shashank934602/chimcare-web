@@ -194,6 +194,15 @@ export function photos(): PhotoRow[] {
 
 /** When the pipeline last published this data. A dashboard showing yesterday's numbers without
  *  saying so is worse than no dashboard: it was doing exactly that until 2026-09-21. */
+/** The busiest migrated pages, for pre-rendering. Empty when the ledger is absent, which means
+ *  "pre-render nothing" — every page then renders on demand and is cached, which is correct, just
+ *  slower for whoever arrives first. */
+export function topSlugsByClicks(limit: number): string[] {
+  return all<{ slug: string }>(
+    `SELECT slug FROM ledger WHERE published = 1 ORDER BY COALESCE(clicks, 0) DESC, COALESCE(impressions, 0) DESC LIMIT ${Number(limit) || 0}`,
+  ).map((r) => r.slug);
+}
+
 export function publishedAt(): string | null {
   return all<{ at: string }>('SELECT MAX(updated_at) AS at FROM ledger')[0]?.at ?? null;
 }

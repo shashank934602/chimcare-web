@@ -3,7 +3,15 @@ import { getMigratedStates } from '@/lib/data/migrated-locations';
 export type ZipLookupResult =
   | { match: 'city'; cityName: string; stateCode: string; href: string; addressLine: string | null }
   | { match: 'state'; stateName: string; href: string }
-  | { match: 'none' };
+  // Not served. `zipCity`/`zipState` carry where the ZIP actually is when the directory could say —
+  // a lead is worth more to a buyer with a town on it. Absent when the lookup was unreachable.
+  //
+  // `usZip` is the difference between "somewhere we don't cover" and "nowhere at all":
+  //   false     the directory positively says no such US ZIP. Reject it.
+  //   true      a real US ZIP, outside the service area. This is the saleable lead.
+  //   undefined the directory never answered. Unproven, so treated as acceptable — an outage of
+  //             ours must not turn a real visitor away.
+  | { match: 'none'; usZip?: boolean; zipCity?: string; zipState?: string };
 
 /**
  * USPS ZIP3-prefix ranges for the states this deployment actually serves — real, long-standing postal
@@ -60,24 +68,48 @@ function normalizeCityName(name: string): string {
     .trim();
 }
 
-const resolvedZipCache = new Map<string, { city: string; stateCode: string } | null>();
+/**
+ * Three outcomes, and the difference between the last two matters:
+ *   found       the directory knows this ZIP.
+ *   not-found   the directory answered, and there is no such US ZIP. A real negative.
+ *   unavailable the directory did not answer. Proves nothing either way.
+ *
+ * Collapsing `not-found` and `unavailable` into one null is what let `99999` through as a saleable
+ * lead: both looked like "no answer", so both fell to the ZIP3 fallback and out the bottom as a
+ * request from a place that does not exist.
+ */
+type ZipResolution =
+  | { status: 'found'; city: string; stateCode: string }
+  | { status: 'not-found' }
+  | { status: 'unavailable' };
+
+// Only real answers are cached. An outage must not pin a ZIP as unresolvable for the process's life.
+const resolvedZipCache = new Map<string, Exclude<ZipResolution, { status: 'unavailable' }>>();
 
 /** Resolves a ZIP to a city/state via Zippopotam.us — a free, keyless, public ZIP directory — used
  * only to find which of OUR OWN real pages a ZIP falls in when we hold no street address for it
  * ourselves. This never asserts a city on its own; the result still has to match one of our real
- * migrated cities (below) before it's shown as a city match. */
-async function resolveZipCity(zip: string): Promise<{ city: string; stateCode: string } | null> {
-  if (resolvedZipCache.has(zip)) return resolvedZipCache.get(zip) ?? null;
-  let result: { city: string; stateCode: string } | null = null;
+ * migrated cities (below) before it's shown as a city match. The `/us/` endpoint is US-only by
+ * construction, so a 404 here means "not a US ZIP", which is exactly the negative we need. */
+async function resolveZipCity(zip: string): Promise<ZipResolution> {
+  const cached = resolvedZipCache.get(zip);
+  if (cached) return cached;
+  let result: Exclude<ZipResolution, { status: 'unavailable' }>;
   try {
     const res = await fetch(`https://api.zippopotam.us/us/${zip}`, { signal: AbortSignal.timeout(2500) });
-    if (res.ok) {
+    if (res.status === 404) {
+      result = { status: 'not-found' };
+    } else if (res.ok) {
       const data = (await res.json()) as { places?: Array<{ 'place name': string; 'state abbreviation': string }> };
       const place = data.places?.[0];
-      if (place) result = { city: place['place name'], stateCode: place['state abbreviation'] };
+      // A 200 with no places is the directory failing to answer properly, not a real negative.
+      if (!place) return { status: 'unavailable' };
+      result = { status: 'found', city: place['place name'], stateCode: place['state abbreviation'] };
+    } else {
+      return { status: 'unavailable' }; // 5xx, rate limit: try again next time
     }
   } catch {
-    result = null;
+    return { status: 'unavailable' }; // timeout, DNS, offline
   }
   resolvedZipCache.set(zip, result);
   return result;
@@ -102,9 +134,12 @@ export async function lookupZip(zip: string): Promise<ZipLookupResult> {
   }
 
   const resolved = await resolveZipCity(zip);
-  if (resolved) {
+  // The directory says there is no such US ZIP. Say so, rather than treating it as a place we
+  // simply don't cover: nothing downstream should accept it, least of all as a lead to sell.
+  if (resolved.status === 'not-found') return { match: 'none', usZip: false };
+  if (resolved.status === 'found') {
     const state = states.find((s) => s.code === resolved.stateCode);
-    if (!state) return { match: 'none' };
+    if (!state) return { match: 'none', usZip: true, zipCity: resolved.city, zipState: resolved.stateCode };
     const city = state.cities.find((c) => normalizeCityName(c.name) === normalizeCityName(resolved.city));
     if (city) {
       return { match: 'city', cityName: city.name, stateCode: state.code, href: city.href, addressLine: zipFromAddressLines(city.addressLines) ? (city.addressLines[0] ?? null) : null };
@@ -119,5 +154,7 @@ export async function lookupZip(zip: string): Promise<ZipLookupResult> {
     }
   }
 
+  // Directory unavailable and no ZIP3 range matched: we cannot prove anything about this ZIP, so
+  // `usZip` is left undefined rather than asserted either way.
   return { match: 'none' };
 }

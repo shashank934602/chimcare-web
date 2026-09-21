@@ -39,10 +39,16 @@ export function FloatingCta({
     const dialogOpen = () =>
       !!document.querySelector('.bsheet.is-open, .drawer.is-open') || document.body.classList.contains('no-scroll');
 
-    let past = !anchor;
+    // `false`, never `!anchor`. A page with none of those four anchors used to start at `true`,
+    // which read as "the visitor has already scrolled past the booking form" on a page that was
+    // still at the top — so the cluster sat on the hero from the moment the page loaded. That is
+    // the homepage, About, Contact and Services: all four are hand-built or saved WordPress markup
+    // and carry no booking slot, and all four showed the fabs over their own hero (P-090).
+    let past = false;
     const sync = () => setOn(past && !dialogOpen());
 
     let io: IntersectionObserver | null = null;
+    let onScroll: (() => void) | null = null;
     if (anchor) {
       io = new IntersectionObserver(
         ([e]) => {
@@ -52,6 +58,19 @@ export function FloatingCta({
         { rootMargin: '-80px 0px 0px 0px' },
       );
       io.observe(anchor);
+    } else {
+      // No booking form to scroll past, so the hero itself is the thing not to cover: the cluster
+      // appears once roughly one screen has gone by, and hides again at the top. Same intent as the
+      // observer above — never over the first thing a visitor sees.
+      onScroll = () => {
+        const next = window.scrollY > Math.max(320, window.innerHeight * 0.8);
+        if (next !== past) {
+          past = next;
+          sync();
+        }
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
     }
     // A dialog opening or closing changes nothing about scroll, so watch the class instead.
     const mo = new MutationObserver(sync);
@@ -63,6 +82,7 @@ export function FloatingCta({
     return () => {
       io?.disconnect();
       mo.disconnect();
+      if (onScroll) window.removeEventListener('scroll', onScroll);
     };
   }, []);
 

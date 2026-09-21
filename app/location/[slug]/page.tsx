@@ -956,7 +956,16 @@ function cleanTitle(raw: string | null | undefined, place: Place | null, fallbac
   // Normalise the trailing ", ST" however it is malformed: "Round Lake Beach ,IL" (the space the
   // CRLF collapsed into) and "Ham Lake,MN" (no space at all) both become "…, IL" / "…, MN". A title
   // that is already correct is matched and rewritten to itself, so this is idempotent.
-  return named.replace(/\s*,\s*([A-Za-z]{2})\s*$/, ', $1');
+  const settled = named.replace(/\s*,\s*([A-Za-z]{2})\s*$/, ', $1');
+
+  // Some WordPress titles are a pasted keyword list, and this string is the page's visible <h1>:
+  // "Chimney Chase Cover – chimney chase cover installation. chimney chase cover replacement. …
+  // stainless steel chimney chase cover in Fort Bragg, CA" — 170 characters of stuffing where the
+  // headline should be. Keep the service before the en dash and the place after the final "in",
+  // and drop the list between them. Deliberately narrow: the dash must be space-surrounded and the
+  // tail must already be a normalised ", ST", so ordinary titles and hyphenated city names cannot
+  // match. Measured over every title WordPress holds: no title that is not stuffed is rewritten.
+  return settled.replace(/^(.+?)\s+–\s+.*?\bin\s+([^,]+,\s*[A-Za-z]{2})$/, '$1 in $2');
 }
 
 function parsePlace(slug: string, title?: string | null): { city: string; code: string; state: string } | null {

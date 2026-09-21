@@ -84,6 +84,22 @@ type ZipResolution =
   | { status: 'unavailable' };
 
 // Only real answers are cached. An outage must not pin a ZIP as unresolvable for the process's life.
+/**
+ * The ZIP directory flattens intercardinal names: it returns "Mcallen", not "McAllen". That string
+ * is shown to the visitor ("we can help in Mcallen, TX") and stored on the lead a buyer reads, so
+ * it is worth repairing — carefully.
+ *
+ * Only three rules, all safe: a letter after "Mc", after an apostrophe, and after a hyphen. "Mac"
+ * is deliberately NOT handled — it would turn Macon into MacOn. Anything this cannot fix is left
+ * exactly as the directory gave it rather than guessed at.
+ */
+function tidyPlaceName(name: string): string {
+  return name
+    .replace(/\bMc([a-z])/g, (_, c: string) => `Mc${c.toUpperCase()}`)
+    .replace(/([A-Za-z])'([a-z])/g, (_, a: string, c: string) => `${a}'${c.toUpperCase()}`)
+    .replace(/\b([A-Za-z]+)-([a-z])/g, (_, a: string, c: string) => `${a}-${c.toUpperCase()}`);
+}
+
 const resolvedZipCache = new Map<string, Exclude<ZipResolution, { status: 'unavailable' }>>();
 
 /** Resolves a ZIP to a city/state via Zippopotam.us — a free, keyless, public ZIP directory — used
@@ -139,7 +155,7 @@ export async function lookupZip(zip: string): Promise<ZipLookupResult> {
   if (resolved.status === 'not-found') return { match: 'none', usZip: false };
   if (resolved.status === 'found') {
     const state = states.find((s) => s.code === resolved.stateCode);
-    if (!state) return { match: 'none', usZip: true, zipCity: resolved.city, zipState: resolved.stateCode };
+    if (!state) return { match: 'none', usZip: true, zipCity: tidyPlaceName(resolved.city), zipState: resolved.stateCode };
     const city = state.cities.find((c) => normalizeCityName(c.name) === normalizeCityName(resolved.city));
     if (city) {
       return { match: 'city', cityName: city.name, stateCode: state.code, href: city.href, addressLine: zipFromAddressLines(city.addressLines) ? (city.addressLines[0] ?? null) : null };

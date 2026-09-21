@@ -239,8 +239,17 @@ export const bookings = site.table('bookings', {
   externalId: text('external_id'), // Workiz job id once the real adapter exists
   serviceKey: text('service_key').notNull(), // sweep | inspect | gas | quote
   serviceLabel: text('service_label').notNull(), // the priced label the customer saw
-  preferredDate: text('preferred_date').notNull(), // YYYY-MM-DD
-  timeWindow: text('time_window').notNull(),
+  /**
+   * Where the request came from, and therefore whether it carries a slot:
+   *   booking  the full booking sheet. The customer picked a date and a window.
+   *   request  the ZIP popup's short form. No slot was ever asked for, so there is none to record.
+   * Both are real service requests for a ZIP we cover; only the first is already scheduled.
+   */
+  source: text('source').notNull().default('booking'),
+  // Nullable since 0006: a `request` row has no chosen slot. Null means "not scheduled yet", never
+  // "unknown" — do not backfill it with a guess.
+  preferredDate: text('preferred_date'), // YYYY-MM-DD
+  timeWindow: text('time_window'),
   name: text('name').notNull(),
   phone: text('phone').notNull(),
   email: text('email').notNull(),

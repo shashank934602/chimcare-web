@@ -3,6 +3,13 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   // WordPress URLs end with a slash; keep them byte-identical so no legacy URL ever 308s.
   trailingSlash: true,
+  // Where the build is written. The default is `.next`, and it is configurable for one reason: a
+  // migration run serves the production build on :3200 and checks 10,000 pages against it for
+  // hours, while `next dev` writes to that same folder. Frontend work would silently rewrite the
+  // build the run is measuring. `NEXT_DIST_DIR=.next-dev npm run dev -- -p 3210` gives the dev
+  // server its own directory, so both can run at once. Unset in CI and in production.
+  distDir: process.env.NEXT_DIST_DIR || '.next',
+
   // Development only. Next blocks cross-origin requests to dev assets (fonts, CSS, client JS, HMR)
   // from any host but localhost, so opening the dev server on a phone over the LAN served the HTML
   // and then blocked everything that makes it a page. Testing on a real phone is not optional here

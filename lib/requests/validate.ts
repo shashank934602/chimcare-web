@@ -3,11 +3,16 @@ import { SERVICE_KEYS, type ServiceKey } from '@/lib/booking/types';
 const str = (v: unknown, max = 200) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
 
 /**
- * An out-of-area request. Note what is NOT here: no preferred date, no time window. Nothing on this
- * form is being scheduled, so asking a visitor to choose a visit slot for a job we will not do would
- * be a lie told in a form field.
+ * A service request from the ZIP popup: who to call back, where, and what about.
+ *
+ * Note what is NOT here: no preferred date, no time window. The popup never asks for a slot — it
+ * promises a call back, and a form that asked someone to pick a visit time before anyone had
+ * confirmed they could come would be promising something different.
+ *
+ * The same submission serves both outcomes. Which table it lands in is decided server-side from the
+ * ZIP alone (lib/content/coverage.ts); the visitor sees one form either way.
  */
-export type LeadSubmission = {
+export type RequestSubmission = {
   name: string;
   phone: string;
   email: string;
@@ -21,14 +26,14 @@ export type LeadSubmission = {
 };
 
 /** Shared by the client (before submit) and the server (whole payload). Returns field → message. */
-export function validateLead(raw: Record<string, unknown>): { errors: Record<string, string>; value?: LeadSubmission } {
+export function validateRequest(raw: Record<string, unknown>): { errors: Record<string, string>; value?: RequestSubmission } {
   const errors: Record<string, string> = {};
   const name = str(raw.name, 120);
-  if (name.length < 2) errors.name = 'Tell us who to ask for.';
+  if (name.length < 2) errors.name = 'Enter your name.';
   const phone = str(raw.phone, 40);
-  if (phone.replace(/\D/g, '').length < 10) errors.phone = 'Enter a 10-digit phone number.';
+  if (phone.replace(/\D/g, '').length !== 10) errors.phone = 'Enter a 10-digit phone number.';
   const email = str(raw.email, 160);
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) errors.email = 'Enter a valid email address.';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) errors.email = 'Enter an email like name@example.com.';
   const zip = str(raw.zip, 10);
   if (!/^\d{5}$/.test(zip)) errors.zip = 'Enter your 5-digit ZIP code.';
 
@@ -45,10 +50,7 @@ export function validateLead(raw: Record<string, unknown>): { errors: Record<str
   return {
     errors,
     value: {
-      name,
-      phone,
-      email,
-      zip,
+      name, phone, email, zip,
       service: serviceKey,
       serviceLabel: serviceLabel || undefined,
       message: message || undefined,

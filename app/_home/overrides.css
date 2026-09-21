@@ -1159,56 +1159,10 @@ body:has(.cc-rq) .wp-home .header-template {
   display: block;
 }
 
-/* 21 — out-of-area request form (2026-09-21): a ZIP we don't cover used to end at "Give us a call",
-   which turned away a lead the client resells. The hero result now carries a short request form
-   (components/islands/HomeBehaviour.tsx, posted to /api/leads) instead. Styled to sit inside the
-   existing .cc-hero-result panel, so the fields match the hero card's own inputs (§8) rather than
-   introducing a second form language on the same screen. */
-.wp-home .cc-hero-lead {
-  display: grid;
-  gap: 8px;
-  margin: 2px 0 4px;
-  text-align: left;
-}
-.wp-home .cc-hero-lead input,
-.wp-home .cc-hero-lead textarea {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 12px 14px;
-  border: 1.5px solid #dfd6cf;
-  border-radius: 9px;
-  background: #fff;
-  color: #17110f;
-  font: inherit;
-  font-size: 15px;
-  transition: border-color 0.2s ease;
-}
-.wp-home .cc-hero-lead textarea {
-  resize: vertical;
-  min-height: 64px;
-}
-.wp-home .cc-hero-lead input:focus-visible,
-.wp-home .cc-hero-lead textarea:focus-visible {
-  border-color: var(--brand-red);
-  outline: none;
-}
-.wp-home .cc-hero-lead input:invalid:not(:placeholder-shown) {
-  border-color: var(--brand-red);
-}
-.wp-home .cc-hero-lead-err:empty {
-  display: none;
-}
-.wp-home .cc-hero-lead-err {
-  margin: 0;
-  color: var(--brand-red);
-  font-size: 13.5px;
-  font-weight: 600;
-}
-/* Matches .cc-hero-submit's loading state: the label dims rather than the button vanishing. */
-.wp-home .cc-hero-lead.is-loading .cc-hero-lead-submit {
-  opacity: 0.6;
-  cursor: progress;
-}
+/* 21 — superseded 2026-09-21 by the ZIP result popup (styles/zip-modal.css,
+   components/islands/ZipRequestModal.tsx). This section styled an out-of-area request form rendered
+   inline inside the hero card; the hero now hands every accepted ZIP to the modal instead, so those
+   rules matched nothing and were removed rather than left to rot. The number is not reused. */
 
 /* 22 — nav links highlight red on hover (2026-09-21): the saved header's menu (Home, Services,
    Locations, About Us, Contact Us) had no hover state whatsoever — the pointer crossed a link and

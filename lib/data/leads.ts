@@ -2,7 +2,7 @@ import { desc } from 'drizzle-orm';
 import { getDb } from '@/lib/db/client';
 import { leads, type Lead, type NewLead } from '@/lib/db/schema';
 import { reference } from '@/lib/reference';
-import type { LeadSubmission } from '@/lib/leads/validate';
+import type { RequestSubmission } from '@/lib/requests/validate';
 import type { Coverage } from '@/lib/content/coverage';
 
 /**
@@ -12,12 +12,15 @@ import type { Coverage } from '@/lib/content/coverage';
  * crafted POST could file a real customer as a sellable lead, or the reverse.
  */
 export async function insertLead(
-  input: LeadSubmission,
+  input: RequestSubmission,
   coverage: Coverage,
   opts: { divertedFromBooking?: boolean } = {},
 ): Promise<Lead> {
   const row: NewLead = {
-    reference: reference('CHM-L'),
+    // Deliberately the same `CHM-` prefix a booking gets. A `CHM-L-` reference would tell the
+    // visitor — and anyone probing — that they were filed as a lead rather than served, which is
+    // the one thing this whole design keeps off the page.
+    reference: reference(),
     name: input.name,
     phone: input.phone,
     email: input.email,

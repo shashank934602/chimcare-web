@@ -13,7 +13,8 @@ export interface BookingAdapter {
 export class MockAdapter implements BookingAdapter {
   readonly name = 'mock';
   async createBooking(input: BookingSubmission & { reference: string }): Promise<AdapterResult> {
-    console.log(`[booking:mock] ${input.reference} ${input.service} ${input.date} ${input.timeWindow} for ${input.context.label}`);
+    const slot = input.date && input.timeWindow ? `${input.date} ${input.timeWindow}` : 'no slot chosen (call back)';
+    console.log(`[booking:mock] ${input.reference} ${input.service} ${slot} for ${input.context.label}`);
     return { externalId: `MOCK-${input.reference}`, status: 'synced' };
   }
 }

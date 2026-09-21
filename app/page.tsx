@@ -21,6 +21,7 @@ import { BookingSheet } from '@/components/islands/BookingSheet';
 import { HomeBehaviour } from '@/components/islands/HomeBehaviour';
 import { HomeLocationsMenu } from '@/components/islands/HomeLocationsMenu';
 import { RequestServiceModal } from '@/components/islands/RequestServiceModal';
+import { ZipRequestModal } from '@/components/islands/ZipRequestModal';
 import type { BookingContext } from '@/lib/booking/types';
 import { SITE_URL, bookingOptions } from '@/lib/content/assemble';
 import { buildLocationsMenu } from '@/lib/content/locations-menu';
@@ -110,6 +111,7 @@ export default async function Home() {
       </div>
       <BookingSheet options={booking} context={bookingContext} />
       <RequestServiceModal />
+      <ZipRequestModal />
       <HomeBehaviour />
       <HomeLocationsMenu data={buildLocationsMenu()} />
       <FloatingCta phone={NATIONAL_PHONE} phoneHref={NATIONAL_PHONE_HREF} email="harold@chimcare.com" quoteHref="#booking" />

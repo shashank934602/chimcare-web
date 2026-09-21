@@ -25,8 +25,10 @@ export type BookingPrefill = { name?: string; phone?: string; email?: string; zi
 export type BookingSubmission = {
   service: ServiceKey;
   serviceLabel: string;
-  date: string; // YYYY-MM-DD
-  timeWindow: TimeWindow;
+  // Optional since the ZIP popup: that form promises a call back and never asks for a slot.
+  // The booking sheet still requires both — see validateBooking.
+  date?: string; // YYYY-MM-DD
+  timeWindow?: TimeWindow;
   name: string;
   phone: string;
   email: string;

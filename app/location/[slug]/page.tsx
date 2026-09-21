@@ -775,8 +775,8 @@ async function viewFromManifest(route: Route): Promise<PageView> {
     source: 'manifest',
     slug: route.slug,
     url: route.url,
-    title: route.title ?? route.slug,
-    seoTitle: route.seoTitle,
+    title: cleanTitle(route.title, place, route.slug),
+    seoTitle: route.seoTitle ? cleanTitle(route.seoTitle, place, route.slug) : null,
     metaDescription: route.metaDescription,
     canonical: `${PRODUCTION_ORIGIN}${route.url}`,
     phone: route.phone,
@@ -865,8 +865,8 @@ async function viewFromDatabase(slug: string, page: Awaited<ReturnType<typeof re
     source: 'database',
     slug,
     url,
-    title: src.postTitle || slug,
-    seoTitle: src.yoastTitle,
+    title: cleanTitle(src.postTitle, place, slug),
+    seoTitle: src.yoastTitle ? cleanTitle(src.yoastTitle, place, slug) : null,
     metaDescription: src.yoastMetadesc,
     // Yoast's own canonical where WordPress set one; otherwise this URL on production, which is
     // what a self-canonical means here.
@@ -918,6 +918,29 @@ const STATE_NAMES: Record<string, string> = {
  * `chimney-sweep-seattle-wa`, `bedford-chimney-sweep` and `-2` duplicates included, so their breadcrumb
  * links to the state hub like every other page. The title is used only where the slug cannot name the city.
  */
+/**
+ * WordPress titles are dirty in two ways that reach the visitor and the SERP (P-080).
+ *
+ * About a third of `post_title` values carry a literal CRLF before the state comma, which HTML
+ * whitespace-collapse renders as "Round Lake Beach ,IL". On 66 pages the city is missing from the
+ * title altogether — "Commercial Pizza Oven Cleaning Service in ,CO" — although the slug still
+ * knows it, which is why `place` is consulted before the space is closed up.
+ *
+ * The pipeline reproduces WordPress faithfully and is right to; normalising belongs here, at the
+ * point the title is rendered, so it also covers any future page with the same dirt.
+ */
+function cleanTitle(raw: string | null | undefined, place: Place | null, fallback: string): string {
+  const collapsed = String(raw ?? '').replace(/\s+/g, ' ').trim();
+  if (!collapsed) return fallback;
+  // "... in , CO" — put back the city the title dropped, when the slug supplies one.
+  const named = collapsed.replace(/\bin\s+,\s*([A-Za-z]{2})\s*$/, (whole, code) =>
+    place?.city ? `in ${place.city}, ${code}` : whole);
+  // Normalise the trailing ", ST" however it is malformed: "Round Lake Beach ,IL" (the space the
+  // CRLF collapsed into) and "Ham Lake,MN" (no space at all) both become "…, IL" / "…, MN". A title
+  // that is already correct is matched and rewritten to itself, so this is idempotent.
+  return named.replace(/\s*,\s*([A-Za-z]{2})\s*$/, ', $1');
+}
+
 function parsePlace(slug: string, title?: string | null): { city: string; code: string; state: string } | null {
   const place = placeFromSlug(slug, title);
   if (!place) return null;
@@ -1979,7 +2002,17 @@ function referenceJsonLd(view: PageView) {
  */
 async function load(slug: string) {
   const page = await resolvePage(slug);
-  if (page?.fate === 'redirect' && page.redirectTo) return { kind: 'redirect' as const, to: page.redirectTo };
+  // A page this migration has built serves itself, whatever the seeded fate says. The Minnesota
+  // slice seeds redirect rules from an old plan (`chimcare-rebuild-main/site/data/redirects.json`)
+  // that was never applied on the live site, and asking the database first sent 71 batch-1 URLs to
+  // another page although WordPress publishes each of them: `gas-fireplace-repair-in-bloomington-mn`
+  // answers 200 on www.chimcare.com and was redirected away here (P-073). A slug WordPress really
+  // has dropped keeps its redirect, because no migration run ever builds a page for it — which is
+  // why `chimney-sweep-repair-in-minneapolis-mn`, a genuine 404 at source, still redirects.
+  const migrated = findRoute(slug);
+  if (page?.fate === 'redirect' && page.redirectTo && !migrated) {
+    return { kind: 'redirect' as const, to: page.redirectTo };
+  }
 
   // Then the pipeline's own rewrite, BEFORE the manifest. Stage 7 moves a migrated page from
   // `{service}-in-{city}-{st}` to `{service}-{city}-{st}` and deletes the old `routes` row, so the
@@ -1990,8 +2023,7 @@ async function load(slug: string) {
   const moved = readRedirect(slug);
   if (moved) return { kind: 'redirect' as const, to: `/location/${moved}/` };
 
-  const route = findRoute(slug);
-  if (route) return { kind: 'page' as const, view: deepWithoutEmDash(await viewFromManifest(route)) };
+  if (migrated) return { kind: 'page' as const, view: deepWithoutEmDash(await viewFromManifest(migrated)) };
 
   const view = await viewFromDatabase(slug, page);
   if (view) return { kind: 'page' as const, view: deepWithoutEmDash(view) };

@@ -101,9 +101,13 @@ export type UrlRow = {
   live_status: number | null;
   service_count: number | null;
   defect: string | null;
+  hero_image: string | null;
+  hero_host: string | null;
 };
 
 export type CheckRow = { check: string; question: string; failed: number; sample: string[] };
+
+export type PhotoRow = { hero_image: string; hero_host: string; pages: number; share: number };
 
 export type IssueRow = {
   id: string;
@@ -178,20 +182,41 @@ export function checks(batch?: string): CheckRow[] {
   });
 }
 
-export function urls(options: { batch?: string; only?: string; limit?: number } = {}): UrlRow[] {
-  const { batch, only, limit = 200 } = options;
+/** Which photo each page shows, biggest first. One file on 97% of pages is the point (I-013). */
+export function photos(): PhotoRow[] {
+  const total = all<{ n: number }>('SELECT COUNT(*) AS n FROM ledger WHERE hero_image IS NOT NULL')[0]?.n || 1;
+  return all<PhotoRow>(`
+    SELECT hero_image, hero_host, COUNT(*) AS pages
+    FROM ledger WHERE hero_image IS NOT NULL
+    GROUP BY hero_image, hero_host ORDER BY pages DESC LIMIT 12
+  `).map((r) => ({ ...r, share: r.pages / total }));
+}
+
+/** When the pipeline last published this data. A dashboard showing yesterday's numbers without
+ *  saying so is worse than no dashboard: it was doing exactly that until 2026-09-21. */
+export function publishedAt(): string | null {
+  return all<{ at: string }>('SELECT MAX(updated_at) AS at FROM ledger')[0]?.at ?? null;
+}
+
+export function urls(options: { batch?: string; only?: string; photo?: string; limit?: number } = {}): UrlRow[] {
+  const { batch, only, photo, limit = 200 } = options;
   const clauses: string[] = [];
   const params: unknown[] = [];
   if (batch) {
     clauses.push('batch = ?');
     params.push(batch);
   }
+  if (photo) {
+    clauses.push('hero_image = ?');
+    params.push(photo);
+  }
   if (only === 'defects') clauses.push('defect IS NOT NULL');
   if (only === 'live') clauses.push('live_status = 200');
+  if (only === 'old-photo') clauses.push("hero_host = 'old site'");
   const where = clauses.length ? `WHERE ${clauses.join(' AND ')}` : '';
   return all<UrlRow>(`
     SELECT slug, batch, clicks, probe_fate, render_pass, seo_failures, published,
-           live_status, service_count, defect
+           live_status, service_count, defect, hero_image, hero_host
     FROM ledger ${where} ORDER BY COALESCE(clicks, 0) DESC, slug LIMIT ${Number(limit) || 200}
   `, params);
 }

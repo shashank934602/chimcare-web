@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import {
-  batches, checks, images, issues, ledgerAvailable, spaces, totals, urls,
-  type CheckRow, type IssueRow, type UrlRow,
+  batches, checks, images, issues, ledgerAvailable, photos, publishedAt, spaces, totals, urls,
+  type CheckRow, type IssueRow, type PhotoRow, type UrlRow,
 } from '@/lib/data/migration-ledger';
 
 export const dynamic = 'force-dynamic';
@@ -26,9 +26,9 @@ export const metadata: Metadata = { title: 'Migration batches', robots: { index:
 export default async function BatchesAdmin({
   searchParams,
 }: {
-  searchParams: Promise<{ token?: string; batch?: string; only?: string }>;
+  searchParams: Promise<{ token?: string; batch?: string; only?: string; photo?: string }>;
 }) {
-  const { token, batch, only } = await searchParams;
+  const { token, batch, only, photo } = await searchParams;
   if (process.env.NODE_ENV === 'production' && (!process.env.ADMIN_TOKEN || token !== process.env.ADMIN_TOKEN)) notFound();
 
   const th: React.CSSProperties = { textAlign: 'left', padding: '9px 12px', borderBottom: '1px solid var(--line)', fontSize: 11, letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--text-2)', whiteSpace: 'nowrap' };
@@ -69,7 +69,11 @@ export default async function BatchesAdmin({
   const checkRows: CheckRow[] = checks(batch);
   const spaceRows = spaces();
   const img = images();
-  const list: UrlRow[] = urls({ batch, only, limit: 200 });
+  const list: UrlRow[] = urls({ batch, only, photo, limit: 200 });
+  const photoRows: PhotoRow[] = photos();
+  const published = publishedAt();
+  const ageHours = published ? (Date.now() - Date.parse(published)) / 3_600_000 : null;
+  const fromOldSite = photoRows.filter((p) => p.hero_host === 'old site').reduce((n, p) => n + p.pages, 0);
   const register: IssueRow[] = issues();
   const openIssues = register.filter((i) => i.status !== 'fixed' && i.status !== 'accepted');
   const failing = checkRows.filter((c) => c.failed > 0);
@@ -88,6 +92,12 @@ export default async function BatchesAdmin({
           <p className="lede" style={{ marginBottom: 26 }}>
             Every URL the pipeline has touched, what happened to it, and what is still missing.
             {batch ? <> Showing <strong>{batch}</strong> — {link(q({}), 'all batches')}.</> : null}
+          </p>
+          <p style={{ fontSize: 13, margin: '-18px 0 26px', color: ageHours && ageHours > 6 ? '#A50E0E' : 'var(--text-2)' }}>
+            Data published {published ? `${published.slice(0, 16).replace('T', ' ')} UTC` : 'never'}
+            {ageHours !== null && ageHours > 6
+              ? ` — ${Math.round(ageHours)} hours old. Run \`python3 scripts/ledger.py --publish\` for current numbers.`
+              : ' · current'}
           </p>
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginBottom: 30 }}>
@@ -248,6 +258,47 @@ export default async function BatchesAdmin({
             </tbody>
           </table>
 
+          <h2 style={{ fontSize: 20, margin: '0 0 6px' }}>
+            Photos on the pages{' '}
+            {photoRows[0] && photoRows[0].share > 0.5
+              ? <span style={bad}>{Math.round(photoRows[0].share * 100)}% share one photo</span>
+              : <span style={ok}>varied</span>}
+          </h2>
+          <p style={{ fontSize: 13.5, color: 'var(--text-2)', margin: '0 0 12px' }}>
+            Which photo each page shows, and where it is fetched from. Click a count to list those URLs.
+            WordPress itself sets one Boston photo on 227,504 of its 229,621 pages, so this reflects the
+            source rather than a migration fault (I-013).
+          </p>
+          <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: 34 }}>
+            <thead>
+              <tr>
+                <th style={th}>Photo</th>
+                <th style={th}>Served from</th>
+                <th style={{ ...th, textAlign: 'right' }}>Pages</th>
+                <th style={{ ...th, textAlign: 'right' }}>Share</th>
+              </tr>
+            </thead>
+            <tbody>
+              {photoRows.map((p) => (
+                <tr key={p.hero_image}>
+                  <td style={td}>{p.hero_image}</td>
+                  <td style={td}>
+                    {p.hero_host === 'old site'
+                      ? <span style={bad}>old WordPress site</span>
+                      : <span style={ok}>this site</span>}
+                  </td>
+                  <td style={num}>{link(q({ batch, photo: p.hero_image }), p.pages.toLocaleString())}</td>
+                  <td style={num}>{(p.share * 100).toFixed(1)}%</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p style={{ fontSize: 13.5, color: 'var(--text-2)', margin: '0 0 30px' }}>
+            {fromOldSite.toLocaleString()} pages fetch their photo from the old WordPress site. Every one
+            breaks when the domain moves unless the files are mirrored first —{' '}
+            {link(q({ batch, only: 'old-photo' }), 'list them')}.
+          </p>
+
           <h2 style={{ fontSize: 20, margin: '0 0 6px' }}>Images at cutover</h2>
           <p style={{ fontSize: 13.5, color: 'var(--text-2)', margin: '0 0 30px', maxWidth: '80ch' }}>
             Migrated pages reference <strong>{img.files.toLocaleString()} image files</strong>{' '}
@@ -264,7 +315,10 @@ export default async function BatchesAdmin({
           </h2>
           <p style={{ fontSize: 13.5, color: 'var(--text-2)', margin: '0 0 12px' }}>
             {link(q({ batch, only: undefined }), 'all')} · {link(q({ batch, only: 'defects' }), 'only defects')} ·{' '}
-            {link(q({ batch, only: 'live' }), 'only live')} — highest traffic first, 200 shown.
+            {link(q({ batch, only: 'live' }), 'only live')} ·{' '}
+            {link(q({ batch, only: 'old-photo' }), 'photo from the old site')}
+            {photo ? <> · photo <strong>{photo}</strong> — {link(q({ batch }), 'clear')}</> : null}
+            {' '}— highest traffic first, 200 shown.
           </p>
           <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: 50 }}>
             <thead>
@@ -272,6 +326,7 @@ export default async function BatchesAdmin({
                 <th style={th}>URL</th>
                 <th style={{ ...th, textAlign: 'right' }}>Clicks</th>
                 <th style={{ ...th, textAlign: 'right' }}>Services</th>
+                <th style={th}>Photo</th>
                 <th style={th}>Published</th>
                 <th style={th}>Live</th>
                 <th style={th}>Defect</th>
@@ -285,6 +340,9 @@ export default async function BatchesAdmin({
                   </td>
                   <td style={num}>{u.clicks ? Math.round(u.clicks).toLocaleString() : '—'}</td>
                   <td style={num}>{u.service_count ?? '—'}</td>
+                  <td style={{ ...td, fontSize: 12.5, color: 'var(--text-2)' }}>
+                    {u.hero_image ? u.hero_image.replace(/\.(jpe?g|png|webp|avif)$/i, '').slice(0, 26) : '—'}
+                  </td>
                   <td style={td}>{u.published ? <span style={ok}>yes</span> : <span style={bad}>no</span>}</td>
                   <td style={td}>
                     {u.live_status === 200 ? <span style={ok}>200</span>
@@ -294,7 +352,7 @@ export default async function BatchesAdmin({
                 </tr>
               ))}
               {list.length === 0 ? (
-                <tr><td style={td} colSpan={6}>Nothing matches.</td></tr>
+                <tr><td style={td} colSpan={7}>Nothing matches.</td></tr>
               ) : null}
             </tbody>
           </table>

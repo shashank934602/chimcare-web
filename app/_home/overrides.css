@@ -1209,3 +1209,21 @@ body:has(.cc-rq) .wp-home .header-template {
   opacity: 0.6;
   cursor: progress;
 }
+
+/* 22 — nav links highlight red on hover (2026-09-21): the saved header's menu (Home, Services,
+   Locations, About Us, Contact Us) had no hover state whatsoever — the pointer crossed a link and
+   nothing happened, so nothing read as clickable. The theme ships `e--pointer-none` on this nav,
+   which is exactly that: no pointer effect. Colour only, matching the keyboard-focus colour the
+   shared nav already used (styles/home-nav.css), so mouse and keyboard now mark the same thing the
+   same way. No underline or background: the saved header is a white card and a bar under one item
+   fights the pill button beside it.
+   `!important` is not optional here and no amount of specificity replaces it: the saved theme ships
+   `.wp-home .menu-item a{color:#000!important}`, which pins every menu link black. Confirmed by
+   reading the matched rules under a forced :hover — the rule below was matching and losing to that
+   one declaration the whole time. */
+.wp-home nav.elementor-nav-menu--main a.elementor-item:hover,
+.wp-home nav.elementor-nav-menu--main a.elementor-item:focus-visible {
+  color: var(--brand-red) !important;
+}
+/* The mobile dropdown keeps the theme's own dark-fill hover — it is a filled list, not a row of
+   links, and red text on #3f444b would be the one unreadable pair in the menu. */

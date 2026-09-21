@@ -67,9 +67,13 @@
 /* The homepage marks no current page and shows no Locations chevron; the menu still opens on hover
    and the toggle stays reachable by keyboard, just visually hidden. */
 .hnav-links a[aria-current='page'] { color: #000; }
-/* The homepage's links stay black under the mouse; only keyboard focus is marked, in the brand red. */
-.hnav-links a:hover { color: #000; border-color: transparent; }
-.hnav-links a:focus-visible { color: #dd2e44; border-color: transparent; }
+/* Links highlight in the brand red under the mouse, and under keyboard focus, the same way. This
+   nav mirrors the homepage's saved header, so it follows it: that header had no hover state at all
+   until 2026-09-21 (app/_home/overrides.css §22), and these rules were black to match it. Keep the
+   two in step — if one highlights and the other doesn't, the menu changes behaviour mid-site. */
+.hnav-links a:hover,
+.hnav-links .mega-trigger > a:hover { color: var(--brand-red, #dd2e44); border-color: transparent; }
+.hnav-links a:focus-visible { color: var(--brand-red, #dd2e44); border-color: transparent; }
 .hnav-links .mega-toggle:not(:focus-visible) {
   position: absolute;
   width: 1px;
